@@ -65,6 +65,7 @@ export function Portfolio() {
       const links = document.querySelectorAll(".pill-link");
       links.forEach((link) => {
         link.addEventListener("click", (e) => {
+          e.preventDefault();
           const href = link.getAttribute("href");
           if (href) {
             scrollToSection(href);

@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
-import profileImage from 'figma:asset/78aba47caca1d67ee6faf931da1867795cd304e0.png';
+import profileImage from '@/assets/profile-image.png';
 
 export function SketchProfileImage({ className = '' }: { className?: string }) {
   const containerRef = useRef(null);

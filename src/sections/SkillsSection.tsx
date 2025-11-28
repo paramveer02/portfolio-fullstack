@@ -103,7 +103,7 @@ export function SkillsSection() {
             cardsData={skills}
             animationConfig={{ stiffness: 260, damping: 20 }}
           >
-            {(card, index) => {
+            {(card) => {
               const CategoryIcon = card.icon;
               return (
                 <div className="w-full h-full border-4 border-white overflow-hidden bg-white text-black relative group transition-all duration-700 hover:border-black">
