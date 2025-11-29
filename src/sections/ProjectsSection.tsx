@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef, useState, useEffect } from "react";
-import { ExternalLink } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import DecryptedText from "../components/DecryptedText";
 import { projects } from "../constants/projectsData";
