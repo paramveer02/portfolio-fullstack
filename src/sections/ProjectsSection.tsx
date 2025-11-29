@@ -4,6 +4,7 @@ import { ExternalLink } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import DecryptedText from "../components/DecryptedText";
 import { projects } from "../constants/projectsData";
+import Magnet from "../components/Magnet";
 
 export function ProjectsSection() {
   const ref = useRef(null);
@@ -14,6 +15,7 @@ export function ProjectsSection() {
 
   // Track current project based on scroll
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
     return scrollYProgress.on("change", (latest) => {
@@ -24,6 +26,27 @@ export function ProjectsSection() {
       setCurrentProjectIndex(Math.max(0, index));
     });
   }, [scrollYProgress]);
+
+  // Image slideshow for each project
+  useEffect(() => {
+    const intervals: NodeJS.Timeout[] = [];
+    
+    projects.forEach((project, projectIndex) => {
+      if (project.images && project.images.length > 1) {
+        const interval = setInterval(() => {
+          setCurrentImageIndex(prev => ({
+            ...prev,
+            [projectIndex]: ((prev[projectIndex] || 0) + 1) % project.images!.length
+          }));
+        }, 3000); // Change image every 3 seconds
+        intervals.push(interval);
+      }
+    });
+
+    return () => {
+      intervals.forEach(interval => clearInterval(interval));
+    };
+  }, []);
 
   const currentProject = projects[currentProjectIndex];
 
@@ -36,7 +59,7 @@ export function ProjectsSection() {
       id="projects"
       ref={ref}
       className="relative bg-white text-black"
-      style={{ height: "500vh" }}
+      style={{ height: "800vh" }}
     >
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         {/* Split Layout */}
@@ -79,7 +102,15 @@ export function ProjectsSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="border border-white inline-block px-4 sm:px-6 py-2 mb-8 sm:mb-12 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]"
+                className="inline-block px-4 sm:px-6 py-2 mb-8 sm:mb-12 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]"
+                style={{
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderColor: '#000000',
+                  backgroundColor: '#ffffff',
+                  color: '#000000',
+                  transition: 'all 0.3s ease'
+                }}
               >
                 <DecryptedText
                   text="FEATURED WORK"
@@ -233,49 +264,76 @@ export function ProjectsSection() {
                     }}
                     className="absolute inset-0 flex items-center justify-center"
                   >
-                    <div className="relative w-full h-full group">
+                    <div className="relative w-full h-full group cursor-pointer">
                       {/* Project Card */}
                       <div className="relative w-full h-full border-2 sm:border-4 md:border-6 lg:border-8 border-black overflow-hidden shadow-2xl">
-                        <ImageWithFallback
-                          src={project.image}
-                          alt={project.title}
-                          className="w-full h-full object-cover"
-                        />
-
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80" />
-
-                        {/* Content */}
-                        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6 lg:p-8 xl:p-12 text-white">
-                          <div className="mb-3 sm:mb-4 md:mb-6">
-                            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-1 sm:mb-2 md:mb-4">
-                              {project.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 mb-2 sm:mb-3 md:mb-4 lg:mb-6 line-clamp-2">
-                              {project.description}
-                            </p>
+                        {/* Image Slideshow Container */}
+                        <div className="relative w-full h-full">
+                          {/* Multiple Images for Slideshow */}
+                          {(project.images || [project.image]).map((img: string, imgIndex: number) => (
+                            <div
+                              key={imgIndex}
+                              className="absolute inset-0 transition-opacity duration-1000"
+                              style={{
+                                opacity: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
+                                zIndex: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
+                              }}
+                            >
+                              <ImageWithFallback
+                                src={img}
+                                alt={`${project.title} - ${imgIndex + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ))}
+                          
+                          {/* Vertical Line Stripe Effect - TV Opening Style - Bidirectional from Center */}
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none z-10">
+                            {[...Array(40)].map((_, i) => {
+                              const isLeftSide = i < 20;
+                              const stripeIndex = isLeftSide ? i : (39 - i);
+                              const centerDistance = Math.abs(stripeIndex - 19.5);
+                              
+                              return (
+                                <div
+                                  key={i}
+                                  className="absolute top-0 bottom-0 bg-black group-hover:[animation-play-state:running]"
+                                  style={{
+                                    left: `${(i / 40) * 100}%`,
+                                    width: '2.5%',
+                                    transformOrigin: 'center',
+                                    transform: 'scaleX(0)',
+                                    animation: `stripeReveal 0.5s ease-out ${centerDistance * 0.015}s forwards`,
+                                    animationPlayState: 'paused',
+                                  }}
+                                />
+                              );
+                            })}
                           </div>
+                        </div>
 
-                          {/* Tech Stack */}
-                          <div className="flex gap-1 sm:gap-2 md:gap-3 flex-wrap">
-                            {project.tech.map((tech: string) => (
-                              <span
-                                key={tech}
-                                className="border border-white px-2 sm:px-3 md:px-4 lg:px-6 py-0.5 sm:py-1 md:py-1.5 lg:py-2 text-[9px] sm:text-[10px] md:text-xs lg:text-sm tracking-wider hover:bg-white hover:text-black transition-all"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-
-                          {/* View Project Button */}
-                          <div className="mt-3 sm:mt-4 md:mt-6 lg:mt-8 flex items-center gap-2 sm:gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-                            <span className="text-[10px] sm:text-xs md:text-sm lg:text-base tracking-wider">
-                              VIEW PROJECT
-                            </span>
-                            <div className="flex-1 h-px bg-white" />
-                          </div>
+                        {/* Subtle Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70 transition-opacity duration-500" />
+                        
+                        {/* Central Magnet CTA - Appears on Hover with Neon Pulse */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20">
+                          <Magnet
+                            padding={80}
+                            magnetStrength={8}
+                            wrapperClassName=""
+                          >
+                            <button
+                              className="neon-pulse-btn px-8 sm:px-10 md:px-12 lg:px-16 py-4 sm:py-5 md:py-6 backdrop-blur-md bg-black/40 cursor-pointer"
+                              onClick={() => {
+                                // Add your navigation logic here
+                                console.log('Navigate to project:', project.title);
+                              }}
+                            >
+                              <p className="text-cyan-400 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-[0.15em] uppercase font-['Space_Grotesk',_sans-serif]">
+                                View Project
+                              </p>
+                            </button>
+                          </Magnet>
                         </div>
                       </div>
                     </div>

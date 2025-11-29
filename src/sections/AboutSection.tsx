@@ -100,7 +100,15 @@ export function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="border border-black inline-block px-4 sm:px-6 py-2 mb-12 sm:mb-16 md:mb-20 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]"
+          className="inline-block px-4 sm:px-6 py-2 mb-12 sm:mb-16 md:mb-20 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]"
+          style={{
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#ffffff',
+            backgroundColor: '#000000',
+            color: '#ffffff',
+            transition: 'all 0.3s ease'
+          }}
         >
           <DecryptedText
             text="ABOUT"

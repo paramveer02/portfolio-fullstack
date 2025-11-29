@@ -39,7 +39,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
       ref={ref}
       id="hero"
       style={{ y, opacity, scale }}
-      className="min-h-screen flex items-center justify-center relative overflow-hidden perspective-2000 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden perspective-2000 px-4 sm:px-6 lg:px-8 pt-24 md:pt-28"
     >
       {/* Background Grid with Parallax */}
       <motion.div
@@ -86,14 +86,14 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
             transition={{ duration: 1, ease: "easeOut" }}
             className="text-center lg:text-left"
           >
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
               className="border border-white bg-white text-black inline-block px-3 sm:px-4 py-1.5 sm:py-2 mb-4 sm:mb-6 text-[10px] sm:text-xs tracking-widest font-semibold"
             >
-              FULL STACK DEVELOPER
-            </motion.div>
+              FULL STACK DEVELOPERR
+            </motion.div> */}
 
             <h1 className="mb-3 sm:mb-4 md:mb-6 leading-none text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold">
               PARAMVIR

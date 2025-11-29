@@ -36,14 +36,43 @@ export const menuItems = [
   },
 ];
 
+// Smooth scroll with custom easing and duration
+const smoothScrollTo = (targetPosition: number, duration: number = 1200) => {
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime: number | null = null;
+
+  const easeInOutCubic = (t: number): number => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+
+  const animation = (currentTime: number) => {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    const ease = easeInOutCubic(progress);
+    
+    window.scrollTo(0, startPosition + distance * ease);
+    
+    if (timeElapsed < duration) {
+      requestAnimationFrame(animation);
+    }
+  };
+
+  requestAnimationFrame(animation);
+};
+
 export const scrollToSection = (href: string) => {
   const sectionId = href.replace("#", "");
-  if (sectionId === "home") {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  if (sectionId === "home" || sectionId === "hero") {
+    smoothScrollTo(0);
     return;
   }
   const element = document.getElementById(sectionId);
   if (element) {
-    element.scrollIntoView({ behavior: "smooth" });
+    const headerOffset = 80; // Account for fixed header
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    smoothScrollTo(offsetPosition);
   }
 };

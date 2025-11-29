@@ -50,7 +50,17 @@ export function SkillsSection() {
           viewport={{ once: true }}
           className="mb-12 sm:mb-16 md:mb-20"
         >
-          <div className="border border-white inline-block px-4 sm:px-6 py-2 mb-6 sm:mb-8 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]">
+          <div 
+            className="inline-block px-4 sm:px-6 py-2 mb-6 sm:mb-8 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]"
+            style={{
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: '#000000',
+              backgroundColor: '#ffffff',
+              color: '#000000',
+              transition: 'all 0.3s ease'
+            }}
+          >
             <DecryptedText
               text="TECHNICAL ARSENAL"
               animateOn="view"

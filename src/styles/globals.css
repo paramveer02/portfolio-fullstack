@@ -145,7 +145,68 @@ p {
   }
 }
 
+@keyframes imageSlide {
+  0%, 30% {
+    opacity: 1;
+  }
+  33%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes stripeReveal {
+  0% {
+    transform: translateX(0) scaleX(0);
+  }
+  50% {
+    transform: translateX(0) scaleX(1);
+  }
+  100% {
+    transform: translateX(0) scaleX(0);
+  }
+}
+
+@keyframes pulseOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
 /* Smooth Transitions */
 .smooth-transition {
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-stripe {
+  animation-play-state: running !important;
+}
+
+/* Neon Pulse Button Effect */
+.neon-pulse-btn {
+  position: relative;
+  background: #000;
+  border: 2px solid #0ff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.2);
+  overflow: visible;
+}
+
+.neon-pulse-btn::before,
+.neon-pulse-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 2px solid #0ff;
+  border-radius: inherit;
+  animation: pulseOut 2s ease-out infinite;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.neon-pulse-btn::after {
+  animation-delay: 1s;
 }

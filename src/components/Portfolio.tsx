@@ -10,10 +10,6 @@ import { menuItems, scrollToSection } from "../constants/menuItems";
 
 export function Portfolio() {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
 
   const [menuColors, setMenuColors] = useState({
     menuBg: "#ffffff",
@@ -74,6 +70,14 @@ export function Portfolio() {
       });
     }, 100);
   };
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+
+
+
 
   return (
     <motion.div
@@ -84,18 +88,7 @@ export function Portfolio() {
       className="bg-black text-white"
     >
       <BubbleMenu
-        logo={(
-          <span 
-            style={{ 
-              fontWeight: 700, 
-              fontSize: "1.25rem",
-              color: menuColors.menuContentColor,
-              transition: "color 0.3s ease"
-            }}
-          >
-            DEV
-          </span>
-        )}
+        logo={null}
         items={menuItems}
         menuAriaLabel="Toggle navigation"
         menuBg={menuColors.menuBg}

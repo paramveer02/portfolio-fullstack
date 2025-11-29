@@ -95,7 +95,7 @@ export default function BubbleMenu({
     'bubble-menu',
     useFixedPosition ? 'fixed' : 'absolute',
     'left-0 right-0 top-8',
-    'flex items-center justify-between',
+    'flex items-center justify-end',
     'gap-4 px-8',
     'pointer-events-none',
     'z-[1001]',
@@ -265,42 +265,44 @@ export default function BubbleMenu({
       `}</style>
 
       <nav className={containerClassName} style={style} aria-label="Main navigation">
-        <div
-          className={[
-            'bubble logo-bubble',
-            'inline-flex items-center justify-center',
-            'rounded-full',
-            'bg-white',
-            'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
-            'pointer-events-auto',
-            'h-12 md:h-14',
-            'px-4 md:px-8',
-            'gap-2',
-            'will-change-transform'
-          ].join(' ')}
-          aria-label="Logo"
-          style={{
-            background: menuBg,
-            minHeight: '48px',
-            borderRadius: '9999px'
-          }}
-        >
-          <span
-            className={['logo-content', 'inline-flex items-center justify-center', 'w-[120px] h-full'].join(' ')}
-            style={
-              {
-                ['--logo-max-height']: '60%',
-                ['--logo-max-width']: '100%'
-              } as CSSProperties
-            }
+        {logo && (
+          <div
+            className={[
+              'bubble logo-bubble',
+              'inline-flex items-center justify-center',
+              'rounded-full',
+              'bg-white',
+              'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
+              'pointer-events-auto',
+              'h-12 md:h-14',
+              'px-4 md:px-8',
+              'gap-2',
+              'will-change-transform'
+            ].join(' ')}
+            aria-label="Logo"
+            style={{
+              background: menuBg,
+              minHeight: '48px',
+              borderRadius: '9999px'
+            }}
           >
-            {typeof logo === 'string' ? (
-              <img src={logo} alt="Logo" className="bubble-logo max-h-[60%] max-w-full object-contain block" />
-            ) : (
-              logo
-            )}
-          </span>
-        </div>
+            <span
+              className={['logo-content', 'inline-flex items-center justify-center', 'w-[120px] h-full'].join(' ')}
+              style={
+                {
+                  ['--logo-max-height']: '60%',
+                  ['--logo-max-width']: '100%'
+                } as CSSProperties
+              }
+            >
+              {typeof logo === 'string' ? (
+                <img src={logo} alt="Logo" className="bubble-logo max-h-[60%] max-w-full object-contain block" />
+              ) : (
+                logo
+              )}
+            </span>
+          </div>
+        )}
 
         <button
           ref={menuButtonRef}
