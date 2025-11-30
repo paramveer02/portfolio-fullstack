@@ -1,6 +1,7 @@
-import { motion, useScroll, useTransform, useInView } from "motion/react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Mail, MessageCircle, Github, Linkedin } from "lucide-react";
+import { Mail, Github, Linkedin } from "lucide-react";
+import { SiWhatsapp } from "react-icons/si";
 
 export function ContactSection() {
   const ref = useRef(null);
@@ -77,25 +78,25 @@ export function ContactSection() {
               Hire Different ™
             </h3>
             <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed">
-              Full-stack developer with 4+ years of experience building production-ready web applications.
+              Full-stack developer with 4 years of experience building production-ready web applications.
             </p>
           </div>
 
           {/* Social Icons */}
           <div className="flex items-center justify-center gap-3">
             <a
-              href="mailto:paramvir.marwah@gmail.com"
+              href="mailto:service@monpro-ai.com"
               className="flex h-10 w-10 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300"
             >
               <Mail size={18} />
             </a>
             <a
-              href="https://wa.me/1234567890"
+              href="https://wa.me/4917643835327"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-10 w-10 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300"
             >
-              <MessageCircle size={18} />
+              <SiWhatsapp size={18} />
             </a>
             <a
               href="https://github.com/paramveer02"
@@ -106,7 +107,7 @@ export function ContactSection() {
               <Github size={18} />
             </a>
             <a
-              href="https://linkedin.com/in/paramvirmarwah"
+              href="https://www.linkedin.com/in/paramveer-marwah/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-10 w-10 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300"
@@ -118,14 +119,20 @@ export function ContactSection() {
           {/* Contact Info - Simplified for Mobile */}
           <div className="space-y-4 text-center px-4">
             <div>
-              <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">Email</span>
-              <a href="mailto:paramvir.marwah@gmail.com" className="text-sm text-gray-900 hover:underline">
-                paramvir.marwah@gmail.com
+              <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">Outlook Email</span>
+              <a href="mailto:service@monpro-ai.com" className="text-sm text-gray-900 hover:underline">
+                service@monpro-ai.com
+              </a>
+            </div>
+            <div>
+              <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">Mobile</span>
+              <a href="tel:+4917643835327" className="text-sm text-gray-900 hover:underline">
+                +49 176 43835327
               </a>
             </div>
             <div>
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">Location</span>
-              <span className="text-sm text-gray-900">Strasbourg · France (EU)</span>
+              <span className="text-sm text-gray-900">Leipzig · Germany (EU)</span>
             </div>
             <div>
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">Stack</span>
@@ -145,7 +152,7 @@ export function ContactSection() {
               </h3>
 
               <p className="text-sm sm:text-base text-gray-700 max-w-sm mx-auto">
-                Full-stack developer with 4+ years of experience building bold,
+                Full-stack developer with 4 years of experience building bold,
                 production-ready web applications with modern JavaScript, React,
                 and Node.js.
               </p>
@@ -153,19 +160,19 @@ export function ContactSection() {
               {/* Quick contact icons */}
               <div className="flex items-center justify-center gap-2 sm:gap-3 pt-2">
                 <a
-                  href="mailto:paramvir.marwah@gmail.com"
+                  href="mailto:service@monpro-ai.com"
                   className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white hover:border-black transition-all duration-300"
                 >
                   <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />
                 </a>
 
                 <a
-                  href="https://wa.me/1234567890"
+                  href="https://wa.me/4917643835327"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white hover:border-black transition-all duration-300"
                 >
-                  <MessageCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <SiWhatsapp size={16} className="sm:w-[18px] sm:h-[18px]" />
                 </a>
 
                 <a
@@ -178,7 +185,7 @@ export function ContactSection() {
                 </a>
 
                 <a
-                  href="https://linkedin.com/in/paramvirmarwah"
+                  href="https://www.linkedin.com/in/paramveer-marwah/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white hover:border-black transition-all duration-300"
@@ -198,13 +205,25 @@ export function ContactSection() {
               <ul className="space-y-3 sm:space-y-4 text-gray-900">
                 <li className="flex flex-col gap-1">
                   <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
-                    Email
+                    Outlook Email
                   </span>
                   <a
-                    href="mailto:paramvir.marwah@gmail.com"
+                    href="mailto:service@monpro-ai.com"
                     className="text-gray-900 hover:underline underline-offset-4 decoration-2 transition-all duration-300 break-all"
                   >
-                    paramvir.marwah@gmail.com
+                    service@monpro-ai.com
+                  </a>
+                </li>
+
+                <li className="flex flex-col gap-1">
+                  <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
+                    Mobile
+                  </span>
+                  <a
+                    href="tel:+4917643835327"
+                    className="text-gray-900 hover:underline underline-offset-4 decoration-2 transition-all duration-300"
+                  >
+                    +49 176 43835327
                   </a>
                 </li>
 
@@ -213,7 +232,7 @@ export function ContactSection() {
                     WhatsApp
                   </span>
                   <a
-                    href="https://wa.me/1234567890"
+                    href="https://wa.me/4917643835327"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-900 hover:underline underline-offset-4 decoration-2 transition-all duration-300"
@@ -227,12 +246,12 @@ export function ContactSection() {
                     LinkedIn
                   </span>
                   <a
-                    href="https://linkedin.com/in/paramvirmarwah"
+                    href="https://www.linkedin.com/in/paramveer-marwah/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-900 hover:underline underline-offset-4 decoration-2 transition-all duration-300"
                   >
-                    /in/paramvirmarwah
+                    /in/paramveer-marwah
                   </a>
                 </li>
 
@@ -262,14 +281,14 @@ export function ContactSection() {
                   <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
                     Location
                   </span>
-                  <span>Strasbourg · France (EU)</span>
+                  <span>Leipzig · Germany (EU)</span>
                 </li>
 
                 <li className="flex flex-col gap-1">
                   <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
                     Experience
                   </span>
-                  <span>4+ years · Full-stack development</span>
+                  <span>4 years · Full-stack development</span>
                 </li>
 
                 <li className="flex flex-col gap-1">

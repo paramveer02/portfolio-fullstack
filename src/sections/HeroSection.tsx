@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useMemo } from "react";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { SketchProfileImage } from "../components/SketchProfileImage";
 
@@ -34,6 +34,17 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
     [0, 5],
   );
 
+  // Memoize particle positions to prevent re-computation on each render
+  const particles = useMemo(() => {
+    return [...Array(10)].map((_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 3 + Math.random() * 2,
+      delay: Math.random() * 2,
+    }));
+  }, []);
+
   return (
     <motion.section
       ref={ref}
@@ -56,22 +67,22 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
           y: useTransform(sectionProgress, [0, 1], [0, -100]),
         }}
       >
-        {[...Array(10)].map((_, i) => (
+        {particles.map((particle) => (
           <motion.div
-            key={i}
+            key={particle.id}
             className="absolute w-1 h-1 bg-white rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
             }}
             animate={{
               opacity: [0.2, 0.5, 0.2],
               scale: [1, 1.5, 1],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: particle.duration,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: particle.delay,
             }}
           />
         ))}
@@ -104,7 +115,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
             <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8 justify-center lg:justify-start">
               <div className="h-px bg-white w-8 sm:w-12 md:w-16" />
               <p className="text-sm sm:text-base md:text-lg tracking-wide">
-                4+ YEARS EXPERIENCE
+                4 YEARS EXPERIENCE
               </p>
             </div>
 
@@ -116,13 +127,15 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
             {/* Social Links */}
             <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start">
               {[
-                { Icon: Github, href: "#" },
-                { Icon: Linkedin, href: "#" },
-                { Icon: Mail, href: "#contact" },
+                { Icon: Github, href: "https://github.com/paramveer02" },
+                { Icon: Linkedin, href: "https://www.linkedin.com/in/paramveer-marwah/" },
+                { Icon: Mail, href: "mailto:service@monpro-ai.com" },
               ].map(({ Icon, href }, i) => (
                 <motion.a
                   key={i}
                   href={href}
+                  target="_blank"
+                  rel="noreferrer"
                   className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 border border-white flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-300"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

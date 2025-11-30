@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import profileImage from '@/assets/profile-image.png';
 
@@ -188,7 +188,7 @@ export function SketchProfileImage({ className = '' }: { className?: string }) {
               boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
             }}
           >
-            <div className="text-3xl font-bold tracking-tight">4+</div>
+            <div className="text-3xl font-bold tracking-tight">4</div>
             <div className="text-[9px] tracking-[0.25em] mt-0.5 opacity-70">YEARS</div>
           </motion.div>
 

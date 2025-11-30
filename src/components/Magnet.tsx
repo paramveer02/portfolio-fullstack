@@ -32,30 +32,49 @@ const Magnet: React.FC<MagnetProps> = ({
       return;
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!magnetRef.current) return;
+    let rafId: number | null = null;
+    let lastMouseEvent: MouseEvent | null = null;
+
+    const updatePosition = () => {
+      if (!lastMouseEvent || !magnetRef.current) {
+        rafId = null;
+        return;
+      }
 
       const { left, top, width, height } = magnetRef.current.getBoundingClientRect();
       const centerX = left + width / 2;
       const centerY = top + height / 2;
 
-      const distX = Math.abs(centerX - e.clientX);
-      const distY = Math.abs(centerY - e.clientY);
+      const distX = Math.abs(centerX - lastMouseEvent.clientX);
+      const distY = Math.abs(centerY - lastMouseEvent.clientY);
 
       if (distX < width / 2 + padding && distY < height / 2 + padding) {
         setIsActive(true);
-        const offsetX = (e.clientX - centerX) / magnetStrength;
-        const offsetY = (e.clientY - centerY) / magnetStrength;
+        const offsetX = (lastMouseEvent.clientX - centerX) / magnetStrength;
+        const offsetY = (lastMouseEvent.clientY - centerY) / magnetStrength;
         setPosition({ x: offsetX, y: offsetY });
       } else {
         setIsActive(false);
         setPosition({ x: 0, y: 0 });
+      }
+
+      rafId = null;
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      lastMouseEvent = e;
+      
+      if (rafId === null) {
+        rafId = requestAnimationFrame(updatePosition);
       }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
     };
   }, [padding, disabled, magnetStrength]);
 

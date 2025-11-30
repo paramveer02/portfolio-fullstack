@@ -1,4 +1,4 @@
-import { motion, useScroll } from "motion/react";
+import { motion, useScroll } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import BubbleMenu from "./BubbleMenu";
 import { HeroSection } from "../sections/HeroSection";
@@ -17,59 +17,80 @@ export function Portfolio() {
     isOnWhiteSection: false
   });
 
-  // Detect section background and update menu colors
+  // Detect section background and update menu colors - Throttled scroll handler
   useEffect(() => {
+    let rafId: number | null = null;
+
     const handleScroll = () => {
-      const aboutSection = document.getElementById("about");
-      const contactSection = document.getElementById("contact");
-      
-      if (aboutSection && contactSection) {
-        const aboutRect = aboutSection.getBoundingClientRect();
-        const contactRect = contactSection.getBoundingClientRect();
+      if (rafId !== null) return;
+
+      rafId = requestAnimationFrame(() => {
+        const aboutSection = document.getElementById("about");
+        const contactSection = document.getElementById("contact");
         
-        // Check if we're in a white section (about or contact)
-        // Check both top of viewport (for menu button) and middle of viewport (for opened menu)
-        const checkPosition = window.innerHeight / 2;
-        if ((aboutRect.top < checkPosition && aboutRect.bottom > checkPosition) || 
-            (contactRect.top < checkPosition && contactRect.bottom > checkPosition) ||
-            (aboutRect.top < 100 && aboutRect.bottom > 100) || 
-            (contactRect.top < 100 && contactRect.bottom > 100)) {
-          setMenuColors({
-            menuBg: "#000000",
-            menuContentColor: "#ffffff",
-            isOnWhiteSection: true
-          });
-        } else {
-          setMenuColors({
-            menuBg: "#ffffff",
-            menuContentColor: "#000000",
-            isOnWhiteSection: false
-          });
+        if (aboutSection && contactSection) {
+          const aboutRect = aboutSection.getBoundingClientRect();
+          const contactRect = contactSection.getBoundingClientRect();
+          
+          // Check if we're in a white section (about or contact)
+          // Check both top of viewport (for menu button) and middle of viewport (for opened menu)
+          const checkPosition = window.innerHeight / 2;
+          if ((aboutRect.top < checkPosition && aboutRect.bottom > checkPosition) || 
+              (contactRect.top < checkPosition && contactRect.bottom > checkPosition) ||
+              (aboutRect.top < 100 && aboutRect.bottom > 100) || 
+              (contactRect.top < 100 && contactRect.bottom > 100)) {
+            setMenuColors({
+              menuBg: "#000000",
+              menuContentColor: "#ffffff",
+              isOnWhiteSection: true
+            });
+          } else {
+            setMenuColors({
+              menuBg: "#ffffff",
+              menuContentColor: "#000000",
+              isOnWhiteSection: false
+            });
+          }
         }
+
+        rafId = null;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Check initial state
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
+
+  // Override link clicks to use smooth scroll - Attach once with cleanup
+  useEffect(() => {
+    const links = document.querySelectorAll(".pill-link");
+    
+    const handleClick = (e: Event) => {
+      e.preventDefault();
+      const target = e.currentTarget as HTMLElement;
+      const href = target.getAttribute("href");
+      if (href) {
+        scrollToSection(href);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check initial state
-    
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    links.forEach((link) => {
+      link.addEventListener("click", handleClick);
+    });
 
-  // Override link clicks to use smooth scroll
-  const handleMenuMount = () => {
-    setTimeout(() => {
-      const links = document.querySelectorAll(".pill-link");
+    return () => {
       links.forEach((link) => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          const href = link.getAttribute("href");
-          if (href) {
-            scrollToSection(href);
-          }
-        });
+        link.removeEventListener("click", handleClick);
       });
-    }, 100);
-  };
+    };
+  }, []);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -85,7 +106,7 @@ export function Portfolio() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       ref={containerRef}
-      className="bg-black text-white"
+      className="relative bg-black text-white"
     >
       <BubbleMenu
         logo={null}
@@ -98,7 +119,6 @@ export function Portfolio() {
         animationEase="back.out(1.5)"
         animationDuration={0.5}
         staggerDelay={0.12}
-        onMenuClick={handleMenuMount}
       />
       <HeroSection scrollProgress={scrollYProgress} />
       <AboutSection />

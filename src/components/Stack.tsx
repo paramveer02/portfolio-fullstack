@@ -1,5 +1,5 @@
-import { motion, useMotionValue, useTransform } from 'motion/react';
-import { useState } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useState, useMemo } from 'react';
 
 interface CardRotateProps {
   children: React.ReactNode;
@@ -58,6 +58,17 @@ export default function Stack({
 }: StackProps) {
   const [cards, setCards] = useState(cardsData);
 
+  // Memoize random rotations to prevent re-computation on each render
+  const cardRotations = useMemo(() => {
+    if (!randomRotation) return {};
+    
+    const rotations: { [key: number]: number } = {};
+    cardsData.forEach(card => {
+      rotations[card.id] = Math.random() * 10 - 5;
+    });
+    return rotations;
+  }, [randomRotation, cardsData]);
+
   const sendToBack = (id: number) => {
     setCards(prev => {
       const newCards = [...prev];
@@ -78,7 +89,7 @@ export default function Stack({
       }}
     >
       {cards.map((card, index) => {
-        const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
+        const randomRotate = randomRotation ? (cardRotations[card.id] || 0) : 0;
 
         return (
           <CardRotate key={card.id} onSendToBack={() => sendToBack(card.id)} sensitivity={sensitivity}>

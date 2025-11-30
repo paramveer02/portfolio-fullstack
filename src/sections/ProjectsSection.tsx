@@ -1,9 +1,47 @@
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import DecryptedText from "../components/DecryptedText";
 import { projects } from "../constants/projectsData";
 import Magnet from "../components/Magnet";
+import { 
+  SiReact, 
+  SiNodedotjs, 
+  SiPostgresql, 
+  SiNextdotjs, 
+  SiStripe, 
+  SiMongodb,
+  SiFirebase,
+  SiVuedotjs,
+  SiExpress,
+  SiMysql,
+  SiJavascript,
+  SiTypescript,
+  SiPython,
+  SiDjango,
+  SiTailwindcss
+} from "react-icons/si";
+import { IconType } from "react-icons";
+
+// Map technology names to their icons
+const techIconMap: { [key: string]: IconType } = {
+  "React": SiReact,
+  "React Native": SiReact,
+  "Node.js": SiNodedotjs,
+  "PostgreSQL": SiPostgresql,
+  "Next.js": SiNextdotjs,
+  "Stripe": SiStripe,
+  "MongoDB": SiMongodb,
+  "Firebase": SiFirebase,
+  "Vue.js": SiVuedotjs,
+  "Express": SiExpress,
+  "MySQL": SiMysql,
+  "JavaScript": SiJavascript,
+  "TypeScript": SiTypescript,
+  "Python": SiPython,
+  "Django": SiDjango,
+  "Tailwind CSS": SiTailwindcss,
+};
 
 export function ProjectsSection() {
   const ref = useRef(null);
@@ -26,32 +64,28 @@ export function ProjectsSection() {
     });
   }, [scrollYProgress]);
 
-  // Image slideshow for each project
+  // Image slideshow for each project - Only run for current active project
   useEffect(() => {
-    const intervals: NodeJS.Timeout[] = [];
+    const project = projects[currentProjectIndex];
     
-    projects.forEach((project, projectIndex) => {
-      if (project.images && project.images.length > 1) {
-        const interval = setInterval(() => {
-          setCurrentImageIndex(prev => ({
-            ...prev,
-            [projectIndex]: ((prev[projectIndex] || 0) + 1) % project.images!.length
-          }));
-        }, 3000); // Change image every 3 seconds
-        intervals.push(interval);
-      }
-    });
+    if (project && project.images && project.images.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex(prev => ({
+          ...prev,
+          [currentProjectIndex]: ((prev[currentProjectIndex] || 0) + 1) % project.images!.length
+        }));
+      }, 3000); // Change image every 3 seconds
 
-    return () => {
-      intervals.forEach(interval => clearInterval(interval));
-    };
-  }, []);
+      return () => clearInterval(interval);
+    }
+  }, [currentProjectIndex]);
 
   const currentProject = projects[currentProjectIndex];
 
-  // Parallax for backgrounds
+  // Memoized parallax transforms to reduce redundant calculations
   const leftBgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const rightBgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const diagonalY = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   return (
     <section
@@ -77,7 +111,7 @@ export function ProjectsSection() {
             <motion.div
               className="absolute inset-0 pointer-events-none opacity-10"
               style={{
-                y: useTransform(scrollYProgress, [0, 1], [0, -200]),
+                y: diagonalY,
                 rotate: 45,
               }}
             >
@@ -177,14 +211,18 @@ export function ProjectsSection() {
 
                   {/* Tech Stack */}
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-3 pt-2 sm:pt-3 md:pt-4">
-                    {currentProject.tech.map((tech: string) => (
-                      <span
-                        key={tech}
-                        className="border border-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm tracking-wider hover:bg-white hover:text-black transition-all duration-300"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    {currentProject.tech.map((tech: string) => {
+                      const Icon = techIconMap[tech];
+                      return (
+                        <span
+                          key={tech}
+                          className="border border-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 text-[10px] sm:text-xs md:text-sm tracking-wider hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-1.5 sm:gap-2"
+                        >
+                          {Icon && <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />}
+                          {tech}
+                        </span>
+                      );
+                    })}
                   </div>
                 </motion.div>
               </div>
