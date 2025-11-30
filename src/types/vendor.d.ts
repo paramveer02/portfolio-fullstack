@@ -1,0 +1,14 @@
+declare module '@radix-ui/*';
+declare module 'vaul@1.1.2';
+declare module 'sonner@2.0.3';
+declare module 'recharts@2.15.2';
+declare module 'react-resizable-panels@2.1.7';
+declare module 'react-hook-form@7.55.0';
+declare module 'react-day-picker@8.10.1';
+declare module 'next-themes@0.4.6';
+declare module 'lucide-react@0.487.0';
+declare module 'input-otp@1.4.2';
+declare module 'embla-carousel-react@8.6.0';
+declare module 'cmdk@1.1.1';
+declare module 'class-variance-authority@0.7.1';
+declare module 'motion/react';

@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import DecryptedText from "../components/DecryptedText";
@@ -45,6 +45,8 @@ const techIconMap: { [key: string]: IconType } = {
 
 export function ProjectsSection() {
   const ref = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -68,31 +70,31 @@ export function ProjectsSection() {
   useEffect(() => {
     const project = projects[currentProjectIndex];
     
-    if (project && project.images && project.images.length > 1) {
+    if (!shouldReduceMotion && project && project.images && project.images.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex(prev => ({
           ...prev,
           [currentProjectIndex]: ((prev[currentProjectIndex] || 0) + 1) % project.images!.length
         }));
-      }, 3000); // Change image every 3 seconds
+      }, 3500); // Change image every 3.5 seconds to reduce main thread churn
 
       return () => clearInterval(interval);
     }
-  }, [currentProjectIndex]);
+  }, [currentProjectIndex, shouldReduceMotion]);
 
   const currentProject = projects[currentProjectIndex];
 
   // Memoized parallax transforms to reduce redundant calculations
-  const leftBgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const rightBgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const diagonalY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const leftBgY = shouldReduceMotion ? undefined : useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const rightBgY = shouldReduceMotion ? undefined : useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const diagonalY = shouldReduceMotion ? undefined : useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   return (
     <section
       id="projects"
       ref={ref}
       className="relative bg-white text-black"
-      style={{ height: "800vh" }}
+      style={{ height: shouldReduceMotion ? "320vh" : "520vh" }}
     >
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         {/* Split Layout */}
