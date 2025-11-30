@@ -141,7 +141,7 @@ export function ContactSection() {
             </div>
           </div>
           {/* Inline contact form on mobile */}
-          <div className="px-1">
+          <div className="px-1 max-w-md mx-auto">
             <ContactForm />
           </div>
         </div>
@@ -311,8 +311,10 @@ export function ContactSection() {
                 </li>
               </ul>
             </div>
-            <div className="sm:col-span-2">
-              <ContactForm />
+            <div className="sm:col-span-2 flex justify-end">
+              <div className="w-full max-w-md md:sticky md:top-20">
+                <ContactForm />
+              </div>
             </div>
           </div>
         </div>

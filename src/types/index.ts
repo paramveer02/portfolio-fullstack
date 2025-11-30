@@ -4,7 +4,7 @@
  */
 
 import { ReactNode } from "react";
-import { MotionValue } from "motion/react";
+import type { MotionValue } from "framer-motion";
 
 // ============================================
 // PROJECT TYPES

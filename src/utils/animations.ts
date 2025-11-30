@@ -3,7 +3,7 @@
  * Common animation configurations and presets used across sections
  */
 
-import { Variants } from "motion/react";
+import type { Variants } from "framer-motion";
 
 // Scroll offsets for section animations
 export const scrollOffsets = {
