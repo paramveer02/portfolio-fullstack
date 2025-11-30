@@ -8,6 +8,9 @@ import {
   FaFigma,
   FaHtml5,
   FaCss3Alt,
+  FaDatabase,
+  FaBrain,
+  FaCogs,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -21,9 +24,14 @@ import {
   SiExpress,
   SiKubernetes,
   SiFirebase,
+  SiPytorch,
+  SiTensorflow,
+  SiOpenai,
+  SiExpo,
+  SiSocketdotio,
 } from "react-icons/si";
 import { DiMysql } from "react-icons/di";
-import { TbBrandReactNative } from "react-icons/tb";
+import { TbApi, TbBrandReactNative, TbTopologyStar3 } from "react-icons/tb";
 
 // Tech icon mapping with react-icons
 export const techIcons: Record<string, any> = {
@@ -36,6 +44,8 @@ export const techIcons: Record<string, any> = {
   CSS3: FaCss3Alt,
   "Node.js": FaNodeJs,
   Express: SiExpress,
+  "REST APIs": TbApi,
+  WebSockets: SiSocketdotio,
   PostgreSQL: SiPostgresql,
   MongoDB: SiMongodb,
   MySQL: DiMysql,
@@ -45,10 +55,16 @@ export const techIcons: Record<string, any> = {
   Docker: FaDocker,
   Kubernetes: SiKubernetes,
   Git: FaGitAlt,
+  "CI/CD": FaCogs,
   Python: FaPython,
   "React Native": TbBrandReactNative,
+  Expo: SiExpo,
   Firebase: SiFirebase,
   Figma: FaFigma,
+  "PyTorch": SiPytorch,
+  TensorFlow: SiTensorflow,
+  "OpenAI API": SiOpenai,
+  LangChain: TbTopologyStar3,
 };
 
 export const skills = [
@@ -59,8 +75,8 @@ export const skills = [
       "React",
       "Next.js",
       "TypeScript",
-      "Tailwind CSS",
       "JavaScript",
+      "Tailwind CSS",
     ],
     icon: FaReact,
   },
@@ -70,28 +86,34 @@ export const skills = [
     tech: [
       "Node.js",
       "Express",
-      "PostgreSQL",
-      "MongoDB",
       "GraphQL",
+      "REST APIs",
+      "WebSockets",
     ],
     icon: FaNodeJs,
   },
   {
     id: 3,
-    category: "DEVOPS",
-    tech: ["AWS", "Docker", "Kubernetes", "Git", "Redis"],
-    icon: FaAws,
+    category: "DATABASES",
+    tech: ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+    icon: FaDatabase,
   },
   {
     id: 4,
-    category: "MOBILE",
-    tech: [
-      "React Native",
-      "Firebase",
-      "TypeScript",
-      "Python",
-      "Figma",
-    ],
+    category: "DEVOPS & TOOLS",
+    tech: ["AWS", "Docker", "Kubernetes", "Git", "CI/CD"],
+    icon: FaAws,
+  },
+  {
+    id: 5,
+    category: "AI TECH STACK",
+    tech: ["Python", "PyTorch", "TensorFlow", "LangChain", "OpenAI API"],
+    icon: FaBrain,
+  },
+  {
+    id: 6,
+    category: "MOBILE & DESIGN",
+    tech: ["React Native", "Expo", "TypeScript", "Firebase", "Figma"],
     icon: TbBrandReactNative,
   },
 ];
