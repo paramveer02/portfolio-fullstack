@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Mail, Github, Linkedin } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
+import { ContactForm } from "../components/contact/ContactForm";
 
 export function ContactSection() {
   const ref = useRef(null);
@@ -138,6 +139,10 @@ export function ContactSection() {
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">Stack</span>
               <span className="text-sm text-gray-900">React, Next.js, Node.js, TypeScript</span>
             </div>
+          </div>
+          {/* Inline contact form on mobile */}
+          <div className="px-1 max-w-md mx-auto">
+            <ContactForm />
           </div>
         </div>
 
@@ -305,6 +310,11 @@ export function ContactSection() {
                   <span>React, Next.js, Node.js, TypeScript</span>
                 </li>
               </ul>
+            </div>
+            <div className="sm:col-span-2 flex justify-end">
+              <div className="w-full max-w-md md:sticky md:top-20">
+                <ContactForm />
+              </div>
             </div>
           </div>
         </div>

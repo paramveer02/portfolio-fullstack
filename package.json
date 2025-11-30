@@ -31,6 +31,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "security:audit": "npm audit --audit-level=high --omit=dev"
   }
 }
