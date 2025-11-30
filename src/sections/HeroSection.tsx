@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef, useMemo } from "react";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { SketchProfileImage } from "../components/SketchProfileImage";
@@ -13,6 +13,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
     target: ref,
     offset: ["start start", "end start"],
   });
+  const shouldReduceMotion = useReducedMotion();
 
   const y = useTransform(scrollProgress, [0, 0.3], [0, -200]);
   const opacity = useTransform(
@@ -75,15 +76,23 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
               left: `${particle.left}%`,
               top: `${particle.top}%`,
             }}
-            animate={{
-              opacity: [0.2, 0.5, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: particle.duration,
-              repeat: Infinity,
-              delay: particle.delay,
-            }}
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    opacity: [0.2, 0.5, 0.2],
+                    scale: [1, 1.5, 1],
+                  }
+            }
+            transition={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    duration: particle.duration,
+                    repeat: Infinity,
+                    delay: particle.delay,
+                  }
+            }
           />
         ))}
       </motion.div>
