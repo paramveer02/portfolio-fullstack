@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import DecryptedText from "../components/DecryptedText";
-import { Server, Layout, Plug, Database, FlaskConical, UploadCloud, Code2, Workflow, Zap } from "lucide-react";
+import { Server, Layout, FlaskConical, UploadCloud, Code2, Workflow, Zap } from "lucide-react";
 
 export function AboutSection() {
   const ref = useRef(null);
@@ -20,16 +20,11 @@ export function AboutSection() {
   );
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
 
-  // Individual parallax for text and stats
+  // Individual parallax for text
   const textY = useTransform(
     scrollYProgress,
     [0, 1],
     [0, -150],
-  );
-  const statsY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, 150],
   );
 
   // Background parallax - moves opposite direction
@@ -41,19 +36,21 @@ export function AboutSection() {
   );
   const shapesY = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
-  const workflowCards = [
-    { title: "Backend logic", Icon: Server, delay: 0.1 },
-    { title: "Frontend scaffolding", Icon: Layout, delay: 0.2 },
-    { title: "API integrations", Icon: Plug, delay: 0.3 },
-    { title: "Database setup", Icon: Database, delay: 0.4 },
-    { title: "Repetitive testing", Icon: FlaskConical, delay: 0.5 },
-    { title: "Deployment routines", Icon: UploadCloud, delay: 0.6 },
+  const architectureNodes = [
+    { title: "Discovery", note: "Product goals, constraints, founder priorities", Icon: Workflow },
+    { title: "Blueprint", note: "AI-assisted schematics + interface contracts", Icon: Code2 },
+    { title: "Delivery Tracks", note: "Web, mobile, and API surfaces sequenced", Icon: Layout },
+    { title: "Automation Fabric", note: "QA bots, records, observability wired in", Icon: FlaskConical },
+    { title: "Release Loop", note: "Deployment rituals that keep iteration safe", Icon: UploadCloud },
   ];
 
-  const valueProps = [
-    { icon: Code2, label: "Classical Engineering" },
-    { icon: Workflow, label: "AI-Assisted Tools" },
-    { icon: Zap, label: "Automation First" },
+  const flowSteps = [
+    { title: "Brief", Icon: Workflow, note: "Goals, risks, constraints" },
+    { title: "AI Blueprint", Icon: Zap, note: "Scaffolds + test shells" },
+    { title: "Web + Mobile UI", Icon: Layout, note: "Unified UX patterns" },
+    { title: "APIs & Data", Icon: Server, note: "Contracts, auth, scaling" },
+    { title: "QA Bots", Icon: FlaskConical, note: "Checks, records, alerts" },
+    { title: "Release & Observe", Icon: UploadCloud, note: "Ship, watch, iterate" },
   ];
 
   return (
@@ -130,147 +127,98 @@ export function AboutSection() {
         {/* Main Heading */}
         <motion.h2
           style={{ y: textY }}
-          className="mb-12 sm:mb-16 md:mb-20 max-w-5xl leading-[1.05] text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-right font-black"
+          className="mb-3 sm:mb-4 md:mb-6 max-w-4xl leading-tight text-3xl sm:text-4xl md:text-5xl text-center font-black mx-auto"
         >
-          I DON&apos;T JUST CODE.
+          SYSTEM ARCHITECT
           <br />
-          I BUILD SYSTEMS.
+          <span className="text-gray-700 font-semibold text-lg sm:text-xl md:text-2xl">
+            Building Products with Precision
+          </span>
         </motion.h2>
+        <p className="text-sm sm:text-base md:text-lg text-center text-gray-600 max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12">
+          Architecture and automation designed so founders can focus on product and innovation—not repetitive setup, testing, or release overhead.
+        </p>
 
         {/* Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 lg:gap-32 items-start">
-          {/* Left Column - Visual Content */}
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-14 md:gap-16 lg:gap-20 items-start">
+          {/* Left Column - Narrative */}
           <motion.div
             style={{ y: textY }}
-            className="space-y-8 sm:space-y-10 md:space-y-12 text-right"
+            className="space-y-6 sm:space-y-8 md:space-y-10 text-center lg:text-left"
           >
-            {/* Core Identity */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
               viewport={{ once: true }}
-              className="border-r-8 border-black pr-6 sm:pr-8 md:pr-10"
+              className="flex flex-col gap-3 items-center lg:items-start"
             >
-              <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 leading-tight">
-                WORKFLOW ENGINEER
-                <br />
-                <span className="text-gray-600">Not Just a Developer</span>
-              </h3>
-              <div className="text-base sm:text-lg md:text-xl text-gray-500 font-semibold tracking-wide">
-                Germany • Full-Stack • AI-Powered
+              <div className="text-base sm:text-lg font-semibold tracking-[0.25em] uppercase text-gray-500">
+                Full-Stack • Cloud-Native • AI-Assisted
               </div>
+              <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-xl">
+                Delivery runs on rails so you can stay focused on brand and product. AI handles the scaffolding and regression, automation records every event, and releases continue smoothly without tying your team up in repetitive work.
+              </p>
             </motion.div>
 
-            {/* Value Proposition Pills */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
               viewport={{ once: true }}
-              className="flex flex-wrap justify-end gap-3 sm:gap-4"
+              className="relative overflow-hidden border-4 border-black bg-white"
             >
-              {valueProps.map(({ icon: Icon, label }) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-3 border-2 border-black bg-white hover:bg-black hover:text-white transition-all duration-300 group"
-                >
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="text-xs sm:text-sm font-medium tracking-wide">
+              <div className="grid grid-cols-1 sm:grid-cols-3 border-b border-black">
+                {["Strategy", "Execution", "Automation"].map((label, idx) => (
+                  <div
+                    key={label}
+                    className={`px-6 py-4 text-sm sm:text-base font-semibold tracking-wide ${
+                      idx < 2 ? "border-b sm:border-b-0 sm:border-r border-black" : ""
+                    }`}
+                  >
                     {label}
-                  </span>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Process Flow Visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              viewport={{ once: true }}
-              className="relative p-8 sm:p-10 md:p-12 border-4 border-black bg-gradient-to-br from-white to-gray-50"
-            >
-              <div className="absolute top-0 right-0 w-16 h-16 border-l-4 border-b-4 border-black" />
-              <div className="absolute bottom-0 left-0 w-16 h-16 border-r-4 border-t-4 border-black" />
-              
-              <div className="space-y-6 text-right">
-                <div className="flex items-center justify-end gap-4">
-                  <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black">SPOT BOTTLENECKS</div>
-                  <div className="w-3 h-3 bg-black rotate-45" />
-                </div>
-                <div className="h-px bg-black/20 my-4" />
-                <div className="flex items-center justify-end gap-4">
-                  <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black">AUTOMATE RUTHLESSLY</div>
-                  <div className="w-3 h-3 bg-black rotate-45" />
-                </div>
-                <div className="h-px bg-black/20 my-4" />
-                <div className="flex items-center justify-end gap-4">
-                  <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-black">SHIP FASTER</div>
-                  <div className="w-4 h-4 bg-black" />
-                </div>
+                  </div>
+                ))}
               </div>
+              <p className="px-6 py-4 text-sm sm:text-base text-gray-600">
+                The stack is mapped like an architectural illustration—strategy frames the system, execution reuses proven patterns, and automation keeps the structure breathing masterminded by my Human Brain.
+              </p>
             </motion.div>
-
-            {/* Outcome Metrics */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.65 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-3 gap-3 sm:gap-4"
-            >
-              {[
-                { metric: "5X", desc: "Faster" },
-                { metric: "$$$", desc: "Savings" },
-                { metric: "100%", desc: "Scalable" },
-              ].map(({ metric, desc }) => (
-                <div
-                  key={metric}
-                  className="border-2 border-black p-4 sm:p-5 text-center hover:bg-black hover:text-white transition-all duration-300 group"
-                >
-                  <div className="text-xl sm:text-2xl md:text-3xl font-black mb-1">{metric}</div>
-                  <div className="text-xs sm:text-sm font-semibold">{desc}</div>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Divider */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              transition={{ duration: 0.9, delay: 0.8 }}
-              viewport={{ once: true }}
-              className="h-1 bg-black origin-right ml-auto w-3/4"
-            />
           </motion.div>
 
-          {/* Right Column - Workflow Cards */}
+          {/* Right Column - Flow diagram */}
           <motion.div
-            style={{ y: statsY }}
-            className="grid grid-cols-2 gap-4 sm:gap-5 md:gap-6"
+            style={{ y: textY }}
+            className="space-y-6 sm:space-y-8 md:space-y-10"
           >
-            {workflowCards.map(({ title, Icon, delay }) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.5, delay }}
-                viewport={{ once: true }}
-                className="relative overflow-hidden border-2 border-black p-5 sm:p-6 md:p-7 bg-white hover:bg-black hover:text-white transition-all duration-400 group"
-                whileHover={{ scale: 1.04, rotate: 0.5 }}
-              >
-                {/* Corner accent */}
-                <div className="absolute top-0 right-0 w-0 h-0 border-t-[20px] border-t-black/5 border-l-[20px] border-l-transparent group-hover:border-t-white/10" />
-                
-                <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-                  <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 transition-transform group-hover:scale-110" />
-                  <div className="text-sm sm:text-base md:text-lg font-semibold tracking-tight leading-tight">
-                    {title}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            viewport={{ once: true }}
+            className="p-6 sm:p-8 md:p-9 border-4 border-black bg-white"
+          >
+            <h3 className="text-base sm:text-lg font-semibold tracking-[0.2em] uppercase mb-4 text-gray-600 text-center sm:text-left">
+              Architecture Diagram
+            </h3>
+            <div className="relative pl-8">
+              <div className="absolute left-4 top-2 bottom-2 w-px bg-black/20" />
+              {architectureNodes.map((node, idx) => (
+                <div key={node.title} className="relative pb-8 last:pb-0">
+                  <div className="absolute left-1.5 top-1.5 w-5 h-5 rounded-full border-2 border-black bg-white flex items-center justify-center">
+                    <node.Icon className="w-3 h-3" />
+                  </div>
+                  {idx !== architectureNodes.length - 1 && (
+                    <div className="absolute left-4 top-6 w-px h-[calc(100%-0.5rem)] bg-black/20" />
+                  )}
+                  <div className="ml-8 text-left">
+                    <p className="text-sm sm:text-base font-semibold">{node.title}</p>
+                    <p className="text-xs sm:text-sm text-gray-600 leading-5">{node.note}</p>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
+          </motion.div>
           </motion.div>
         </div>
       </motion.div>
