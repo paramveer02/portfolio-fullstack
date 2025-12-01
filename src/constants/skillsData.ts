@@ -87,7 +87,14 @@ export const techIcons: Record<string, IconType> = {
   Supabase: SiSupabase,
 };
 
-export const skills = [
+export type Skill = {
+  id: number;
+  category: string;
+  tech: string[];
+  icon: IconType;
+};
+
+export const skills: Skill[] = [
   {
     id: 1,
     category: "FRONTEND",

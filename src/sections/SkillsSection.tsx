@@ -1,9 +1,17 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { FaReact } from "react-icons/fa";
+import { IconType } from "react-icons";
 import DecryptedText from "../components/DecryptedText";
 import Stack from "../components/Stack";
 import { skills, techIcons } from "../constants/skillsData";
+
+type SkillCard = {
+  id: number;
+  category: string;
+  tech: string[];
+  icon: IconType;
+};
 
 export function SkillsSection() {
   const ref = useRef(null);
@@ -114,7 +122,8 @@ export function SkillsSection() {
             animationConfig={{ stiffness: 260, damping: 20 }}
           >
             {(card) => {
-              const CategoryIcon = card.icon;
+              const skillCard = card as SkillCard;
+              const CategoryIcon = skillCard.icon;
               return (
                 <div className="w-full h-full border-4 border-white overflow-hidden bg-white text-black relative group transition-all duration-700 hover:border-black">
                   {/* Background that inverts on hover */}
@@ -130,14 +139,14 @@ export function SkillsSection() {
                           <CategoryIcon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14" />
                         </div>
                         <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-center break-words max-w-full">
-                          {card.category}
+                          {skillCard.category}
                         </h3>
                       </div>
                     </div>
 
                     {/* Tech Stack with Individual Icons */}
                     <div className="space-y-3 sm:space-y-4 md:space-y-5 w-full overflow-hidden">
-                      {card.tech.map((item: string) => {
+                      {skillCard.tech.map((item: string) => {
                         const TechIcon = techIcons[item] || FaReact;
                         return (
                           <div

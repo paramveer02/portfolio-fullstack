@@ -37,14 +37,14 @@ function CardRotate({ children, onSendToBack, sensitivity }: CardRotateProps) {
   );
 }
 
-interface StackProps {
+interface StackProps<T = { id: number; [key: string]: unknown }> {
   randomRotation?: boolean;
   sensitivity?: number;
   cardDimensions?: { width: number; height: number };
   sendToBackOnClick?: boolean;
-  cardsData?: { id: number; [key: string]: unknown }[];
+  cardsData?: T[];
   animationConfig?: { stiffness: number; damping: number };
-  children?: (card: { id: number; [key: string]: unknown }, index: number) => React.ReactNode;
+  children?: (card: T, index: number) => React.ReactNode;
 }
 
 export default function Stack({
