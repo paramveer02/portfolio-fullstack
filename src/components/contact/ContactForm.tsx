@@ -156,7 +156,7 @@ export function ContactForm({ onClose }: ContactFormProps) {
         </motion.div>
       ) : (
         <>
-          {/* Side Contact Options */}
+          {/* Side Contact Options - Hidden on mobile, shown on desktop */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full hidden lg:flex flex-col gap-4 pr-6">
             <a
               href="mailto:service@monpro-ai.com"
@@ -177,6 +177,32 @@ export function ContactForm({ onClose }: ContactFormProps) {
             >
               <SiWhatsapp className="w-5 h-5 text-[#25d366] group-hover:scale-110 transition" />
               <span className="text-sm font-medium text-gray-700 group-hover:text-black whitespace-nowrap">
+                WhatsApp (fastest reply)
+              </span>
+            </a>
+          </div>
+
+          {/* Top Contact Options - Shown on mobile, hidden on desktop */}
+          <div className="flex lg:hidden flex-col sm:flex-row gap-3 mb-6">
+            <a
+              href="mailto:service@monpro-ai.com"
+              className="group flex-1 flex items-center justify-center gap-3 px-4 py-3 bg-white/90 backdrop-blur border border-black/10 rounded-xl shadow-md hover:shadow-lg transition-all"
+              aria-label="Email Paramveer"
+            >
+              <Mail className="w-5 h-5 text-gray-700 group-hover:text-black transition" />
+              <span className="text-sm font-medium text-gray-700 group-hover:text-black">
+                Email me
+              </span>
+            </a>
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex-1 flex items-center justify-center gap-3 px-4 py-3 bg-white/90 backdrop-blur border border-black/10 rounded-xl shadow-md hover:shadow-lg transition-all"
+              aria-label="Chat on WhatsApp"
+            >
+              <SiWhatsapp className="w-5 h-5 text-[#25d366] group-hover:scale-110 transition" />
+              <span className="text-sm font-medium text-gray-700 group-hover:text-black">
                 WhatsApp (fastest reply)
               </span>
             </a>
