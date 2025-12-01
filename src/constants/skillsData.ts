@@ -39,9 +39,10 @@ import {
 } from "react-icons/si";
 import { DiMysql } from "react-icons/di";
 import { TbApi, TbBrandReactNative, TbTopologyStar3 } from "react-icons/tb";
+import { IconType } from "react-icons";
 
 // Tech icon mapping with react-icons
-export const techIcons: Record<string, any> = {
+export const techIcons: Record<string, IconType> = {
   React: FaReact,
   "Next.js": SiNextdotjs,
   TypeScript: SiTypescript,

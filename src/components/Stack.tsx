@@ -42,9 +42,9 @@ interface StackProps {
   sensitivity?: number;
   cardDimensions?: { width: number; height: number };
   sendToBackOnClick?: boolean;
-  cardsData?: { id: number; [key: string]: any }[];
+  cardsData?: { id: number; [key: string]: unknown }[];
   animationConfig?: { stiffness: number; damping: number };
-  children?: (card: any, index: number) => React.ReactNode;
+  children?: (card: { id: number; [key: string]: unknown }, index: number) => React.ReactNode;
 }
 
 export default function Stack({

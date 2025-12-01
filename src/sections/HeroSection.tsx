@@ -3,8 +3,10 @@ import { useRef, useMemo } from "react";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { SketchProfileImage } from "../components/SketchProfileImage";
 
+import { MotionValue } from "framer-motion";
+
 interface HeroSectionProps {
-  scrollProgress: any;
+  scrollProgress: MotionValue<number>;
 }
 
 export function HeroSection({ scrollProgress }: HeroSectionProps) {

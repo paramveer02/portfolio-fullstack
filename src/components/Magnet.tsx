@@ -94,7 +94,7 @@ const Magnet: React.FC<MagnetProps> = ({
         cancelAnimationFrame(rafId);
       }
     };
-  }, [padding, disabled, magnetStrength]);
+  }, [padding, disabled, magnetStrength, isVisible, prefersReducedMotion]);
 
   const transitionStyle = isActive ? activeTransition : inactiveTransition;
 

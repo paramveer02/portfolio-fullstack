@@ -116,7 +116,7 @@ export function ContactForm({ onClose }: ContactFormProps) {
           </div>
           <div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
-            <p className="text-gray-600">Thanks for reaching out! I'll get back to you within 24 hours.</p>
+            <p className="text-gray-600">Thanks for reaching out! I&apos;ll get back to you within 24 hours.</p>
           </div>
           <button
             onClick={onClose}
@@ -162,7 +162,7 @@ export function ContactForm({ onClose }: ContactFormProps) {
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.18em] text-gray-700">Send a message</p>
-          <p className="text-lg font-semibold text-gray-900">Let's build together</p>
+          <p className="text-lg font-semibold text-gray-900">Let&apos;s build together</p>
         </div>
       </div>
 

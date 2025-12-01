@@ -106,7 +106,7 @@ export function ContactSection() {
 
           {/* Tagline */}
           <div className="text-center px-4">
-            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3">Let's Build Together</h3>
+            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3">Let&apos;s Build Together</h3>
             <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed">
               Full-stack developer + AI automation consultant. Available for small business websites, dashboards, and automation systems.
             </p>
@@ -145,7 +145,7 @@ export function ContactSection() {
             {/* LEFT: intro + icons */}
             <div className="md:col-span-4 space-y-4 sm:space-y-6 mx-auto">
               <h3 className="text-base sm:text-lg font-semibold tracking-[0.15em] sm:tracking-[0.18em] text-gray-800 uppercase">
-                Let's Build Together
+                Let&apos;s Build Together
               </h3>
               <p className="text-sm sm:text-base text-gray-700 max-w-sm mx-auto">
                 Full-stack developer + AI automation consultant. I build modern web apps and automation systems for small businesses and startups.
@@ -229,7 +229,7 @@ export function ContactSection() {
             style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)', letterSpacing: '0.08em' }}
             aria-label="Open contact form"
           >
-            <span className="box">Let's Connect!
+            <span className="box">Let&apos;s Connect!
             </span>
           </button>
         </div>

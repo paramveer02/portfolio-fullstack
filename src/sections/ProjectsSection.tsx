@@ -43,6 +43,129 @@ const techIconMap: { [key: string]: IconType } = {
   "Tailwind CSS": SiTailwindcss,
 };
 
+// Individual project card component to avoid hooks inside map
+interface ProjectCardProps {
+  project: typeof projects[0];
+  index: number;
+  scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress'];
+  currentProjectIndex: number;
+  currentImageIndex: { [key: number]: number };
+}
+
+function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, currentImageIndex }: ProjectCardProps) {
+  const totalProjects = projects.length;
+  const start = index / totalProjects;
+  const end = (index + 1) / totalProjects;
+
+  const projectY = useTransform(
+    scrollYProgress,
+    [start, end],
+    ["100%", "-100%"],
+  );
+  const projectOpacity = useTransform(
+    scrollYProgress,
+    [start, start + 0.05, end - 0.05, end],
+    [0, 1, 1, 0],
+  );
+  const projectScale = useTransform(
+    scrollYProgress,
+    [start, start + 0.1, end - 0.1, end],
+    [0.8, 1, 1, 0.8],
+  );
+  const projectRotate = useTransform(
+    scrollYProgress,
+    [start, end],
+    [5, -5],
+  );
+
+  return (
+    <motion.div
+      style={{
+        y: projectY,
+        opacity: projectOpacity,
+        scale: projectScale,
+        rotateZ: projectRotate,
+      }}
+      className="absolute inset-0 flex items-center justify-center"
+    >
+      <div className="relative w-full h-full group cursor-pointer">
+        {/* Project Card */}
+        <div className="relative w-full h-full border-2 sm:border-4 md:border-6 lg:border-8 border-black overflow-hidden shadow-2xl">
+          {/* Image Slideshow Container */}
+          <div className="relative w-full h-full">
+            {/* Multiple Images for Slideshow */}
+            {(project.images || [project.image]).map((img: string, imgIndex: number) => (
+              <div
+                key={imgIndex}
+                className="absolute inset-0 transition-opacity duration-1000"
+                style={{
+                  opacity: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
+                  zIndex: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
+                }}
+              >
+                <ImageWithFallback
+                  src={img}
+                  alt={`${project.title} - ${imgIndex + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+            
+            {/* Vertical Line Stripe Effect - Only render for active project */}
+            {index === currentProjectIndex && (
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none z-10">
+                {[...Array(40)].map((_, i) => {
+                  const isLeftSide = i < 20;
+                  const stripeIndex = isLeftSide ? i : (39 - i);
+                  const centerDistance = Math.abs(stripeIndex - 19.5);
+                  
+                  return (
+                    <div
+                      key={i}
+                      className="absolute top-0 bottom-0 bg-black group-hover:[animation-play-state:running]"
+                      style={{
+                        left: `${(i / 40) * 100}%`,
+                        width: '2.5%',
+                        transformOrigin: 'center',
+                        transform: 'scaleX(0)',
+                        animation: `stripeReveal 0.5s ease-out ${centerDistance * 0.015}s forwards`,
+                        animationPlayState: 'paused',
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Subtle Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70 transition-opacity duration-500" />
+          
+          {/* Central Magnet CTA - Appears on Hover with Neon Pulse */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20">
+            <Magnet
+              padding={80}
+              magnetStrength={8}
+              wrapperClassName=""
+            >
+              <button
+                className="neon-pulse-btn px-8 sm:px-10 md:px-12 lg:px-16 py-4 sm:py-5 md:py-6 backdrop-blur-md bg-black/40 cursor-pointer"
+                onClick={() => {
+                  window.open(project.link, '_blank', 'noopener,noreferrer');
+                }}
+              >
+                <p className="text-cyan-400 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-[0.15em] uppercase font-['Space_Grotesk',_sans-serif]">
+                  View Project
+                </p>
+              </button>
+            </Magnet>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export function ProjectsSection() {
   const ref = useRef(null);
   const shouldReduceMotion = useReducedMotion();
@@ -84,10 +207,10 @@ export function ProjectsSection() {
 
   const currentProject = projects[currentProjectIndex];
 
-  // Memoized parallax transforms to reduce redundant calculations
-  const leftBgY = shouldReduceMotion ? undefined : useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const rightBgY = shouldReduceMotion ? undefined : useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const diagonalY = shouldReduceMotion ? undefined : useTransform(scrollYProgress, [0, 1], [0, -200]);
+  // Always call hooks unconditionally, use static values when motion is reduced
+  const leftBgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const rightBgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const diagonalY = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   return (
     <section
@@ -104,7 +227,7 @@ export function ProjectsSection() {
             {/* Background Pattern with Parallax */}
             <motion.div
               className="absolute inset-0 opacity-5"
-              style={{ y: leftBgY }}
+              style={{ y: shouldReduceMotion ? 0 : leftBgY }}
             >
               <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:80px_80px]" />
             </motion.div>
@@ -113,7 +236,7 @@ export function ProjectsSection() {
             <motion.div
               className="absolute inset-0 pointer-events-none opacity-10"
               style={{
-                y: diagonalY,
+                y: shouldReduceMotion ? 0 : diagonalY,
                 rotate: 45,
               }}
             >
@@ -236,127 +359,23 @@ export function ProjectsSection() {
             {/* Parallax Background Effect */}
             <motion.div
               className="absolute inset-0 opacity-5"
-              style={{ y: rightBgY }}
+              style={{ y: shouldReduceMotion ? 0 : rightBgY }}
             >
               <div className="absolute inset-0 bg-[linear-gradient(black_2px,transparent_2px),linear-gradient(90deg,black_2px,transparent_2px)] bg-[size:80px_80px]" />
             </motion.div>
 
             {/* Projects Rail Container */}
             <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 md:p-12 lg:p-20">
-              {projects.map((project, index) => {
-                // Calculate progress for each project
-                const start = index / projects.length;
-                const end = (index + 1) / projects.length;
-
-                const projectY = useTransform(
-                  scrollYProgress,
-                  [start, end],
-                  ["100%", "-100%"],
-                );
-                const projectOpacity = useTransform(
-                  scrollYProgress,
-                  [start, start + 0.05, end - 0.05, end],
-                  [0, 1, 1, 0],
-                );
-                const projectScale = useTransform(
-                  scrollYProgress,
-                  [start, start + 0.1, end - 0.1, end],
-                  [0.8, 1, 1, 0.8],
-                );
-                const projectRotate = useTransform(
-                  scrollYProgress,
-                  [start, end],
-                  [5, -5],
-                );
-
-                return (
-                  <motion.div
-                    key={project.title}
-                    style={{
-                      y: projectY,
-                      opacity: projectOpacity,
-                      scale: projectScale,
-                      rotateZ: projectRotate,
-                    }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    <div className="relative w-full h-full group cursor-pointer">
-                      {/* Project Card */}
-                      <div className="relative w-full h-full border-2 sm:border-4 md:border-6 lg:border-8 border-black overflow-hidden shadow-2xl">
-                        {/* Image Slideshow Container */}
-                        <div className="relative w-full h-full">
-                          {/* Multiple Images for Slideshow */}
-                          {(project.images || [project.image]).map((img: string, imgIndex: number) => (
-                            <div
-                              key={imgIndex}
-                              className="absolute inset-0 transition-opacity duration-1000"
-                              style={{
-                                opacity: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
-                                zIndex: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
-                              }}
-                            >
-                              <ImageWithFallback
-                                src={img}
-                                alt={`${project.title} - ${imgIndex + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          ))}
-                          
-                          {/* Vertical Line Stripe Effect - Only render for active project */}
-                          {index === currentProjectIndex && (
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none z-10">
-                              {[...Array(40)].map((_, i) => {
-                                const isLeftSide = i < 20;
-                                const stripeIndex = isLeftSide ? i : (39 - i);
-                                const centerDistance = Math.abs(stripeIndex - 19.5);
-                                
-                                return (
-                                  <div
-                                    key={i}
-                                    className="absolute top-0 bottom-0 bg-black group-hover:[animation-play-state:running]"
-                                    style={{
-                                      left: `${(i / 40) * 100}%`,
-                                      width: '2.5%',
-                                      transformOrigin: 'center',
-                                      transform: 'scaleX(0)',
-                                      animation: `stripeReveal 0.5s ease-out ${centerDistance * 0.015}s forwards`,
-                                      animationPlayState: 'paused',
-                                    }}
-                                  />
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Subtle Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70 transition-opacity duration-500" />
-                        
-                        {/* Central Magnet CTA - Appears on Hover with Neon Pulse */}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20">
-                          <Magnet
-                            padding={80}
-                            magnetStrength={8}
-                            wrapperClassName=""
-                          >
-                            <button
-                              className="neon-pulse-btn px-8 sm:px-10 md:px-12 lg:px-16 py-4 sm:py-5 md:py-6 backdrop-blur-md bg-black/40 cursor-pointer"
-                              onClick={() => {
-                                window.open(project.link, '_blank', 'noopener,noreferrer');
-                              }}
-                            >
-                              <p className="text-cyan-400 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-[0.15em] uppercase font-['Space_Grotesk',_sans-serif]">
-                                View Project
-                              </p>
-                            </button>
-                          </Magnet>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
+              {projects.map((project, index) => (
+                <ProjectCard
+                  key={project.title}
+                  project={project}
+                  index={index}
+                  scrollYProgress={scrollYProgress}
+                  currentProjectIndex={currentProjectIndex}
+                  currentImageIndex={currentImageIndex}
+                />
+              ))}
             </div>
           </div>
         </div>

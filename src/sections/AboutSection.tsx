@@ -144,7 +144,7 @@ export function AboutSection() {
               viewport={{ once: true }}
               className="text-xl sm:text-2xl md:text-3xl leading-relaxed border-l-4 sm:border-l-8 border-black pl-4 sm:pl-6 md:pl-8"
             >
-              I'm a full-stack developer based in Germany (originally India). I started with Python/Django and now focus on JavaScript/TypeScript with React, Node.js, Express, Prisma, and Tailwind CSS.
+              I&apos;m a full-stack developer based in Germany (originally India). I started with Python/Django and now focus on JavaScript/TypeScript with React, Node.js, Express, Prisma, and Tailwind CSS.
             </motion.p>
 
             <motion.p
