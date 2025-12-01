@@ -2,29 +2,33 @@ export const projects = [
   {
     title: "BALANCE APP",
     description:
-      "Fitness tracker focused on daily habits and progress. A responsive React app with clean UI and simple state management.",
-    tech: ["React", "Tailwind CSS"],
+      "AI-powered lifestyle balancing app that generates personalized habit plans using Google Gemini AI. Users track dependencies, receive custom wellness strategies, and monitor progress with an intuitive full-stack solution.",
+    tech: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS", "TypeScript"],
     image:
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/balance-images/Screenshot 2025-12-01 at 14.28.20.png",
     images: [
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/balance-images/Screenshot 2025-12-01 at 14.28.20.png",
+      "/balance-images/Screenshot 2025-12-01 at 14.58.49.png",
+      "/balance-images/Screenshot 2025-12-01 at 14.29.33.png",
+      "/balance-images/Screenshot 2025-12-01 at 14.58.37.png",
+      "/balance-images/Screenshot 2025-12-01 at 14.59.10.png",
     ],
     number: "01",
     link: "https://balance-frontend.onrender.com",
   },
   {
-    title: "EVENTSPARK",
+    title: "EVENTSPARK - AI CITY GUIDE",
     description:
-      "Event booking platform with event listing, booking flows, and REST API. Built with MERN stack for CRUD patterns and deployment.",
+      "AI-powered city guide and event platform. Discover local events, create community gatherings, and explore personalized recommendations for monuments, restaurants, and nightlife based on your location.",
     tech: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
     image:
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/eventSpark-images/Screenshot 2025-12-01 at 14.36.40.png",
     images: [
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/eventSpark-images/Screenshot 2025-12-01 at 14.36.40.png",
+      "/eventSpark-images/Screenshot 2025-12-01 at 14.38.22.png",
+      "/eventSpark-images/Screenshot 2025-12-01 at 14.37.44.png",
+      "/eventSpark-images/Screenshot 2025-12-01 at 14.38.43.png",
+      "/eventSpark-images/Screenshot 2025-12-01 at 14.39.06.png",
     ],
     number: "02",
     link: "https://eventspark-vjnm.onrender.com",
@@ -32,14 +36,16 @@ export const projects = [
   {
     title: "JOBFIX",
     description:
-      "AI-powered job finder with OpenAI integration for tailored job suggestions and resume support. Built to learn API integration and error handling.",
+      "Job application management platform for students and job seekers. Track current and past applications, visualize performance metrics with charts, and manage your job search in one organized, responsive dashboard.",
     tech: ["React", "Node.js", "Express", "JavaScript", "Tailwind CSS"],
     image:
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/jobfix-images/Screenshot 2025-12-01 at 14.46.23.png",
     images: [
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/jobfix-images/Screenshot 2025-12-01 at 14.46.23.png",
+      "/jobfix-images/Screenshot 2025-12-01 at 14.51.09.png",
+      "/jobfix-images/Screenshot 2025-12-01 at 14.46.47.png",
+      "/jobfix-images/Screenshot 2025-12-01 at 14.50.46.png",
+      "/jobfix-images/Screenshot 2025-12-01 at 14.50.53.png",
     ],
     number: "03",
     link: "https://jobfix.onrender.com",
@@ -50,11 +56,11 @@ export const projects = [
       "Classic game built with modern React patterns. Demonstrates component composition, hooks, state updates, and clean UI.",
     tech: ["React", "JavaScript", "Tailwind CSS"],
     image:
-      "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/tic-tac-toe-images/Screenshot 2025-12-01 at 14.35.17.png",
     images: [
-      "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&h=800&q=75&fit=crop&crop=entropy",
-      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1200&h=800&q=75&fit=crop&crop=entropy",
+      "/tic-tac-toe-images/Screenshot 2025-12-01 at 14.34.25.png",
+      "/tic-tac-toe-images/Screenshot 2025-12-01 at 14.34.36.png",
+      "/tic-tac-toe-images/Screenshot 2025-12-01 at 14.35.17.png",
     ],
     number: "04",
     link: "https://react-tic-tac-toe-b8v0.onrender.com",

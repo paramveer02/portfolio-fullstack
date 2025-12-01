@@ -53,6 +53,7 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, currentImageIndex }: ProjectCardProps) {
+  const shouldReduceMotion = useReducedMotion();
   const totalProjects = projects.length;
   const start = index / totalProjects;
   const end = (index + 1) / totalProjects;
@@ -67,15 +68,16 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
     [start, start + 0.05, end - 0.05, end],
     [0, 1, 1, 0],
   );
+  // Simplify scale/rotate transforms - optional effects
   const projectScale = useTransform(
     scrollYProgress,
     [start, start + 0.1, end - 0.1, end],
-    [0.8, 1, 1, 0.8],
+    shouldReduceMotion ? [1, 1, 1, 1] : [0.95, 1, 1, 0.95],
   );
   const projectRotate = useTransform(
     scrollYProgress,
     [start, end],
-    [5, -5],
+    shouldReduceMotion ? [0, 0] : [2, -2],
   );
 
   return (
@@ -91,6 +93,11 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
       <div className="relative w-full h-full group cursor-pointer">
         {/* Project Card */}
         <div className="relative w-full h-full border-2 sm:border-4 md:border-6 lg:border-8 border-black overflow-hidden shadow-2xl">
+          {/* Grid Background Pattern - Same as left side */}
+          <div className="absolute inset-0 bg-black">
+            <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:80px_80px] opacity-5" />
+          </div>
+          
           {/* Image Slideshow Container */}
           <div className="relative w-full h-full">
             {/* Multiple Images for Slideshow */}
@@ -106,7 +113,13 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
                 <ImageWithFallback
                   src={img}
                   alt={`${project.title} - ${imgIndex + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
+                  style={{
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                  }}
+                  width={800}
+                  height={600}
                 />
               </div>
             ))}
@@ -149,10 +162,11 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
               wrapperClassName=""
             >
               <button
-                className="neon-pulse-btn px-8 sm:px-10 md:px-12 lg:px-16 py-4 sm:py-5 md:py-6 backdrop-blur-md bg-black/40 cursor-pointer"
+                className="neon-pulse-btn px-8 sm:px-10 md:px-12 lg:px-16 py-4 sm:py-5 md:py-6 backdrop-blur-md bg-black/40 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 rounded"
                 onClick={() => {
                   window.open(project.link, '_blank', 'noopener,noreferrer');
                 }}
+                aria-label={`View ${project.title} project`}
               >
                 <p className="text-cyan-400 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-[0.15em] uppercase font-['Space_Grotesk',_sans-serif]">
                   View Project
@@ -169,6 +183,7 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
 export function ProjectsSection() {
   const ref = useRef(null);
   const shouldReduceMotion = useReducedMotion();
+  const [isInView, setIsInView] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -178,6 +193,26 @@ export function ProjectsSection() {
   // Track current project based on scroll
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({});
+
+  // Intersection observer to pause animations when offscreen
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     return scrollYProgress.on("change", (latest) => {
@@ -189,11 +224,11 @@ export function ProjectsSection() {
     });
   }, [scrollYProgress]);
 
-  // Image slideshow for each project - Only run for current active project
+  // Image slideshow for each project - Only run when in view and for current active project
   useEffect(() => {
     const project = projects[currentProjectIndex];
     
-    if (!shouldReduceMotion && project && project.images && project.images.length > 1) {
+    if (!shouldReduceMotion && isInView && project && project.images && project.images.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex(prev => ({
           ...prev,
@@ -203,7 +238,7 @@ export function ProjectsSection() {
 
       return () => clearInterval(interval);
     }
-  }, [currentProjectIndex, shouldReduceMotion]);
+  }, [currentProjectIndex, shouldReduceMotion, isInView]);
 
   const currentProject = projects[currentProjectIndex];
 
@@ -217,7 +252,7 @@ export function ProjectsSection() {
       id="projects"
       ref={ref}
       className="relative bg-white text-black"
-      style={{ height: shouldReduceMotion ? "320vh" : "520vh" }}
+      style={{ height: shouldReduceMotion ? "280vh" : "380vh" }}
     >
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         {/* Split Layout */}
@@ -233,14 +268,15 @@ export function ProjectsSection() {
             </motion.div>
 
             {/* Animated Diagonal Lines */}
-            <motion.div
-              className="absolute inset-0 pointer-events-none opacity-10"
-              style={{
-                y: shouldReduceMotion ? 0 : diagonalY,
-                rotate: 45,
-              }}
-            >
-              {[...Array(5)].map((_, i) => (
+            {!shouldReduceMotion && (
+              <motion.div
+                className="absolute inset-0 pointer-events-none opacity-10"
+                style={{
+                  y: diagonalY,
+                  rotate: 45,
+                }}
+              >
+                {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
                   className="absolute h-px bg-white"
@@ -251,7 +287,8 @@ export function ProjectsSection() {
                   }}
                 />
               ))}
-            </motion.div>
+              </motion.div>
+            )}
 
             <motion.div className="relative z-10 w-full max-w-2xl">
               {/* Label */}
@@ -287,14 +324,14 @@ export function ProjectsSection() {
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] font-bold mb-4 sm:mb-6 md:mb-8"
               >
                 <DecryptedText
-                  text="SELECTED"
+                  text="DEPLOYED"
                   animateOn="view"
                   speed={40}
                   maxIterations={12}
                 />
                 <br />
                 <DecryptedText
-                  text="PROJECTS"
+                  text="WEBSITES"
                   animateOn="view"
                   speed={40}
                   maxIterations={12}
@@ -303,8 +340,8 @@ export function ProjectsSection() {
 
               {/* Dynamic Project Info - Fixed Container */}
               <div
-                className="mt-6 sm:mt-8 md:mt-12 lg:mt-16 relative"
-                style={{ minHeight: "250px" }}
+                className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 relative"
+                style={{ minHeight: "280px" }}
               >
                 <motion.div
                   key={currentProjectIndex}
@@ -314,7 +351,7 @@ export function ProjectsSection() {
                     duration: 0.5,
                     ease: "easeOut",
                   }}
-                  className="absolute inset-0 space-y-4 sm:space-y-6"
+                  className="absolute inset-0 space-y-3 sm:space-y-4 md:space-y-5"
                 >
                   {/* Project Number */}
                   <div className="flex items-center gap-4 sm:gap-6">
@@ -330,12 +367,12 @@ export function ProjectsSection() {
                   </h3>
 
                   {/* Project Description */}
-                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 tracking-wide leading-relaxed">
+                  <p className="text-sm sm:text-base md:text-lg text-gray-400 tracking-wide leading-relaxed">
                     {currentProject.description}
                   </p>
 
                   {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-3 pt-2 sm:pt-3 md:pt-4">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-3 pt-1 sm:pt-2">
                     {currentProject.tech.map((tech: string) => {
                       const Icon = techIconMap[tech];
                       return (

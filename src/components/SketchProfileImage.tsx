@@ -173,7 +173,7 @@ export function SketchProfileImage({ className = '' }: { className?: string }) {
           />
 
           {/* Minimal Stats Cards - Sleek Design */}
-          <motion.div
+          {/* <motion.div
             className="absolute -bottom-4 -right-4 bg-white text-black px-6 py-4 z-30"
             initial={{ opacity: 0, x: 30, y: 30 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
@@ -188,11 +188,11 @@ export function SketchProfileImage({ className = '' }: { className?: string }) {
               boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
             }}
           >
-            <div className="text-3xl font-bold tracking-tight">4</div>
-            <div className="text-[9px] tracking-[0.25em] mt-0.5 opacity-70">YEARS</div>
-          </motion.div>
+            <div className="text-3xl font-bold tracking-tight">Vision </div>
+            {/* <div className="text-[9px] tracking-[0.25em] mt-0.5 opacity-70">YEARS</div> */}
+          {/* </motion.div> */} 
 
-          <motion.div
+          {/* <motion.div
             className="absolute -top-4 -left-4 bg-white text-black px-6 py-4 z-30"
             initial={{ opacity: 0, x: -30, y: -30 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
@@ -207,13 +207,13 @@ export function SketchProfileImage({ className = '' }: { className?: string }) {
               boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
             }}
           >
-            <div className="text-3xl font-bold tracking-tight">50+</div>
-            <div className="text-[9px] tracking-[0.25em] mt-0.5 opacity-70">PROJECTS</div>
-          </motion.div>
-        </motion.div>
+            {/* <div className="text-[9px] tracking-[0.25em] mt-0.5 opacity-70">PROJECTS</div> */}
+            {/* <div className="text-3xl font-bold tracking-tight">Goal</div> */}
+          {/* </motion.div> */}
+          </motion.div> 
 
         {/* Bottom Label - Sleek Modern Design */}
-        <motion.div
+        {/* <motion.div
           className="absolute -bottom-20 left-0 right-0 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -225,17 +225,17 @@ export function SketchProfileImage({ className = '' }: { className?: string }) {
               boxShadow: '0 10px 30px rgba(255,255,255,0.3)',
             }}
           >
-            <span className="tracking-[0.35em] text-xs font-bold relative z-10">FULL STACK DEVELOPER</span>
+            <span className="tracking-[0.35em] text-xs font-bold relative z-10">FULL STACK DEVELOPfER</span>
             
             {/* Animated Underline */}
-            <motion.div
+            {/* <motion.div
               className="absolute bottom-0 left-0 h-0.5 bg-black"
               initial={{ width: '0%' }}
               animate={{ width: '100%' }}
               transition={{ delay: 1.8, duration: 0.8, ease: 'easeOut' }}
             />
-          </div>
-        </motion.div>
+          </div> */}
+        {/* </motion.div>  */}
       </motion.div>
     </div>
   );
