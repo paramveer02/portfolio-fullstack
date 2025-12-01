@@ -12,7 +12,6 @@ import {
   FaBrain,
   FaCogs,
   FaRobot,
-  FaServer,
   FaTools,
 } from "react-icons/fa";
 import {
