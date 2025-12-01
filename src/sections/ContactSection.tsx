@@ -110,16 +110,22 @@ export function ContactSection() {
       >
         {/* MOBILE LAYOUT */}
         <div className="md:hidden space-y-8">
-          {/* Tagline */}
-          <div className="text-center px-4">
-            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3">
-              Let&apos;s Build Together
-            </h3>
-            <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed">
-              Full-stack developer + AI automation consultant. Available for small
-              business websites, dashboards, and automation systems.
-            </p>
+          {/* CTA above footer name */}
+          <div className="w-full mt-4 mb-2">
+            <button
+              onClick={() => setShowForm(true)}
+              className="animated-border-btn w-full text-center leading-none font-light uppercase text-black"
+              style={{
+                fontSize: "clamp(2rem, 6vw, 4rem)",
+                letterSpacing: "0.08em",
+              }}
+              aria-label="Open contact form"
+            >
+              <span className="box">Let&apos;s Connect!</span>
+            </button>
           </div>
+
+
 
           {/* Social Icons */}
           <div className="flex items-center justify-center pt-2">
@@ -175,6 +181,17 @@ export function ContactSection() {
                 React, Next.js, Node.js, TypeScript
               </span>
             </div>
+          </div>
+
+          {/* Tagline moved to bottom */}
+          <div className="text-center px-4 pt-4 border-t border-gray-200 mt-4">
+            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3">
+              Let&apos;s Build Together
+            </h3>
+            <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed">
+              Full-stack developer + AI automation consultant. Available for small
+              business websites, dashboards, and automation systems.
+            </p>
           </div>
         </div>
 
@@ -299,8 +316,8 @@ export function ContactSection() {
           </div>
         </div>
 
-        {/* CTA above footer name */}
-        <div className="w-full mt-10 sm:mt-12 md:mt-14 mb-6 sm:mb-8">
+        {/* CTA above footer name - hidden on mobile since it's moved to the top */}
+        <div className="hidden md:block w-full mt-10 sm:mt-12 md:mt-14 mb-6 sm:mb-8">
           <button
             onClick={() => setShowForm(true)}
             className="animated-border-btn w-full text-center leading-none font-light uppercase text-black"
