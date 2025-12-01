@@ -253,14 +253,19 @@ export function ProjectsSection() {
   }, []);
 
   useEffect(() => {
+    if (isMobileDevice) return;
+
     return scrollYProgress.on("change", (latest) => {
       const index = Math.min(
         Math.floor(latest * projects.length),
         projects.length - 1,
       );
-      setCurrentProjectIndex(Math.max(0, index));
+      setCurrentProjectIndex((prev) => {
+        const safeIndex = Math.max(0, index);
+        return prev === safeIndex ? prev : safeIndex;
+      });
     });
-  }, [scrollYProgress]);
+  }, [scrollYProgress, isMobileDevice]);
 
   // Image slideshow for each project - Only run when in view and for current active project
   useEffect(() => {
@@ -281,7 +286,7 @@ export function ProjectsSection() {
     }
   }, [currentProjectIndex, shouldReduceMotion, isInView, isMobileDevice]);
 
-  const currentProject = projects[currentProjectIndex];
+  const currentProject = projects[currentProjectIndex] || projects[0];
 
   // Always call hooks unconditionally, use static values when motion is reduced
   const leftBgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
@@ -290,12 +295,92 @@ export function ProjectsSection() {
   // Simplify animations on mobile devices
   const diagonalY = useTransform(scrollYProgress, [0, 1], [0, isMobileDevice ? -50 : -200]);
 
+  if (isMobileDevice) {
+    return (
+      <section id="projects" className="bg-white text-black py-12 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div className="text-center space-y-3">
+            <div className="inline-block px-4 py-2 text-xs tracking-[0.3em] border border-black bg-white">
+              <DecryptedText text="FEATURED WORK" animateOn="view" speed={30} maxIterations={15} />
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight">
+              <DecryptedText text="DEPLOYED" animateOn="view" speed={40} maxIterations={12} />
+              <br />
+              <DecryptedText text="WEBSITES" animateOn="view" speed={40} maxIterations={12} />
+            </h2>
+            <p className="text-sm text-gray-700 max-w-2xl mx-auto">
+              Smooth, touch-friendly cards keep the experience responsive on mobile while highlighting shipped projects.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {projects.map((project) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="rounded-2xl border border-black/10 shadow-lg overflow-hidden bg-white"
+              >
+                <div className="relative aspect-video bg-black">
+                  <ImageWithFallback
+                    src={(project.images && project.images[0]) || project.image}
+                    alt={`${project.title} preview`}
+                    className="w-full h-full object-contain"
+                    width={800}
+                    height={600}
+                  />
+                  <span className="absolute top-3 left-3 bg-white text-black text-xs font-semibold px-3 py-1 rounded-full border border-black/10">
+                    #{project.number}
+                  </span>
+                </div>
+
+                <div className="p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-bold">{project.title}</h3>
+                      <p className="text-sm text-gray-700 leading-relaxed">{project.description}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech) => {
+                      const Icon = techIconMap[tech];
+                      return (
+                        <span
+                          key={tech}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs font-semibold tracking-wide"
+                        >
+                          {Icon && <Icon className="w-3.5 h-3.5" />}
+                          {tech}
+                        </span>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    className="w-full mt-2 rounded-full border border-black bg-black text-white py-3 text-sm font-semibold tracking-wider hover:scale-[1.01] active:scale-[0.99] transition-transform"
+                    onClick={() => window.open(project.link, '_blank', 'noopener,noreferrer')}
+                    aria-label={`Open ${project.title}`}
+                  >
+                    View Project
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="projects"
       ref={ref}
       className="relative bg-white text-black"
-      style={{ height: shouldReduceMotion ? "280vh" : (isMobileDevice ? "320vh" : "380vh") }}
+      style={{ height: shouldReduceMotion ? "280vh" : "380vh" }}
     >
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         {/* Split Layout */}
@@ -311,7 +396,7 @@ export function ProjectsSection() {
             </motion.div>
 
             {/* Animated Diagonal Lines */}
-            {!shouldReduceMotion && isMobileDevice === false && (
+            {!shouldReduceMotion && (
               <motion.div
                 className="absolute inset-0 pointer-events-none opacity-10"
                 style={{
