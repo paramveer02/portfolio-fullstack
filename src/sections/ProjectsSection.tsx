@@ -80,6 +80,15 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
     shouldReduceMotion ? [0, 0] : [2, -2],
   );
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
+
+  // Handle touch events for mobile
+  const handleTouchStart = () => {
+    setIsTouched(true);
+    setTimeout(() => setIsTouched(false), 3000); // Reset after 3 seconds
+  };
+
   return (
     <motion.div
       style={{
@@ -90,12 +99,28 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
       }}
       className="absolute inset-0 flex items-center justify-center"
     >
-      <div className="relative w-full h-full group cursor-pointer">
+      <div 
+        className="relative w-full h-full group cursor-pointer"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={handleTouchStart}
+        onClick={() => window.open(project.link, '_blank', 'noopener,noreferrer')}
+      >
         {/* Project Card */}
         <div className="relative w-full h-full border-2 sm:border-4 md:border-6 lg:border-8 border-black overflow-hidden shadow-2xl">
           {/* Grid Background Pattern - Same as left side */}
           <div className="absolute inset-0 bg-black">
             <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:100px_100px] opacity-5" />
+          </div>
+          
+          {/* Mobile Tap Indicator */}
+          <div className="absolute top-4 right-4 md:hidden z-30">
+            <div className="bg-black text-white px-2 py-1 rounded text-xs font-bold flex items-center">
+              <span>Tap to view</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </div>
           </div>
           
           {/* Image Slideshow Container */}
@@ -142,7 +167,7 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
                         transformOrigin: 'center',
                         transform: 'scaleX(0)',
                         animation: `stripeReveal 0.5s ease-out ${centerDistance * 0.015}s forwards`,
-                        animationPlayState: 'paused',
+                        animationPlayState: (isHovered || isTouched) ? 'running' : 'paused',
                       }}
                     />
                   );
@@ -152,10 +177,10 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
           </div>
 
           {/* Subtle Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70 transition-opacity duration-500" style={{ opacity: (isHovered || isTouched) ? 0.7 : 0.6 }} />
           
           {/* Central Magnet CTA - Appears on Hover with Neon Pulse */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20">
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20" style={{ opacity: (isHovered || isTouched) ? 1 : 0 }}>
             <Magnet
               padding={80}
               magnetStrength={8}
@@ -184,6 +209,19 @@ export function ProjectsSection() {
   const ref = useRef(null);
   const shouldReduceMotion = useReducedMotion();
   const [isInView, setIsInView] = useState(false);
+  const [isMobileDevice, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(typeof window !== 'undefined' && window.innerWidth < 768);
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -228,37 +266,42 @@ export function ProjectsSection() {
   useEffect(() => {
     const project = projects[currentProjectIndex];
     
+    // Adjust interval based on device
+    const intervalTime = isMobileDevice ? 5000 : 3500; // Slower on mobile
+    
     if (!shouldReduceMotion && isInView && project && project.images && project.images.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex(prev => ({
           ...prev,
           [currentProjectIndex]: ((prev[currentProjectIndex] || 0) + 1) % project.images!.length
         }));
-      }, 3500); // Change image every 3.5 seconds to reduce main thread churn
+      }, intervalTime); // Change image every 3.5 seconds (desktop) or 5 seconds (mobile)
 
       return () => clearInterval(interval);
     }
-  }, [currentProjectIndex, shouldReduceMotion, isInView]);
+  }, [currentProjectIndex, shouldReduceMotion, isInView, isMobileDevice]);
 
   const currentProject = projects[currentProjectIndex];
 
   // Always call hooks unconditionally, use static values when motion is reduced
   const leftBgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const rightBgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const diagonalY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  
+  // Simplify animations on mobile devices
+  const diagonalY = useTransform(scrollYProgress, [0, 1], [0, isMobileDevice ? -50 : -200]);
 
   return (
     <section
       id="projects"
       ref={ref}
       className="relative bg-white text-black"
-      style={{ height: shouldReduceMotion ? "280vh" : "380vh" }}
+      style={{ height: shouldReduceMotion ? "280vh" : (isMobileDevice ? "320vh" : "380vh") }}
     >
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         {/* Split Layout */}
-        <div className="w-full h-full flex flex-col lg:flex-row">
+        <div className="w-full h-full flex flex-col md:flex-row">
           {/* LEFT SIDE - Dynamic Text */}
-          <div className="w-full lg:w-1/2 h-1/2 lg:h-full flex items-center justify-center bg-black text-white relative overflow-hidden px-4 sm:px-6 lg:px-8">
+          <div className="w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center bg-black text-white relative overflow-hidden px-4 sm:px-6 md:px-8">
             {/* Background Pattern with Parallax */}
             <motion.div
               className="absolute inset-0 opacity-5"
@@ -268,7 +311,7 @@ export function ProjectsSection() {
             </motion.div>
 
             {/* Animated Diagonal Lines */}
-            {!shouldReduceMotion && (
+            {!shouldReduceMotion && isMobileDevice === false && (
               <motion.div
                 className="absolute inset-0 pointer-events-none opacity-10"
                 style={{
@@ -392,7 +435,7 @@ export function ProjectsSection() {
           </div>
 
           {/* RIGHT SIDE - Scrolling Projects Rail */}
-          <div className="w-full lg:w-1/2 h-1/2 lg:h-full relative overflow-hidden bg-white">
+          <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden bg-white">
             {/* Parallax Background Effect */}
             <motion.div
               className="absolute inset-0 opacity-5"

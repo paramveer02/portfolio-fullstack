@@ -86,7 +86,7 @@ export function SkillsSection() {
           </h2>
           <p className="text-lg sm:text-xl md:text-2xl text-gray-400 tracking-wider">
             <DecryptedText
-              text="DRAG TO EXPLORE • HOVER TO INTERACT"
+              text="DRAG TO EXPLORE"
               animateOn="view"
               speed={25}
               maxIterations={10}
