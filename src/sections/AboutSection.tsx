@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import DecryptedText from "../components/DecryptedText";
-import { Server, Layout, FlaskConical, UploadCloud, Code2, Workflow, Zap } from "lucide-react";
+import { Layout, FlaskConical, UploadCloud, Code2, Workflow} from "lucide-react";
 
 export function AboutSection() {
   const ref = useRef(null);
@@ -42,15 +42,6 @@ export function AboutSection() {
     { title: "Delivery Tracks", note: "Web, mobile, and API surfaces sequenced", Icon: Layout },
     { title: "Automation Fabric", note: "QA bots, records, observability wired in", Icon: FlaskConical },
     { title: "Release Loop", note: "Deployment rituals that keep iteration safe", Icon: UploadCloud },
-  ];
-
-  const flowSteps = [
-    { title: "Brief", Icon: Workflow, note: "Goals, risks, constraints" },
-    { title: "AI Blueprint", Icon: Zap, note: "Scaffolds + test shells" },
-    { title: "Web + Mobile UI", Icon: Layout, note: "Unified UX patterns" },
-    { title: "APIs & Data", Icon: Server, note: "Contracts, auth, scaling" },
-    { title: "QA Bots", Icon: FlaskConical, note: "Checks, records, alerts" },
-    { title: "Release & Observe", Icon: UploadCloud, note: "Ship, watch, iterate" },
   ];
 
   return (
