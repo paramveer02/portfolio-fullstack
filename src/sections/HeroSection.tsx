@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { SketchProfileImage } from "../components/SketchProfileImage";
 
@@ -11,11 +11,23 @@ interface HeroSectionProps {
 
 export function HeroSection({ scrollProgress }: HeroSectionProps) {
   const ref = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollYProgress: sectionProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (typeof window !== "undefined") {
+        setIsMobile(window.innerWidth < 768);
+      }
+    };
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   const y = useTransform(scrollProgress, [0, 0.3], [0, -200]);
   const opacity = useTransform(
@@ -31,11 +43,8 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
 
   // Parallax for background
   const bgY = useTransform(sectionProgress, [0, 1], [0, 200]);
-  const bgRotate = useTransform(
-    sectionProgress,
-    [0, 1],
-    [0, 5],
-  );
+  const bgRotate = useTransform(sectionProgress, [0, 1], [0, 5]);
+  const particleY = useTransform(sectionProgress, [0, 1], [0, -100]);
 
   // Memoize particle positions to prevent re-computation on each render
   const particles = useMemo(() => {
@@ -52,52 +61,41 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
     <motion.section
       ref={ref}
       id="hero"
-      style={{ y, opacity, scale }}
-      className="min-h-[120vh] flex items-center justify-center relative overflow-hidden perspective-2000 px-4 sm:px-6 lg:px-8 pt-16 md:pt-20 pb-16 sm:pb-20 md:pb-24"
+      style={!isMobile && !shouldReduceMotion ? { y, opacity, scale } : undefined}
+      className={`flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8 pt-16 md:pt-20 pb-16 sm:pb-20 md:pb-24 ${isMobile ? "min-h-screen" : "min-h-[120vh]"}`}
     >
       {/* Background Grid with Parallax */}
-      <motion.div
-        className="absolute inset-0 opacity-5"
-        style={{ y: bgY, rotate: bgRotate }}
-      >
-        <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:100px_100px]" />
-      </motion.div>
-
-      {/* Floating Particles */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          y: useTransform(sectionProgress, [0, 1], [0, -100]),
-        }}
-      >
-        {particles.map((particle) => (
+      {!isMobile && !shouldReduceMotion && (
+        <>
           <motion.div
-            key={particle.id}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            style={{
-              left: `${particle.left}%`,
-              top: `${particle.top}%`,
-            }}
-            animate={
-              shouldReduceMotion
-                ? undefined
-                : {
-                    opacity: [0.2, 0.5, 0.2],
-                    scale: [1, 1.5, 1],
-                  }
-            }
-            transition={
-              shouldReduceMotion
-                ? undefined
-                : {
-                    duration: particle.duration,
-                    repeat: Infinity,
-                    delay: particle.delay,
-                  }
-            }
-          />
-        ))}
-      </motion.div>
+            className="absolute inset-0 opacity-5"
+            style={{ y: bgY, rotate: bgRotate }}
+          >
+            <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:100px_100px]" />
+          </motion.div>
+          <motion.div className="absolute inset-0 pointer-events-none" style={{ y: particleY }}>
+            {particles.map((particle) => (
+              <motion.div
+                key={particle.id}
+                className="absolute w-1 h-1 bg-white rounded-full"
+                style={{
+                  left: `${particle.left}%`,
+                  top: `${particle.top}%`,
+                }}
+                animate={{
+                  opacity: [0.2, 0.5, 0.2],
+                  scale: [1, 1.5, 1],
+                }}
+                transition={{
+                  duration: particle.duration,
+                  repeat: Infinity,
+                  delay: particle.delay,
+                }}
+              />
+            ))}
+          </motion.div>
+        </>
+      )}
 
       <div className="max-w-7xl mx-auto py-8 sm:py-12 md:py-16 relative z-10 w-full">
         <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 xl:gap-32 items-stretch">
@@ -133,7 +131,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
               >
                 <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white" />
                 <p className="font-bold tracking-tight" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.5rem)' }}>
-                  SOLVING REAL PROBLEMS WITH MODERN CODE AND INTELLIGENT AUTOMATION
+                  SOLVING REAL PROBLEMS WITH MODERN PRACTISES AND INTELLIGENT AUTOMATION
                 </p>
               </motion.div>
 

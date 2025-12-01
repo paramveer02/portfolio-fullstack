@@ -173,14 +173,6 @@ export function ContactSection() {
                 Leipzig · Germany (EU)
               </span>
             </div>
-            <div>
-              <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">
-                Stack
-              </span>
-              <span className="text-sm text-gray-900">
-                React, Next.js, Node.js, TypeScript
-              </span>
-            </div>
           </div>
 
           {/* Tagline moved to bottom */}
@@ -303,12 +295,6 @@ export function ContactSection() {
                       Availability
                     </span>
                     <span>Open to freelance & collaborations</span>
-                  </li>
-                  <li className="flex flex-col gap-1">
-                    <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
-                      Stack
-                    </span>
-                    <span>React, Next.js, Node.js, TypeScript</span>
                   </li>
                 </ul>
               </div>

@@ -47,12 +47,20 @@ const techIconMap: { [key: string]: IconType } = {
 interface ProjectCardProps {
   project: typeof projects[0];
   index: number;
-  scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress'];
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
   currentProjectIndex: number;
   currentImageIndex: { [key: number]: number };
+  onImageChange: (projectIndex: number, direction: 1 | -1, total: number) => void;
 }
 
-function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, currentImageIndex }: ProjectCardProps) {
+function ProjectCard({
+  project,
+  index,
+  scrollYProgress,
+  currentProjectIndex,
+  currentImageIndex,
+  onImageChange,
+}: ProjectCardProps) {
   const shouldReduceMotion = useReducedMotion();
   const totalProjects = projects.length;
   const start = index / totalProjects;
@@ -148,6 +156,30 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
                 />
               </div>
             ))}
+            {project.images && project.images.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onImageChange(index, -1, project.images!.length);
+                  }}
+                  className="w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center text-lg"
+                  aria-label="Previous image"
+                >
+                  ‹
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onImageChange(index, 1, project.images!.length);
+                  }}
+                  className="w-9 h-9 rounded-full bg-white/90 text-black flex items-center justify-center text-lg"
+                  aria-label="Next image"
+                >
+                  ›
+                </button>
+              </div>
+            )}
             
             {/* Vertical Line Stripe Effect - Only render for active project */}
             {index === currentProjectIndex && (
@@ -209,7 +241,9 @@ export function ProjectsSection() {
   const ref = useRef(null);
   const shouldReduceMotion = useReducedMotion();
   const [isInView, setIsInView] = useState(false);
-  const [isMobileDevice, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
+  const [isMobileDevice, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
 
   // Handle window resize
   useEffect(() => {
@@ -253,17 +287,19 @@ export function ProjectsSection() {
   }, []);
 
   useEffect(() => {
+    if (isMobileDevice) return;
     return scrollYProgress.on("change", (latest) => {
       const index = Math.min(
         Math.floor(latest * projects.length),
-        projects.length - 1,
+        projects.length - 1
       );
       setCurrentProjectIndex(Math.max(0, index));
     });
-  }, [scrollYProgress]);
+  }, [scrollYProgress, isMobileDevice]);
 
   // Image slideshow for each project - Only run when in view and for current active project
   useEffect(() => {
+    if (isMobileDevice) return;
     const project = projects[currentProjectIndex];
     
     // Adjust interval based on device
@@ -283,12 +319,112 @@ export function ProjectsSection() {
 
   const currentProject = projects[currentProjectIndex];
 
+  const handleImageChange = (projectIndex: number, direction: 1 | -1, total: number) => {
+    if (total <= 0) return;
+    setCurrentImageIndex(prev => {
+      const current = prev[projectIndex] || 0;
+      const next = (current + direction + total) % total;
+      return { ...prev, [projectIndex]: next };
+    });
+  };
+
   // Always call hooks unconditionally, use static values when motion is reduced
   const leftBgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const rightBgY = useTransform(scrollYProgress, [0, 1], [0, 100]);
   
   // Simplify animations on mobile devices
   const diagonalY = useTransform(scrollYProgress, [0, 1], [0, isMobileDevice ? -50 : -200]);
+
+  if (isMobileDevice) {
+    return (
+      <section id="projects" className="bg-white text-black py-12 sm:py-16 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
+          <div className="text-center space-y-3">
+            <p className="inline-block px-4 py-2 border border-black bg-black text-white text-xs tracking-[0.3em] uppercase">
+              Featured Work
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight">
+              Web & Mobile experiences ready for launch.
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600">
+              A curated set of builds pairing modern stacks with automation so releases stay predictable.
+            </p>
+          </div>
+          <div className="space-y-6 sm:space-y-8">
+            {projects.map((project, idx) => {
+              const totalImages = project.images?.length || (project.image ? 1 : 0);
+              const currentIdx = currentImageIndex[idx] || 0;
+              const displayedImage =
+                project.images?.[currentIdx] ?? project.image;
+              return (
+                <div
+                  key={project.title}
+                  className="border-2 border-black bg-white shadow-lg flex flex-col gap-4 p-5 sm:p-6"
+                >
+                  <div className="relative w-full h-56 sm:h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                    <ImageWithFallback
+                      src={displayedImage}
+                      alt={project.title}
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                    {totalImages > 1 && (
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                        <button
+                          onClick={() => handleImageChange(idx, -1, totalImages)}
+                          className="w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center"
+                          aria-label="Previous image"
+                        >
+                          ‹
+                        </button>
+                        <button
+                          onClick={() => handleImageChange(idx, 1, totalImages)}
+                          className="w-8 h-8 rounded-full bg-white text-black border border-black flex items-center justify-center"
+                          aria-label="Next image"
+                        >
+                          ›
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-gray-500">
+                      <span>{project.number}</span>
+                      <div className="flex-1 mx-3 h-px bg-gray-200" />
+                      <span>{project.tech.slice(0, 2).join(" • ")}</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-semibold">{project.title}</h3>
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                      {project.description}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech) => {
+                      const Icon = techIconMap[tech];
+                      return (
+                        <span
+                          key={tech}
+                          className="flex items-center gap-1 px-3 py-1 border border-black text-xs font-medium"
+                        >
+                          {Icon && <Icon className="w-3.5 h-3.5" />} {tech}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <button
+                    onClick={() => window.open(project.link, "_blank", "noopener,noreferrer")}
+                    className="mt-2 inline-flex items-center justify-center w-full border border-black bg-black text-white py-2 text-sm font-semibold tracking-wide"
+                  >
+                    View project
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -345,8 +481,8 @@ export function ProjectsSection() {
                   borderWidth: '1px',
                   borderStyle: 'solid',
                   borderColor: '#000000',
-                  backgroundColor: '#ffffff',
-                  color: '#000000',
+                  backgroundColor: '#000000',
+                  color: '#ffffff',
                   transition: 'all 0.3s ease'
                 }}
               >
@@ -454,6 +590,7 @@ export function ProjectsSection() {
                   scrollYProgress={scrollYProgress}
                   currentProjectIndex={currentProjectIndex}
                   currentImageIndex={currentImageIndex}
+                  onImageChange={handleImageChange}
                 />
               ))}
             </div>
