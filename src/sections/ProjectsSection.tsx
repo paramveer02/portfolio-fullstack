@@ -228,29 +228,6 @@ export function ProjectsSection() {
                   </div>
                 </motion.div>
               </div>
-
-              {/* Progress Indicator */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex items-center gap-2 sm:gap-3 md:gap-4 mt-6 sm:mt-8 md:mt-12"
-              >
-                <div className="flex gap-1.5 sm:gap-2">
-                  {projects.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`h-0.5 sm:h-1 transition-all duration-500 ${
-                        index === currentProjectIndex
-                          ? "w-12 sm:w-16 bg-white"
-                          : "w-6 sm:w-8 bg-white/30"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] opacity-50">
-                  {currentProjectIndex + 1} / {projects.length}
-                </span>
-              </motion.div>
             </motion.div>
           </div>
 

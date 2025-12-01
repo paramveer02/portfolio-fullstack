@@ -11,6 +11,9 @@ import {
   FaDatabase,
   FaBrain,
   FaCogs,
+  FaRobot,
+  FaServer,
+  FaTools,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -29,6 +32,11 @@ import {
   SiOpenai,
   SiExpo,
   SiSocketdotio,
+  SiDjango,
+  SiVercel,
+  SiNetlify,
+  SiRender,
+  SiSupabase,
 } from "react-icons/si";
 import { DiMysql } from "react-icons/di";
 import { TbApi, TbBrandReactNative, TbTopologyStar3 } from "react-icons/tb";
@@ -57,6 +65,7 @@ export const techIcons: Record<string, any> = {
   Git: FaGitAlt,
   "CI/CD": FaCogs,
   Python: FaPython,
+  Django: SiDjango,
   "React Native": TbBrandReactNative,
   Expo: SiExpo,
   Firebase: SiFirebase,
@@ -65,6 +74,17 @@ export const techIcons: Record<string, any> = {
   TensorFlow: SiTensorflow,
   "OpenAI API": SiOpenai,
   LangChain: TbTopologyStar3,
+  Cursor: FaRobot,
+  Copilot: FaRobot,
+  "n8n": FaCogs,
+  AgentKit: FaRobot,
+  Sora: FaBrain,
+  "Google Nano Pro": FaBrain,
+  "Make.com": FaCogs,
+  Render: SiRender,
+  Vercel: SiVercel,
+  Netlify: SiNetlify,
+  Supabase: SiSupabase,
 };
 
 export const skills = [
@@ -102,12 +122,12 @@ export const skills = [
     id: 4,
     category: "DEVOPS & TOOLS",
     tech: ["Git", "Docker", "CI/CD", "AWS"],
-    icon: FaAws,
+    icon: FaTools,
   },
   {
     id: 5,
     category: "AI & AUTOMATION",
-    tech: ["OpenAI API", "Cursor", "Copilot", "Qoder", "Make.com"],
+    tech: ["OpenAI API", "Cursor", "Copilot", "n8n", "AgentKit", "Sora", "Google Nano Pro", "Make.com"],
     icon: FaBrain,
   },
   {
