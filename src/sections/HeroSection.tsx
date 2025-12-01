@@ -124,13 +124,12 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
             <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8 justify-center lg:justify-start">
               <div className="h-px bg-white w-8 sm:w-12 md:w-16" />
               <p className="text-sm sm:text-base md:text-lg tracking-wide">
-                4 YEARS EXPERIENCE
+                FULL-STACK DEVELOPER & AI AUTOMATION
               </p>
             </div>
 
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 md:mb-12 max-w-xl text-gray-400 leading-relaxed mx-auto lg:mx-0">
-              Building exceptional digital products with modern
-              technologies and clean architecture.
+              Building modern web apps and automation systems for small businesses and startups with JavaScript, React, Node.js, and AI-assisted workflows.
             </p>
 
             {/* Social Links */}

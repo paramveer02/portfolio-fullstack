@@ -39,12 +39,12 @@ export function AboutSection() {
   );
 
   const stats = [
-    { number: "50+", label: "PROJECTS", delay: 0.1 },
-    { number: "30+", label: "CLIENTS", delay: 0.2 },
-    { number: "4", label: "LIVE SITES", delay: 0.3 },
+    { number: "3+", label: "YEARS", delay: 0.1 },
+    { number: "4", label: "DEPLOYED APPS", delay: 0.2 },
+    { number: "JS/TS", label: "+ PYTHON", delay: 0.3 },
     {
-      number: "100%",
-      label: "SATISFACTION",
+      number: "AI",
+      label: "WORKFLOWS",
       delay: 0.4,
     },
   ];
@@ -144,10 +144,7 @@ export function AboutSection() {
               viewport={{ once: true }}
               className="text-xl sm:text-2xl md:text-3xl leading-relaxed border-l-4 sm:border-l-8 border-black pl-4 sm:pl-6 md:pl-8"
             >
-              With over 4 years of experience in full-stack
-              development, I specialize in building scalable web
-              applications that combine beautiful design with
-              robust functionality.
+              I'm a full-stack developer based in Germany (originally India). I started with Python/Django and now focus on JavaScript/TypeScript with React, Node.js, Express, Prisma, and Tailwind CSS.
             </motion.p>
 
             <motion.p
@@ -157,10 +154,7 @@ export function AboutSection() {
               viewport={{ once: true }}
               className="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600 pl-4 sm:pl-6 md:pl-8"
             >
-              My expertise spans modern JavaScript frameworks,
-              backend technologies, and cloud infrastructure —
-              delivering end-to-end solutions that drive
-              business growth.
+              I combine development with AI-assisted tools (Cursor, Copilot, Qoder, Make.com) to prototype faster, automate workflows, and ship end-to-end solutions—web app + automation + backend—as a one-person team.
             </motion.p>
 
             {/* Divider Line */}

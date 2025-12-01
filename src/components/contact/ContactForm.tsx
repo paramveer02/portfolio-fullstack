@@ -2,12 +2,18 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { submitContactForm, ContactFormPayload } from '../../utils/contactFormService';
+import { Mail } from 'lucide-react';
+import { SiWhatsapp } from 'react-icons/si';
 
 const RATE_LIMIT_MS = 30_000;
 
 type FormValues = ContactFormPayload & { honeypot?: string };
 
-export function ContactForm() {
+interface ContactFormProps {
+  onClose?: () => void;
+}
+
+export function ContactForm({ onClose }: ContactFormProps) {
   const lastSubmissionRef = useRef<number>(0);
   const abortRef = useRef<AbortController | null>(null);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -74,24 +80,70 @@ export function ContactForm() {
   };
 
   return (
-    <motion.form
-      onSubmit={handleSubmit(onSubmit)}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="relative space-y-4 rounded-2xl border border-black/10 bg-white/70 p-6 text-left shadow-lg backdrop-blur"
-    >
+    <>
+      {status === 'success' ? (
+        /* Thank You Screen */
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center py-12 px-6 space-y-6"
+        >
+          <div className="w-20 h-20 mx-auto rounded-full bg-green-100 flex items-center justify-center">
+            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
+            <p className="text-gray-600">Thanks for reaching out! I'll get back to you within 24 hours.</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="animated-border-btn w-full text-center leading-none font-light uppercase text-black mx-auto max-w-xs"
+            style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)', letterSpacing: '0.08em' }}
+          >
+            <span className="box">Back to Site</span>
+          </button>
+        </motion.div>
+      ) : (
+        /* Contact Form */
+        <>
+          {/* Side Contact Options */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full hidden lg:flex flex-col gap-4 pr-6">
+            <a
+              href="mailto:service@monpro-ai.com"
+              className="group flex items-center gap-3 px-4 py-3 bg-white/90 backdrop-blur border border-black/10 rounded-l-xl shadow-lg hover:shadow-xl transition-all hover:-translate-x-1"
+              aria-label="Email"
+            >
+              <Mail className="w-5 h-5 text-gray-700 group-hover:text-black transition" />
+              <span className="text-sm font-medium text-gray-700 group-hover:text-black whitespace-nowrap">Email Me</span>
+            </a>
+            <a
+              href="https://wa.me/4917643835327"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 px-4 py-3 bg-white/90 backdrop-blur border border-black/10 rounded-l-xl shadow-lg hover:shadow-xl transition-all hover:-translate-x-1"
+              aria-label="WhatsApp"
+            >
+              <SiWhatsapp className="w-5 h-5 text-[#25d366] group-hover:scale-110 transition" />
+              <span className="text-sm font-medium text-gray-700 group-hover:text-black whitespace-nowrap">WhatsApp</span>
+            </a>
+          </div>
+
+          <motion.form
+            onSubmit={handleSubmit(onSubmit)}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="relative space-y-4 rounded-2xl border border-black/10 bg-white/70 p-6 text-left shadow-lg backdrop-blur"
+          >
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.18em] text-gray-700">Send a message</p>
-          <p className="text-lg font-semibold text-gray-900">Let’s build together</p>
+          <p className="text-lg font-semibold text-gray-900">Let's build together</p>
         </div>
-        {status === 'success' && (
-          <span className="rounded-full bg-green-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-            Sent
-          </span>
-        )}
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -104,7 +156,7 @@ export function ContactForm() {
             type="text"
             {...register('name', { required: 'Your name is required', minLength: { value: 2, message: 'Name is too short' } })}
             className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
-            placeholder="Your name"
+            placeholder="e.g., John Smith"
             autoComplete="name"
           />
           {errors.name && <span className="text-xs text-red-600">{errors.name.message}</span>}
@@ -125,7 +177,7 @@ export function ContactForm() {
               },
             })}
             className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
-            placeholder="you@company.com"
+            placeholder="john@example.com"
             autoComplete="email"
             inputMode="email"
           />
@@ -142,7 +194,7 @@ export function ContactForm() {
           type="text"
           {...register('company')}
           className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
-          placeholder="Company or team name"
+          placeholder="e.g., Acme Inc or Startup XYZ"
           autoComplete="organization"
         />
       </div>
@@ -159,7 +211,7 @@ export function ContactForm() {
             minLength: { value: 24, message: 'Please include a few more details' },
           })}
           className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
-          placeholder="What are you building, timelines, and any budget constraints?"
+          placeholder="Tell me about your project: What are you building? Timeline? Budget range? Tech stack preferences?"
         />
         {errors.message && <span className="text-xs text-red-600">{errors.message.message}</span>}
       </div>
@@ -188,11 +240,9 @@ export function ContactForm() {
           {errorMessage || 'Unable to send right now. Please try again or email directly.'}
         </p>
       )}
-      {status === 'success' && (
-        <p className="text-sm text-green-700" role="status">
-          Thanks for reaching out! I’ll reply to you within one business day.
-        </p>
-      )}
     </motion.form>
+        </>
+      )}
+    </>
   );
 }

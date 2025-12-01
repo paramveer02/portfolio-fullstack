@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Mail, Github, Linkedin } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import { ContactForm } from "../components/contact/ContactForm";
@@ -13,6 +13,56 @@ export function ContactSection() {
   });
 
   const [showForm, setShowForm] = useState(false);
+
+  // Close form on ESC key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showForm) {
+        setShowForm(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [showForm]);
+  const SocialButtons = () => (
+    <div className="social-circle-grid">
+      <a
+        href="mailto:service@monpro-ai.com"
+        aria-label="Email"
+        className="social-card tl email"
+      >
+        <Mail className="h-7 w-7" />
+      </a>
+      <a
+        href="https://www.linkedin.com/in/paramveer-marwah/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+        className="social-card tr linkedin"
+      >
+        <Linkedin className="h-7 w-7" />
+      </a>
+      <a
+        href="https://github.com/paramveer02"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+        className="social-card bl github"
+      >
+        <Github className="h-7 w-7" />
+      </a>
+      <a
+        href="https://wa.me/4917643835327"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp"
+        className="social-card br whatsapp"
+      >
+        <SiWhatsapp className="h-7 w-7" />
+      </a>
+    </div>
+  );
 
   // Parallax effects for background
   const bgY = useTransform(scrollYProgress, [0, 1], [50, -50]);
@@ -56,26 +106,15 @@ export function ContactSection() {
 
           {/* Tagline */}
           <div className="text-center px-4">
-            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3">Hire Different ™</h3>
+            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3">Let's Build Together</h3>
             <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed">
-              Full-stack developer with 4 years of experience building production-ready web applications.
+              Full-stack developer + AI automation consultant. Available for small business websites, dashboards, and automation systems.
             </p>
           </div>
 
           {/* Social Icons */}
-          <div className="flex items-center justify-center gap-3">
-            <a href="mailto:service@monpro-ai.com" className="flex h-10 w-10 items-center justify-center border border-black bg-white text-black hover:bg.black hover:text-white transition-all duration-300">
-              <Mail size={18} />
-            </a>
-            <a href="https://wa.me/4917643835327" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center border border.black bg.white text.black hover.bg.black hover.text.white transition-all duration-300">
-              <SiWhatsapp size={18} />
-            </a>
-            <a href="https://github.com/paramveer02" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items.center justify.center border border.black bg.white text.black hover.bg.black hover.text.white transition-all duration-300">
-              <Github size={18} />
-            </a>
-            <a href="https://www.linkedin.com/in/paramveer-marwah/" target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items.center justify.center border border.black bg.white text.black hover.bg.black hover.text.white transition-all duration-300">
-              <Linkedin size={18} />
-            </a>
+          <div className="flex items-center justify-center pt-2">
+            <SocialButtons />
           </div>
 
           {/* Contact Info - Simplified for Mobile */}
@@ -106,25 +145,14 @@ export function ContactSection() {
             {/* LEFT: intro + icons */}
             <div className="md:col-span-4 space-y-4 sm:space-y-6 mx-auto">
               <h3 className="text-base sm:text-lg font-semibold tracking-[0.15em] sm:tracking-[0.18em] text-gray-800 uppercase">
-                Hire Different ™
+                Let's Build Together
               </h3>
               <p className="text-sm sm:text-base text-gray-700 max-w-sm mx-auto">
-                Full-stack developer with 4 years of experience building bold, production-ready web applications with modern JavaScript, React, and Node.js.
+                Full-stack developer + AI automation consultant. I build modern web apps and automation systems for small businesses and startups.
               </p>
               {/* Quick contact icons */}
-              <div className="flex items-center justify-center gap-2 sm:gap-3 pt-2">
-                <a href="mailto:service@monpro-ai.com" className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300">
-                  <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />
-                </a>
-                <a href="https://wa.me/4917643835327" target="_blank" rel="noopener noreferrer" className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300">
-                  <SiWhatsapp size={16} className="sm:w-[18px] sm:h-[18px]" />
-                </a>
-                <a href="https://github.com/paramveer02" target="_blank" rel="noopener noreferrer" className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300">
-                  <Github size={16} className="sm:w-[18px] sm:h-[18px]" />
-                </a>
-                <a href="https://www.linkedin.com/in/paramveer-marwah/" target="_blank" rel="noopener noreferrer" className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300">
-                  <Linkedin size={16} className="sm:w-[18px] sm:h-[18px]" />
-                </a>
+              <div className="flex items-center justify-center pt-2">
+                <SocialButtons />
               </div>
             </div>
 
@@ -193,29 +221,17 @@ export function ContactSection() {
           </div>
         </div>
 
-        {/* CTA above footer name: full-width neon ribbon */}
-        <div className="w-full mt-10 sm:mt-12 md:mt-14 px-2">
+        {/* CTA above footer name: animated border button */}
+        <div className="w-full mt-10 sm:mt-12 md:mt-14 mb-6 sm:mb-8">
           <button
             onClick={() => setShowForm(true)}
-            className="group relative w-full overflow-hidden rounded-2xl border-2 border-black bg-gradient-to-r from-black via-gray-900 to-black py-6 sm:py-8 md:py-10 shadow-[0_15px_45px_rgba(0,0,0,0.25)] transition-all duration-300 hover:shadow-[0_18px_60px_rgba(0,0,0,0.35)]"
+            className="animated-border-btn w-full text-center leading-none font-light uppercase text-black"
+            style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)', letterSpacing: '0.08em' }}
             aria-label="Open contact form"
           >
-            <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/15 to-amber-400/20 blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-300" aria-hidden="true" />
-            <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_35%),radial-gradient(circle_at_80%_30%,rgba(255,255,255,0.08),transparent_30%),radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.10),transparent_28%)]" aria-hidden="true" />
-            <span className="relative block w-full text-center text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-[0.32em] uppercase text-white font-semibold">
-              Hit me up
+            <span className="box">Let's Connect!
             </span>
           </button>
-        </div>
-
-        {/* BIG NAME – Desktop Only, Single Line */}
-        <div className="hidden md:block mt-10 sm:mt-12 md:mt-16 mb-6 sm:mb-8 w-full px-2">
-          <h1
-            className="w-full text-center leading-none font-light uppercase text-black text-[12vw] sm:text-[11vw] md:text-[9vw] lg:text-[8vw] xl:text-[7vw]"
-            style={{ letterSpacing: '0.08em', fontStretch: 'condensed' }}
-          >
-            PARAMVIR MARWAH
-          </h1>
         </div>
       </motion.div>
 
@@ -224,23 +240,25 @@ export function ContactSection() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          onClick={() => setShowForm(false)}
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center"
         >
           <motion.div
             initial={{ scale: 0.95, y: 18 }}
             animate={{ scale: 1, y: 0 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="relative w-full max-w-lg mx-4 rounded-2xl border border-white/15 bg-white/85 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-2xl mx-4 rounded-2xl border border-white/15 bg-white/95 shadow-2xl"
           >
             <button
               onClick={() => setShowForm(false)}
               aria-label="Close"
-              className="absolute top-3 right-3 grid place-items-center w-9 h-9 rounded-full border border-black/20 bg-white/85 text-black hover:bg-white transition"
+              className="absolute -top-3 -right-3 z-10 grid place-items-center w-10 h-10 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white hover:scale-110 transition-all shadow-lg"
             >
               ✕
             </button>
             <div className="p-6">
-              <ContactForm />
+              <ContactForm onClose={() => setShowForm(false)} />
             </div>
           </motion.div>
         </motion.div>

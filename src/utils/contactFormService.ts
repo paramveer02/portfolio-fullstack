@@ -7,7 +7,7 @@ export type ContactFormPayload = {
 
 const CONTACT_ENDPOINT =
   import.meta.env.VITE_CONTACT_ENDPOINT ||
-  'https://formspree.io/f/xvgpaoew';
+  'https://formspree.io/f/mnnejlpn';
 
 export async function submitContactForm(payload: ContactFormPayload, signal?: AbortSignal) {
   const response = await fetch(CONTACT_ENDPOINT, {

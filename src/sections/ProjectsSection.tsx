@@ -195,7 +195,7 @@ export function ProjectsSection() {
                 >
                   {/* Project Number */}
                   <div className="flex items-center gap-4 sm:gap-6">
-                    <div className="text-4xl sm:text-5xl md:text-6xl font-bold opacity-50">
+                    <div className="text-4xl sm:text-5xl md:text-6xl font-bold opacity-50 flex-shrink-0 min-w-[4rem] sm:min-w-[5rem] md:min-w-[6rem]">
                       {currentProject.number}
                     </div>
                     <div className="h-px flex-1 bg-white opacity-30" />
