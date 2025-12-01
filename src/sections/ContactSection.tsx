@@ -350,9 +350,9 @@ export function ContactSection() {
             <button
               onClick={() => setShowForm(false)}
               aria-label="Close"
-              className="absolute -top-3 -right-3 z-10 grid place-items-center w-10 h-10 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white hover:scale-110 transition-all shadow-lg"
+              className="absolute top-3 right-3 z-10 grid place-items-center px-4 h-10 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white hover:scale-105 transition-all shadow-lg text-sm font-semibold"
             >
-              ✕
+              Close
             </button>
             <div className="p-6">
               <ContactForm onClose={() => setShowForm(false)} />
