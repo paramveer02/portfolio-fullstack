@@ -303,29 +303,31 @@ export function ProjectsSection() {
                             </div>
                           ))}
                           
-                          {/* Vertical Line Stripe Effect - TV Opening Style - Bidirectional from Center */}
-                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none z-10">
-                            {[...Array(40)].map((_, i) => {
-                              const isLeftSide = i < 20;
-                              const stripeIndex = isLeftSide ? i : (39 - i);
-                              const centerDistance = Math.abs(stripeIndex - 19.5);
-                              
-                              return (
-                                <div
-                                  key={i}
-                                  className="absolute top-0 bottom-0 bg-black group-hover:[animation-play-state:running]"
-                                  style={{
-                                    left: `${(i / 40) * 100}%`,
-                                    width: '2.5%',
-                                    transformOrigin: 'center',
-                                    transform: 'scaleX(0)',
-                                    animation: `stripeReveal 0.5s ease-out ${centerDistance * 0.015}s forwards`,
-                                    animationPlayState: 'paused',
-                                  }}
-                                />
-                              );
-                            })}
-                          </div>
+                          {/* Vertical Line Stripe Effect - Only render for active project */}
+                          {index === currentProjectIndex && (
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none z-10">
+                              {[...Array(40)].map((_, i) => {
+                                const isLeftSide = i < 20;
+                                const stripeIndex = isLeftSide ? i : (39 - i);
+                                const centerDistance = Math.abs(stripeIndex - 19.5);
+                                
+                                return (
+                                  <div
+                                    key={i}
+                                    className="absolute top-0 bottom-0 bg-black group-hover:[animation-play-state:running]"
+                                    style={{
+                                      left: `${(i / 40) * 100}%`,
+                                      width: '2.5%',
+                                      transformOrigin: 'center',
+                                      transform: 'scaleX(0)',
+                                      animation: `stripeReveal 0.5s ease-out ${centerDistance * 0.015}s forwards`,
+                                      animationPlayState: 'paused',
+                                    }}
+                                  />
+                                );
+                              })}
+                            </div>
+                          )}
                         </div>
 
                         {/* Subtle Gradient Overlay */}

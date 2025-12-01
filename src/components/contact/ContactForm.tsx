@@ -6,6 +6,8 @@ import { Mail } from 'lucide-react';
 import { SiWhatsapp } from 'react-icons/si';
 
 const RATE_LIMIT_MS = 30_000;
+const MAX_MESSAGE_LENGTH = 2000;
+const MIN_MESSAGE_LENGTH = 24;
 
 type FormValues = ContactFormPayload & { honeypot?: string };
 
@@ -36,17 +38,27 @@ export function ContactForm({ onClose }: ContactFormProps) {
   });
 
   const onSubmit = async (values: FormValues) => {
+    // Honeypot check
     if (values.honeypot) {
       return; // silently drop spam submissions
     }
 
+    // Client-side rate limiting
     const now = Date.now();
     if (now - lastSubmissionRef.current < RATE_LIMIT_MS) {
-      setErrorMessage('Please wait a few moments before sending another message.');
+      setErrorMessage('Please wait 30 seconds before sending another message.');
       setStatus('error');
       return;
     }
 
+    // Additional validation
+    if (values.message.length > MAX_MESSAGE_LENGTH) {
+      setErrorMessage(`Message is too long. Maximum ${MAX_MESSAGE_LENGTH} characters.`);
+      setStatus('error');
+      return;
+    }
+
+    // Abort previous request if still pending
     if (abortRef.current) {
       abortRef.current.abort();
     }
@@ -57,25 +69,33 @@ export function ContactForm({ onClose }: ContactFormProps) {
     setErrorMessage('');
 
     try {
-      await submitContactForm(
+      const result = await submitContactForm(
         {
-          name: values.name,
-          email: values.email,
+          name: values.name.trim(),
+          email: values.email.trim(),
           company: values.company?.trim() || undefined,
-          message: values.message,
+          message: values.message.trim(),
         },
         abortRef.current.signal,
       );
-      lastSubmissionRef.current = now;
-      setStatus('success');
-      reset({ name: '', email: '', message: '', company: '', honeypot: '' });
+      
+      if (result.success) {
+        lastSubmissionRef.current = now;
+        setStatus('success');
+        reset({ name: '', email: '', message: '', company: '', honeypot: '' });
+      } else {
+        throw new Error(result.error || 'Submission failed');
+      }
     } catch (error) {
       setStatus('error');
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage('Something went wrong while sending your message.');
+        setErrorMessage('Something went wrong. Please try again or contact via email.');
       }
+      
+      // Log error for debugging (in production, send to monitoring service)
+      console.error('Contact form error:', error);
     }
   };
 
@@ -208,7 +228,8 @@ export function ContactForm({ onClose }: ContactFormProps) {
           rows={4}
           {...register('message', {
             required: 'A short project summary helps me respond quickly',
-            minLength: { value: 24, message: 'Please include a few more details' },
+            minLength: { value: MIN_MESSAGE_LENGTH, message: 'Please include a few more details' },
+            maxLength: { value: MAX_MESSAGE_LENGTH, message: `Message is too long (max ${MAX_MESSAGE_LENGTH} characters)` },
           })}
           className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
           placeholder="Tell me about your project: What are you building? Timeline? Budget range? Tech stack preferences?"

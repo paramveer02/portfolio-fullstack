@@ -24,10 +24,28 @@ const Magnet: React.FC<MagnetProps> = ({
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const magnetRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // IntersectionObserver to track visibility
+  useEffect(() => {
+    if (!magnetRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(magnetRef.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
-    if (disabled) {
+    if (disabled || prefersReducedMotion || !isVisible) {
       setPosition({ x: 0, y: 0 });
       return;
     }

@@ -30,36 +30,36 @@ export function ContactSection() {
       <a
         href="mailto:service@monpro-ai.com"
         aria-label="Email"
-        className="social-card tl email"
+        className="social-card tl email focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       >
-        <Mail className="h-7 w-7" />
+        <Mail className="h-6 w-6 sm:h-7 sm:w-7" />
       </a>
       <a
         href="https://www.linkedin.com/in/paramveer-marwah/"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LinkedIn"
-        className="social-card tr linkedin"
+        className="social-card tr linkedin focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       >
-        <Linkedin className="h-7 w-7" />
+        <Linkedin className="h-6 w-6 sm:h-7 sm:w-7" />
       </a>
       <a
         href="https://github.com/paramveer02"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="GitHub"
-        className="social-card bl github"
+        className="social-card bl github focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       >
-        <Github className="h-7 w-7" />
+        <Github className="h-6 w-6 sm:h-7 sm:w-7" />
       </a>
       <a
         href="https://wa.me/4917643835327"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"
-        className="social-card br whatsapp"
+        className="social-card br whatsapp focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       >
-        <SiWhatsapp className="h-7 w-7" />
+        <SiWhatsapp className="h-6 w-6 sm:h-7 sm:w-7" />
       </a>
     </div>
   );

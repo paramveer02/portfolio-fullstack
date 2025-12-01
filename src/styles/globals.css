@@ -209,6 +209,18 @@ p {
   animation-delay: 1s;
 }
 
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 4px;
+}
+
 /* Animated Border Button Effect */
 .animated-border-btn {
   color: #000;
@@ -237,7 +249,13 @@ p {
   font-size: inherit;
   letter-spacing: inherit;
   line-height: 1;
-  animation: pulseHint 3s ease-in-out infinite;
+}
+
+/* Only animate if motion is allowed */
+@media (prefers-reduced-motion: no-preference) {
+  .animated-border-btn .box {
+    animation: pulseHint 3s ease-in-out infinite;
+  }
 }
 
 @keyframes pulseHint {
