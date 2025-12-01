@@ -32,35 +32,35 @@ export type BubbleMenuProps = {
 const DEFAULT_ITEMS: MenuItem[] = [
   {
     label: 'home',
-    href: '#',
+    href: '#hero',
     ariaLabel: 'Home',
     rotation: -8,
     hoverStyles: { bgColor: '#3b82f6', textColor: '#ffffff' }
   },
   {
     label: 'about',
-    href: '#',
+    href: '#about',
     ariaLabel: 'About',
     rotation: 8,
     hoverStyles: { bgColor: '#10b981', textColor: '#ffffff' }
   },
   {
-    label: 'projects',
-    href: '#',
-    ariaLabel: 'Documentation',
+    label: 'my projects',
+    href: '#projects',
+    ariaLabel: 'My Projects',
     rotation: 8,
     hoverStyles: { bgColor: '#f59e0b', textColor: '#ffffff' }
   },
   {
-    label: 'blog',
-    href: '#',
-    ariaLabel: 'Blog',
+    label: 'skills',
+    href: '#skills',
+    ariaLabel: 'Skills',
     rotation: 8,
     hoverStyles: { bgColor: '#ef4444', textColor: '#ffffff' }
   },
   {
     label: 'contact',
-    href: '#',
+    href: '#contact',
     ariaLabel: 'Contact',
     rotation: -8,
     hoverStyles: { bgColor: '#8b5cf6', textColor: '#ffffff' }
@@ -394,6 +394,13 @@ export default function BubbleMenu({
                   onClick={(e) => {
                     e.preventDefault();
                     handleClose();
+                    
+                    // Smooth scroll to section
+                    const targetId = item.href.replace('#', '');
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                   }}
                   className={[
                     'pill-link',

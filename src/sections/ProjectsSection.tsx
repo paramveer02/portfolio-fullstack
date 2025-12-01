@@ -364,8 +364,7 @@ export function ProjectsSection() {
                             <button
                               className="neon-pulse-btn px-8 sm:px-10 md:px-12 lg:px-16 py-4 sm:py-5 md:py-6 backdrop-blur-md bg-black/40 cursor-pointer"
                               onClick={() => {
-                                // Add your navigation logic here
-                                console.log('Navigate to project:', project.title);
+                                window.open(project.link, '_blank', 'noopener,noreferrer');
                               }}
                             >
                               <p className="text-cyan-400 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-[0.15em] uppercase font-['Space_Grotesk',_sans-serif]">
