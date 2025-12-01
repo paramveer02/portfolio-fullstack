@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef, useMemo } from "react";
-import { ArrowDown, Github, Linkedin, Mail, Zap, Bot, Workflow, Rocket } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { SketchProfileImage } from "../components/SketchProfileImage";
 
 import { MotionValue } from "framer-motion";

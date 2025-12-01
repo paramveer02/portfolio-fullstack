@@ -170,7 +170,7 @@ export function AboutSection() {
               viewport={{ once: true }}
               className="flex flex-wrap justify-end gap-3 sm:gap-4"
             >
-              {valueProps.map(({ icon: Icon, label }, idx) => (
+              {valueProps.map(({ icon: Icon, label }) => (
                 <div
                   key={label}
                   className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-3 border-2 border-black bg-white hover:bg-black hover:text-white transition-all duration-300 group"
