@@ -139,29 +139,25 @@ export function ContactSection() {
                 service@monpro-ai.com
               </a>
             </div>
-            <div>
+            <div className="relative">
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">
                 Phone &amp; WhatsApp
               </span>
-              <span className="text-sm text-gray-900 block mb-2">
+              <span 
+                className="text-sm text-gray-900 block mb-2 cursor-pointer hover:text-blue-600 transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const selection = confirm('Choose an option:\nOK = Call\nCancel = WhatsApp');
+                  if (selection) {
+                    window.location.href = 'tel:+4917643835327';
+                  } else {
+                    window.open(WHATSAPP_LINK, '_blank', 'noopener,noreferrer');
+                  }
+                }}
+              >
                 +49 176 43835327
               </span>
-              <div className="flex justify-center gap-6">
-                <a
-                  href="tel:+4917643835327"
-                  className="text-xs text-gray-700 hover:underline"
-                >
-                  Call
-                </a>
-                <a
-                  href={WHATSAPP_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-gray-700 hover:underline"
-                >
-                  WhatsApp
-                </a>
-              </div>
+              <div className="text-xs text-gray-500">Click to choose call or WhatsApp</div>
             </div>
             <div>
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">
@@ -222,25 +218,21 @@ export function ContactSection() {
                     <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
                       Phone &amp; WhatsApp
                     </span>
-                    <span className="text-gray-900">
+                    <span 
+                      className="text-gray-900 cursor-pointer hover:text-blue-600 transition-colors"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const selection = confirm('Choose an option:\nOK = Call\nCancel = WhatsApp');
+                        if (selection) {
+                          window.location.href = 'tel:+4917643835327';
+                        } else {
+                          window.open(WHATSAPP_LINK, '_blank', 'noopener,noreferrer');
+                        }
+                      }}
+                    >
                       +49 176 43835327
                     </span>
-                    {/* <div className="flex gap-6 mt-1">
-                      <a
-                        href="tel:+4917643835327"
-                        className="text-xs text-gray-700 hover:underline underline-offset-4"
-                      >
-                        Call
-                      </a>
-                      <a
-                        href={WHATSAPP_LINK}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-gray-700 hover:underline underline-offset-4"
-                      >
-                        WhatsApp
-                      </a>
-                    </div> */}
+                    <span className="text-xs text-gray-500">Click to choose call or WhatsApp</span>
                   </li>
                   <li className="flex flex-col gap-1">
                     <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
