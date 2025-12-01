@@ -57,10 +57,10 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
     >
       {/* Background Grid with Parallax */}
       <motion.div
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-5"
         style={{ y: bgY, rotate: bgRotate }}
       >
-        <div className="absolute inset-0 bg-[linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] bg-[size:100px_100px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:100px_100px]" />
       </motion.div>
 
       {/* Floating Particles */}

@@ -60,14 +60,14 @@ export function AboutSection() {
     <section
       id="about"
       ref={ref}
-      className="min-h-screen relative overflow-hidden bg-white text-black flex items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20"
+      className="min-h-screen relative overflow-hidden bg-white text-black flex items-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12"
     >
       {/* Subtle Background Pattern with Parallax */}
       <motion.div
         className="absolute inset-0 opacity-5"
         style={{ y: bgY, scale: bgScale }}
       >
-        <div className="absolute inset-0 bg-[linear-gradient(black_1px,transparent_1px),linear-gradient(90deg,black_1px,transparent_1px)] bg-[size:100px_100px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(black_2px,transparent_2px),linear-gradient(90deg,black_2px,transparent_2px)] bg-[size:100px_100px]" />
       </motion.div>
 
       {/* Floating Geometric Shapes */}
@@ -101,7 +101,7 @@ export function AboutSection() {
 
       <motion.div
         style={{ y, opacity, scale }}
-        className="max-w-7xl mx-auto py-12 sm:py-16 md:py-20 w-full relative z-10"
+        className="max-w-7xl mx-auto py-6 sm:py-8 md:py-10 w-full relative z-10"
       >
         {/* Section Label */}
         <motion.div

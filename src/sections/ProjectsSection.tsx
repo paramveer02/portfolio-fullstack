@@ -95,7 +95,7 @@ function ProjectCard({ project, index, scrollYProgress, currentProjectIndex, cur
         <div className="relative w-full h-full border-2 sm:border-4 md:border-6 lg:border-8 border-black overflow-hidden shadow-2xl">
           {/* Grid Background Pattern - Same as left side */}
           <div className="absolute inset-0 bg-black">
-            <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:80px_80px] opacity-5" />
+            <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:100px_100px] opacity-5" />
           </div>
           
           {/* Image Slideshow Container */}
@@ -264,7 +264,7 @@ export function ProjectsSection() {
               className="absolute inset-0 opacity-5"
               style={{ y: shouldReduceMotion ? 0 : leftBgY }}
             >
-              <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:80px_80px]" />
+              <div className="absolute inset-0 bg-[linear-gradient(white_2px,transparent_2px),linear-gradient(90deg,white_2px,transparent_2px)] bg-[size:100px_100px]" />
             </motion.div>
 
             {/* Animated Diagonal Lines */}
@@ -398,7 +398,7 @@ export function ProjectsSection() {
               className="absolute inset-0 opacity-5"
               style={{ y: shouldReduceMotion ? 0 : rightBgY }}
             >
-              <div className="absolute inset-0 bg-[linear-gradient(black_2px,transparent_2px),linear-gradient(90deg,black_2px,transparent_2px)] bg-[size:80px_80px]" />
+              <div className="absolute inset-0 bg-[linear-gradient(black_2px,transparent_2px),linear-gradient(90deg,black_2px,transparent_2px)] bg-[size:100px_100px]" />
             </motion.div>
 
             {/* Projects Rail Container */}

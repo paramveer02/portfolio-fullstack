@@ -66,7 +66,7 @@ export function ContactSection() {
 
   // Parallax effects for background
   const bgY = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.05, 0.1, 0.05]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.02, 0.05, 0.02]);
 
   return (
     <section
@@ -75,8 +75,7 @@ export function ContactSection() {
       className="relative bg-white text-black py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       {/* Parallax Background Grid */}
-      <motion.div className="absolute inset-0 pointer-events-none" style={{ y: bgY, opacity: bgOpacity }}>
-        <div className="absolute inset-0 bg-[linear-gradient(black_1px,transparent_1px),linear-gradient(90deg,black_1px,transparent_1px)] bg-[size:80px_80px]" />
+      <motion.div className="absolute inset-0 pointer-events-none" style={{ y: bgY, opacity: bgOpacity }}>        <div className="absolute inset-0 bg-[linear-gradient(black_2px,transparent_2px),linear-gradient(90deg,black_2px,transparent_2px)] bg-[size:100px_100px]" />
       </motion.div>
 
       {/* Floating Circles */}

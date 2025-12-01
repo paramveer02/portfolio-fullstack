@@ -157,13 +157,13 @@ export function SketchProfileImage({ className = '' }: { className?: string }) {
 
           {/* Grid Overlay for Tech Feel - Larger grid */}
           <motion.div
-            className="absolute inset-0 pointer-events-none opacity-10 z-5"
+            className="absolute inset-0 pointer-events-none opacity-5 z-5"
             style={{
-              backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)',
+              backgroundImage: 'linear-gradient(white 2px, transparent 2px), linear-gradient(90deg, white 2px, transparent 2px)',
               backgroundSize: '100px 100px',
             }}
             animate={{
-              opacity: [0.1, 0.15, 0.1],
+              opacity: [0.05, 0.075, 0.05],
             }}
             transition={{
               duration: 4,
