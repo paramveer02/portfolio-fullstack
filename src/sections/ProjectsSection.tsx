@@ -43,6 +43,32 @@ const techIconMap: { [key: string]: IconType } = {
   "Tailwind CSS": SiTailwindcss,
 };
 
+const mobileImageMap: Record<string, string[]> = {
+  "BALANCE APP": [
+    "/mobile-images/balance/1.png",
+    "/mobile-images/balance/2.png",
+    "/mobile-images/balance/3.png",
+    "/mobile-images/balance/4.png",
+    "/mobile-images/balance/5.png",
+  ],
+  "EVENTSPARK - AI CITY GUIDE": [
+    "/mobile-images/eventSpark/1.png",
+    "/mobile-images/eventSpark/2.png",
+    "/mobile-images/eventSpark/3.png",
+    "/mobile-images/eventSpark/4.png",
+  ],
+  "JOBFIX": [
+    "/mobile-images/jobfix/1.png",
+    "/mobile-images/jobfix/2.png",
+    "/mobile-images/jobfix/3.png",
+  ],
+  "TIC-TAC-TOE": [
+    "/mobile-images/tic-tac-toe/1.png",
+    "/mobile-images/tic-tac-toe/2.png",
+    "/mobile-images/tic-tac-toe/3.png",
+  ],
+};
+
 // Individual project card component to avoid hooks inside map
 interface ProjectCardProps {
   project: typeof projects[0];
@@ -51,6 +77,7 @@ interface ProjectCardProps {
   currentProjectIndex: number;
   currentImageIndex: { [key: number]: number };
   onImageChange: (projectIndex: number, direction: 1 | -1, total: number) => void;
+  images: string[];
 }
 
 function ProjectCard({
@@ -60,7 +87,17 @@ function ProjectCard({
   currentProjectIndex,
   currentImageIndex,
   onImageChange,
+  images,
 }: ProjectCardProps) {
+  const imageSet =
+    images.length > 0
+      ? images
+      : project.images
+        ? project.images
+        : project.image
+          ? [project.image]
+          : [];
+  const totalImages = imageSet.length;
   const shouldReduceMotion = useReducedMotion();
   const totalProjects = projects.length;
   const start = index / totalProjects;
@@ -131,10 +168,10 @@ function ProjectCard({
             </div>
           </div>
           
-          {/* Image Slideshow Container */}
+        {/* Image Slideshow Container */}
           <div className="relative w-full h-full">
             {/* Multiple Images for Slideshow */}
-            {(project.images || [project.image]).map((img: string, imgIndex: number) => (
+            {imageSet.map((img: string, imgIndex: number) => (
               <div
                 key={imgIndex}
                 className="absolute inset-0 transition-opacity duration-1000"
@@ -156,12 +193,12 @@ function ProjectCard({
                 />
               </div>
             ))}
-            {project.images && project.images.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onImageChange(index, -1, project.images!.length);
+              {totalImages > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    onImageChange(index, -1, totalImages);
                   }}
                   className="w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center text-lg"
                   aria-label="Previous image"
@@ -169,9 +206,9 @@ function ProjectCard({
                   ‹
                 </button>
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onImageChange(index, 1, project.images!.length);
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    onImageChange(index, 1, totalImages);
                   }}
                   className="w-9 h-9 rounded-full bg-white/90 text-black flex items-center justify-center text-lg"
                   aria-label="Next image"
@@ -265,6 +302,18 @@ export function ProjectsSection() {
   // Track current project based on scroll
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({});
+  const getImageSet = (project?: typeof projects[0]) => {
+    if (!project) return [];
+    const fallback =
+      project.images ?? (project.image ? [project.image] : []);
+    if (isMobileDevice) {
+      const mobileSet = mobileImageMap[project.title];
+      if (mobileSet?.length) {
+        return mobileSet;
+      }
+    }
+    return fallback;
+  };
 
   // Intersection observer to pause animations when offscreen
   useEffect(() => {
@@ -301,17 +350,16 @@ export function ProjectsSection() {
   useEffect(() => {
     if (isMobileDevice) return;
     const project = projects[currentProjectIndex];
-    
-    // Adjust interval based on device
-    const intervalTime = isMobileDevice ? 5000 : 3500; // Slower on mobile
-    
-    if (!shouldReduceMotion && isInView && project && project.images && project.images.length > 1) {
+    const images =
+      project?.images ?? (project?.image ? [project.image] : []);
+    const intervalTime = 3500;
+    if (!shouldReduceMotion && isInView && images.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex(prev => ({
           ...prev,
-          [currentProjectIndex]: ((prev[currentProjectIndex] || 0) + 1) % project.images!.length
+          [currentProjectIndex]: ((prev[currentProjectIndex] || 0) + 1) % images.length
         }));
-      }, intervalTime); // Change image every 3.5 seconds (desktop) or 5 seconds (mobile)
+      }, intervalTime);
 
       return () => clearInterval(interval);
     }
@@ -352,10 +400,10 @@ export function ProjectsSection() {
           </div>
           <div className="space-y-6 sm:space-y-8">
             {projects.map((project, idx) => {
-              const totalImages = project.images?.length || (project.image ? 1 : 0);
+              const imageSet = getImageSet(project);
+              const totalImages = imageSet.length;
               const currentIdx = currentImageIndex[idx] || 0;
-              const displayedImage =
-                project.images?.[currentIdx] ?? project.image;
+              const displayedImage = imageSet[currentIdx] ?? imageSet[0] ?? project.image ?? "";
               return (
                 <div
                   key={project.title}
@@ -591,6 +639,7 @@ export function ProjectsSection() {
                   currentProjectIndex={currentProjectIndex}
                   currentImageIndex={currentImageIndex}
                   onImageChange={handleImageChange}
+                  images={getImageSet(project)}
                 />
               ))}
             </div>
