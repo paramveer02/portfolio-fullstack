@@ -1,218 +1,273 @@
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import DecryptedText from "../components/DecryptedText";
-import { Layout, FlaskConical, UploadCloud, Code2, Workflow} from "lucide-react";
 
 export function AboutSection() {
-  const ref = useRef(null);
-  const shouldReduceMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ["start end", "end start"],
   });
 
-  // Parallax effects similar to hero
-  const y = useTransform(scrollYProgress, [0, 1], [0, -300]);
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],
-    [1, 1, 0],
-  );
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+  // Simple parallax only for the background grid
+  const bgY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
-  // Individual parallax for text
-  const textY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, -150],
-  );
+  const stepTitles = [
+    "Discovery",
+    "Architecture & Plan",
+    "Build & Integrate",
+    "Automation & Observability",
+    "Launch & Iterate",
+  ];
 
-  // Background parallax - moves opposite direction
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, 300]);
-  const bgScale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [1, 1.2],
-  );
-  const shapesY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const stepDescriptions = [
+    "We map your product idea, business model, and tools, then decide what should be built, integrated, or automated.",
+    "A lean technical blueprint: stack, data flow, API contracts, and automation points—tailored to your budget and team.",
+    "Frontend, backend, and integrations are implemented in tight loops with real environments deployed early for review.",
+    "Workflows, alerts, and reports are wired in so repeatable tasks run automatically and important issues never go unnoticed.",
+    "We launch with a stable core, then improve based on real usage—adding features, refining flows, and extending automation.",
+  ];
 
-  const architectureNodes = [
-    { title: "Discovery", note: "Product goals, constraints, founder priorities", Icon: Workflow },
-    { title: "Blueprint", note: "AI-assisted schematics + interface contracts", Icon: Code2 },
-    { title: "Delivery Tracks", note: "Web, mobile, and API surfaces sequenced", Icon: Layout },
-    { title: "Automation Fabric", note: "QA bots, records, observability wired in", Icon: FlaskConical },
-    { title: "Release Loop", note: "Deployment rituals that keep iteration safe", Icon: UploadCloud },
+  const executionPillars = [
+    {
+      title: "Strategy",
+      description:
+        "We define clear outcomes, constraints, and guardrails: who this is for, what “success” looks like, and which parts of the business must never break.",
+    },
+    {
+      title: "Execution",
+      description:
+        "I implement battle-tested patterns for data, APIs, and UI so the product stays maintainable, fast, and ready for future features.",
+    },
+    {
+      title: "Automation",
+      description:
+        "AI and automation are applied where they remove manual work: onboarding, reporting, notifications, and quality checks—so your team’s time goes back to customers and strategy.",
+    },
   ];
 
   return (
     <section
-      id="about"
+      id="how-i-work"
       ref={ref}
-      className="min-h-screen relative overflow-hidden bg-white text-black flex items-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12"
+      className="relative bg-white text-black py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* Subtle Background Pattern with Parallax */}
+      {/* Parallax Background Grid */}
       <motion.div
-        className="absolute inset-0 opacity-5"
-        style={{ y: bgY, scale: bgScale }}
+        className="pointer-events-none absolute inset-0"
+        style={{ y: bgY, opacity: 0.11 }}
       >
-        <div className="absolute inset-0 bg-[linear-gradient(black_2px,transparent_2px),linear-gradient(90deg,black_2px,transparent_2px)] bg-[size:100px_100px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(black_1px,transparent_1px),linear-gradient(90deg,black_1px,transparent_1px)] bg-[size:120px_120px]" />
       </motion.div>
 
-      {/* Floating Geometric Shapes */}
-      {!shouldReduceMotion && (
-        <motion.div
-          className="absolute inset-0 pointer-events-none overflow-hidden"
-          style={{
-            y: shapesY,
-          }}
-        >
-          <motion.div
-            className="absolute top-20 left-10 w-32 h-32 border-2 border-black/10"
-            animate={{ rotate: 360 }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-10 w-24 h-24 border-2 border-black/10"
-            animate={{ rotate: -360 }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        </motion.div>
-      )}
-
-      <motion.div
-        style={{ y, opacity, scale }}
-        className="max-w-7xl mx-auto py-6 sm:py-8 md:py-10 w-full relative z-10"
-      >
+      {/* Inner Shell – slightly transparent so grid shows through */}
+      <div className="relative w-full max-w-6xl mx-auto border border-black/10 bg-white/70 shadow-[0_40px_120px_rgba(0,0,0,0.08)] px-4 sm:px-8 md:px-10 py-8 sm:py-10">
         {/* Section Label */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="inline-block px-4 sm:px-6 py-2 mb-10 sm:mb-12 md:mb-16 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]"
-          style={{
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#ffffff',
-            backgroundColor: '#000000',
-            color: '#ffffff',
-            transition: 'all 0.3s ease'
-          }}
-        >
-          <DecryptedText
-            text="HOW I WORK"
-            animateOn="view"
-            speed={30}
-            maxIterations={15}
-          />
-        </motion.div>
-
-        {/* Main Heading */}
-        <motion.h2
-          style={{ y: textY }}
-          className="mb-3 sm:mb-4 md:mb-6 max-w-4xl leading-tight text-3xl sm:text-4xl md:text-5xl text-center font-black mx-auto"
-        >
-          SYSTEM ARCHITECT
-          <br />
-          <span className="text-gray-700 font-semibold text-lg sm:text-xl md:text-2xl">
-            Building Products with Precision
-          </span>
-        </motion.h2>
-        <p className="text-sm sm:text-base md:text-lg text-center text-gray-600 max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12">
-          Architecture and automation designed so founders can focus on product and innovation—not repetitive setup, testing, or release overhead.
-        </p>
-
-        {/* Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-14 md:gap-16 lg:gap-20 items-start">
-          {/* Left Column - Narrative */}
-          <motion.div
-            style={{ y: textY }}
-            className="space-y-6 sm:space-y-8 md:space-y-10 text-center lg:text-left"
+        <div className="mb-6 sm:mb-8">
+          <span
+            className="inline-flex items-center px-4 py-1.5 text-[11px] font-semibold 
+                       tracking-[0.22em] uppercase bg-black text-white border border-white/20"
           >
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              viewport={{ once: true }}
-              className="flex flex-col gap-3 items-center lg:items-start"
-            >
-              <div className="text-base sm:text-lg font-semibold tracking-[0.25em] uppercase text-gray-500">
-                Full-Stack • Cloud-Native • AI-Assisted
-              </div>
-              <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-xl">
-                Delivery runs on rails so you can stay focused on brand and product. AI handles the scaffolding and regression, automation records every event, and releases continue smoothly without tying your team up in repetitive work.
-              </p>
-            </motion.div>
+            How I Work
+          </span>
+        </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              viewport={{ once: true }}
-              className="relative overflow-hidden border-4 border-black bg-white"
+        {/* Title + Intro */}
+        <div className="text-center mb-10 sm:mb-14">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[0.16em] uppercase">
+            System Architect
+          </h2>
+          <p className="mt-3 text-sm sm:text-base tracking-[0.18em] uppercase text-gray-700">
+            Building Products with Precision
+          </p>
+          <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-gray-700 leading-relaxed">
+            I design and ship systems so founders can stay focused on vision,
+            product, and customers. Architecture, development, and automation
+            are handled end-to-end—without you getting pulled into technical
+            noise or delivery overhead.
+          </p>
+        </div>
+
+        {/* Main Grid */}
+        <div className="grid gap-10 sm:gap-12 md:grid-cols-2 md:items-start">
+          {/* LEFT: Narrative + Strategy Card */}
+          <div className="space-y-6">
+            {/* Narrative Card – Soft Premium Hover */}
+            <div
+              className="
+                group border border-black/10 bg-gradient-to-br from-white via-gray-50 to-white 
+                p-4 sm:p-6 shadow-[0_15px_50px_rgba(0,0,0,0.08)]
+                transition-all duration-500 
+                md:hover:bg-black/95 md:hover:bg-none md:hover:border-black/40 
+                md:hover:shadow-[0_20px_60px_rgba(0,0,0,0.25)]
+                md:hover:scale-[1.01]
+              "
             >
-              <div className="grid grid-cols-1 sm:grid-cols-3 border-b border-black">
-                {["Strategy", "Execution", "Automation"].map((label, idx) => (
+              <p
+                className="
+                  text-[11px] sm:text-xs tracking-[0.26em] uppercase text-gray-700 mb-3 
+                  transition-colors duration-500 
+                  md:group-hover:text-white/70
+                "
+              >
+                Full-Stack · Cloud-Native · AI-Assisted
+              </p>
+              <p
+                className="
+                  text-sm sm:text-base text-gray-800 leading-relaxed 
+                  transition-colors duration-500 
+                  md:group-hover:text-white
+                "
+              >
+                I work like a small, focused product team in one person:
+                architecting the stack, building the UI, wiring the APIs, and
+                layering in AI and automation where it actually moves the
+                needle—never as a gimmick. Repetitive work is delegated to
+                reliable systems, while decisions stay human and aligned with
+                your brand.
+              </p>
+            </div>
+
+            {/* Strategy / Execution / Automation Card – MATCHED BASE + HOVER */}
+            <div
+              className="
+                group border border-black/10 bg-gradient-to-br from-white via-gray-50 to-white 
+                text-black overflow-hidden 
+                shadow-[0_25px_70px_rgba(0,0,0,0.18)] 
+                transition-all duration-500 
+                md:hover:bg-black/95 md:hover:bg-none md:hover:text-white 
+                md:hover:border-black/40 
+                md:hover:shadow-[0_30px_80px_rgba(0,0,0,0.28)]
+                md:hover:scale-[1.01]
+              "
+            >
+              {/* Mobile layout */}
+              <div className="grid grid-cols-1 divide-y divide-black/10 sm:hidden overflow-hidden">
+                {executionPillars.map((pillar) => (
                   <div
-                    key={label}
-                    className={`px-6 py-4 text-sm sm:text-base font-semibold tracking-wide ${
-                      idx < 2 ? "border-b sm:border-b-0 sm:border-r border-black" : ""
-                    }`}
+                    key={pillar.title}
+                    className="px-4 py-5 flex flex-col gap-3 text-gray-800 text-sm leading-relaxed transition-colors duration-500 md:group-hover:text-white"
                   >
-                    {label}
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-700 transition-colors duration-500 md:group-hover:text-white/70">
+                      {pillar.title}
+                    </p>
+                    <p>{pillar.description}</p>
                   </div>
                 ))}
               </div>
-              <p className="px-6 py-4 text-sm sm:text-base text-gray-600">
-                The stack is mapped like an architectural illustration—strategy frames the system, execution reuses proven patterns, and automation keeps the structure breathing masterminded by my Human Brain.
-              </p>
-            </motion.div>
-          </motion.div>
 
-          {/* Right Column - Flow diagram */}
-          <motion.div
-            style={{ y: textY }}
-            className="space-y-6 sm:space-y-8 md:space-y-10"
-          >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            viewport={{ once: true }}
-            className="p-6 sm:p-8 md:p-9 border-4 border-black bg-white"
-          >
-            <h3 className="text-base sm:text-lg font-semibold tracking-[0.2em] uppercase mb-4 text-gray-600 text-center sm:text-left">
-              Architecture Diagram
-            </h3>
-            <div className="relative pl-8">
-              <div className="absolute left-4 top-2 bottom-2 w-px bg-black/20" />
-              {architectureNodes.map((node, idx) => (
-                <div key={node.title} className="relative pb-8 last:pb-0">
-                  <div className="absolute left-1.5 top-1.5 w-5 h-5 rounded-full border-2 border-black bg-white flex items-center justify-center">
-                    <node.Icon className="w-3 h-3" />
-                  </div>
-                  {idx !== architectureNodes.length - 1 && (
-                    <div className="absolute left-4 top-6 w-px h-[calc(100%-0.5rem)] bg-black/20" />
-                  )}
-                  <div className="ml-8 text-left">
-                    <p className="text-sm sm:text-base font-semibold">{node.title}</p>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-5">{node.note}</p>
-                  </div>
+              {/* Tablet/Desktop layout */}
+              <div className="hidden sm:block">
+                {/* Header row */}
+                <div
+                  className="
+                    grid grid-cols-3 border-b border-black/10 
+                    text-[11px] md:text-[11px] lg:text-xs 
+                    font-semibold uppercase 
+                    tracking-[0.18em] md:tracking-[0.22em]
+                    text-gray-800 transition-colors duration-500 
+                    md:group-hover:text-white/70 md:group-hover:border-white/20
+                  "
+                >
+                  {executionPillars.map((pillar, idx) => (
+                    <div
+                      key={pillar.title}
+                      className={[
+                        // slightly tighter vertical padding so the card isn't too tall
+                        "px-4 py-6 md:px-5 md:py-9.5 lg:px-6",
+                        "text-left",
+                        idx === 0
+                          ? ""
+                          : "border-l border-black/10 md:group-hover:border-white/25",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      {pillar.title}
+                    </div>
+                  ))}
                 </div>
-              ))}
+
+                {/* Body row */}
+                <div
+                  className="
+                    grid grid-cols-3
+                    text-[11px] md:text-[13px] lg:text-sm
+                    leading-relaxed md:leading-6
+                  "
+                >
+                  {executionPillars.map((pillar, idx) => (
+                    <div
+                      key={pillar.title}
+                      className={[
+                        // reduced vertical padding compared to before
+                        "px-4 py-4 md:px-5 md:py-4.5 lg:px-6 lg:py-5",
+                        "text-gray-800/90 transition-colors duration-500 md:group-hover:text-white",
+                        idx === 0
+                          ? ""
+                          : "border-l border-black/10 md:group-hover:border-white/25",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      {pillar.description}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </motion.div>
-          </motion.div>
+          </div>
+
+          {/* RIGHT: Process / Architecture Diagram – Soft Premium Hover */}
+          <div
+            className="
+              group relative border border-black/80 bg-white text-black 
+              shadow-[0_24px_80px_rgba(0,0,0,0.16)] 
+              px-4 sm:px-8 py-6 sm:py-8 overflow-hidden 
+              transition-all duration-500 
+              md:hover:bg-black/95 md:hover:text-white 
+              md:hover:border-white/40 
+              md:hover:shadow-[0_30px_90px_rgba(0,0,0,0.25)]
+              md:hover:scale-[1.01]
+            "
+          >
+            <div className="absolute inset-y-5 sm:inset-y-6 left-4 sm:left-6 w-px bg-gradient-to-b from-black via-black/60 to-transparent md:group-hover:from-white md:group-hover:via-white/60 md:group-hover:to-transparent transition-all duration-500 pointer-events-none" />
+
+            <h3
+              className="
+                text-[11px] sm:text-xs tracking-[0.24em] uppercase text-gray-800 mb-5 
+                transition-colors duration-500
+                md:group-hover:text-white/70
+              "
+            >
+              Delivery Blueprint
+            </h3>
+
+            <ol className="space-y-6 text-sm sm:text-base text-gray-900 relative pl-4 sm:pl-6">
+              {stepTitles.map((title, idx) => (
+                <li key={title} className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
+                  <span
+                    className="
+                      mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-black 
+                      text-[11px] font-semibold transition-colors duration-500 shrink-0
+                      md:group-hover:border-white md:group-hover:text-white
+                    "
+                  >
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="font-semibold transition-colors duration-500 md:group-hover:text-white">
+                      {title}
+                    </p>
+                    <p className="text-xs sm:text-sm text-gray-700 transition-colors duration-500 md:group-hover:text-white/80">
+                      {stepDescriptions[idx]}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -29,6 +29,29 @@ export function ContactSection() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [showForm]);
 
+  // Prevent background scrolling when the modal is open
+  useEffect(() => {
+    if (!showForm) return;
+
+    const body = document.body;
+    const originalOverflow = body.style.overflow;
+    const originalPaddingRight = body.style.paddingRight;
+    const scrollBarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    body.style.overflow = "hidden";
+    body.classList.add("contact-modal-open");
+    if (scrollBarWidth > 0) {
+      body.style.paddingRight = `${scrollBarWidth}px`;
+    }
+
+    return () => {
+      body.style.overflow = originalOverflow;
+      body.style.paddingRight = originalPaddingRight;
+      body.classList.remove("contact-modal-open");
+    };
+  }, [showForm]);
+
   const SocialButtons = () => (
     <div className="social-circle-grid">
       <a
@@ -327,6 +350,8 @@ export function ContactSection() {
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center"
         >
           <motion.div
+            role="dialog"
+            aria-modal="true"
             initial={{ scale: 0.95, y: 18 }}
             animate={{ scale: 1, y: 0 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
@@ -334,9 +359,10 @@ export function ContactSection() {
             className="relative w-full max-w-2xl mx-4 rounded-2xl border border-white/15 bg-white/95 shadow-2xl"
           >
             <button
+              type="button"
               onClick={() => setShowForm(false)}
               aria-label="Close"
-              className="absolute -top-3 -right-3 z-10 grid place-items-center w-10 h-10 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white hover:scale-110 transition-all shadow-lg"
+              className="absolute top-3 right-3 md:-top-3 md:-right-3 z-10 grid place-items-center w-10 h-10 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white hover:scale-110 transition-all shadow-lg"
             >
               ✕
             </button>

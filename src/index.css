@@ -91,3 +91,9 @@ html.smooth-scroll {
 .preserve-3d {
   transform-style: preserve-3d;
 }
+
+@media (max-width: 767px) {
+  body.contact-modal-open .bubble-menu {
+    display: none !important;
+  }
+}

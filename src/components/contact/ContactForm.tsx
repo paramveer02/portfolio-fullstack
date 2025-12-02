@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import {
@@ -15,7 +15,11 @@ const MIN_MESSAGE_LENGTH = 24;
 const WHATSAPP_LINK =
   'https://wa.me/4917643835327?text=Hi%20Paramveer,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project.';
 
-type FormValues = ContactFormPayload & { honeypot?: string };
+type FormValues = ContactFormPayload & {
+  honeypot?: string;
+  projectType?: string;
+  budgetRange?: string;
+};
 
 interface ContactFormProps {
   onClose?: () => void;
@@ -27,6 +31,7 @@ export function ContactForm({ onClose }: ContactFormProps) {
   const [status, setStatus] =
     useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [messageValue, setMessageValue] = useState('');
 
   const {
     register,
@@ -41,8 +46,19 @@ export function ContactForm({ onClose }: ContactFormProps) {
       message: '',
       company: '',
       honeypot: '',
+      projectType: '',
+      budgetRange: '',
     },
   });
+
+  // Abort pending request on unmount
+  useEffect(() => {
+    return () => {
+      if (abortRef.current) {
+        abortRef.current.abort();
+      }
+    };
+  }, []);
 
   const onSubmit = async (values: FormValues) => {
     // Honeypot check
@@ -72,13 +88,26 @@ export function ContactForm({ onClose }: ContactFormProps) {
     setStatus('submitting');
     setErrorMessage('');
 
+    // Fold projectType + budgetRange into the final message
+    const enrichedMessageParts: string[] = [];
+
+    if (values.projectType) {
+      enrichedMessageParts.push(`Project type: ${values.projectType}`);
+    }
+    if (values.budgetRange) {
+      enrichedMessageParts.push(`Budget range: ${values.budgetRange}`);
+    }
+    enrichedMessageParts.push(`Message:\n${values.message.trim()}`);
+
+    const finalMessage = enrichedMessageParts.join('\n\n');
+
     try {
       const result = await submitContactForm(
         {
           name: values.name.trim(),
           email: values.email.trim(),
           company: values.company?.trim() || undefined,
-          message: values.message.trim(),
+          message: finalMessage,
         },
         abortRef.current.signal,
       );
@@ -86,12 +115,15 @@ export function ContactForm({ onClose }: ContactFormProps) {
       if (result.success) {
         lastSubmissionRef.current = now;
         setStatus('success');
+        setMessageValue('');
         reset({
           name: '',
           email: '',
           message: '',
           company: '',
           honeypot: '',
+          projectType: '',
+          budgetRange: '',
         });
       } else {
         throw new Error(result.error || 'Submission failed');
@@ -109,6 +141,20 @@ export function ContactForm({ onClose }: ContactFormProps) {
     }
   };
 
+  const CloseAction = () =>
+    onClose ? (
+      <div className="flex justify-end sm:hidden mb-4">
+        <button
+          type="button"
+          onClick={onClose}
+          className="inline-flex items-center gap-2 rounded border border-black/60 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-black shadow-sm transition hover:bg-black hover:text-white"
+          aria-label="Close contact form"
+        >
+          Close
+        </button>
+      </div>
+    ) : null;
+
   return (
     <>
       {status === 'success' ? (
@@ -119,6 +165,7 @@ export function ContactForm({ onClose }: ContactFormProps) {
           transition={{ duration: 0.5 }}
           className="text-center py-12 px-6 space-y-6"
         >
+          <CloseAction />
           <div className="w-20 h-20 mx-auto rounded-full bg-green-100 flex items-center justify-center">
             <svg
               className="w-10 h-10 text-green-600"
@@ -215,8 +262,9 @@ export function ContactForm({ onClose }: ContactFormProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="relative space-y-4 rounded-2xl border border-black/10 bg-white/70 p-6 text-left shadow-lg backdrop-blur"
+            className="relative space-y-4 border border-black/10 bg-white/80 p-4 sm:p-6 text-left shadow-lg backdrop-blur max-h-[80vh] overflow-y-auto overscroll-contain sm:max-h-none sm:overflow-visible"
           >
+            <CloseAction />
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.18em] text-gray-700">
@@ -226,6 +274,16 @@ export function ContactForm({ onClose }: ContactFormProps) {
                   Tell me what you need built
                 </p>
               </div>
+              {onClose && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="hidden sm:inline-flex items-center justify-center rounded border border-black/70 bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-black transition hover:bg-black hover:text-white"
+                  aria-label="Close contact form"
+                >
+                  Close
+                </button>
+              )}
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -246,12 +304,14 @@ export function ContactForm({ onClose }: ContactFormProps) {
                       message: 'Name is too short',
                     },
                   })}
+                  aria-invalid={!!errors.name || undefined}
+                  aria-describedby={errors.name ? 'name-error' : undefined}
                   className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
                   placeholder="e.g., John Smith"
                   autoComplete="name"
                 />
                 {errors.name && (
-                  <span className="text-xs text-red-600">
+                  <span id="name-error" className="text-xs text-red-600">
                     {errors.name.message}
                   </span>
                 )}
@@ -274,34 +334,97 @@ export function ContactForm({ onClose }: ContactFormProps) {
                       message: 'Enter a valid email address',
                     },
                   })}
+                  aria-invalid={!!errors.email || undefined}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                   className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
                   placeholder="john@example.com"
                   autoComplete="email"
                   inputMode="email"
                 />
                 {errors.email && (
-                  <span className="text-xs text-red-600">
+                  <span id="email-error" className="text-xs text-red-600">
                     {errors.email.message}
                   </span>
                 )}
               </div>
             </div>
 
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-2">
+                <label
+                  className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-700"
+                  htmlFor="company"
+                >
+                  Company (optional)
+                </label>
+                <input
+                  id="company"
+                  type="text"
+                  {...register('company')}
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
+                  placeholder="e.g., Acme Inc or local café in Leipzig"
+                  autoComplete="organization"
+                />
+              </div>
+
+              {/* Project type */}
+              <div className="flex flex-col gap-2">
+                <label
+                  className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-700"
+                  htmlFor="projectType"
+                >
+                  Project type (optional)
+                </label>
+                <select
+                  id="projectType"
+                  {...register('projectType')}
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  <option value="New website / redesign">
+                    New website / redesign
+                  </option>
+                  <option value="Workflow / automation system">
+                    Workflow / automation system
+                  </option>
+                  <option value="Website + Application (Android / iOS">
+                    Website + Application (Android/iOS)
+                  </option>
+                  <option value="Other / not sure yet">
+                    Something different / not sure yet
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            {/* Budget range */}
             <div className="flex flex-col gap-2">
               <label
                 className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-700"
-                htmlFor="company"
+                htmlFor="budgetRange"
               >
-                Company (optional)
+                Budget range (optional)
               </label>
-              <input
-                id="company"
-                type="text"
-                {...register('company')}
+              <select
+                id="budgetRange"
+                {...register('budgetRange')}
                 className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
-                placeholder="e.g., Acme Inc or local café in Leipzig"
-                autoComplete="organization"
-              />
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Select a rough range
+                </option>
+                <option value="< 1000€">&lt; 1.000€</option>
+                <option value="1000–3000€">1.000–3.000€</option>
+                <option value="3000–6000€">3.000–6.000€</option>
+                <option value="> 6000€ / flexible">
+                  &gt; 6.000€ / flexible
+                </option>
+                <option value="Not sure yet">Not sure yet</option>
+              </select>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -325,18 +448,33 @@ export function ContactForm({ onClose }: ContactFormProps) {
                     message: `Message is too long (max ${MAX_MESSAGE_LENGTH} characters)`,
                   },
                 })}
+                aria-invalid={!!errors.message || undefined}
+                aria-describedby={
+                  errors.message ? 'message-error' : 'message-help'
+                }
                 className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-black focus:outline-none"
                 placeholder="Example: I run a small business and need a modern website and simple automations (e.g. order tracking, email reminders). Please share what you do, what you need, any deadline, and a rough budget range."
+                onChange={(e) => {
+                  setMessageValue(e.target.value);
+                }}
               />
               {errors.message && (
-                <span className="text-xs text-red-600">
+                <span id="message-error" className="text-xs text-red-600">
                   {errors.message.message}
                 </span>
               )}
-              <p className="text-[11px] text-gray-500">
-                Tip: one–two sentences about your business + what you want
-                built + timeline + budget range helps me reply with a clear
-                plan.
+              <p
+                id="message-help"
+                className="text-[11px] text-gray-500 flex justify-between gap-2"
+              >
+                <span>
+                  Tip: one–two sentences about your business + what you want
+                  built + timeline + budget range helps me reply with a clear
+                  plan.
+                </span>
+                <span className="whitespace-nowrap">
+                  {messageValue.length}/{MAX_MESSAGE_LENGTH}
+                </span>
               </p>
             </div>
 
@@ -361,7 +499,8 @@ export function ContactForm({ onClose }: ContactFormProps) {
                 {status === 'submitting' ? 'Sending…' : 'Send message'}
               </button>
               <p className="text-xs text-gray-600">
-                Replies within 24 hours. Your details are never shared.
+                I usually reply within 24 hours. For urgent projects, WhatsApp
+                is the fastest way to reach me.
               </p>
             </div>
 
