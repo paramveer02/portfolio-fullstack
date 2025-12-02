@@ -24,7 +24,7 @@ function CardRotate({ children, onSendToBack, sensitivity }: CardRotateProps) {
 
   return (
     <motion.div
-      className="absolute cursor-grab"
+      className="absolute cursor-grab touch-none"
       style={{ x, y, rotateX, rotateY }}
       drag
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}

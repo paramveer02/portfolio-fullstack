@@ -18,7 +18,6 @@ export function ContactSection() {
 
   const [showForm, setShowForm] = useState(false);
   const dialogRef = useRef<HTMLDivElement | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const previouslyFocusedRef = useRef<Element | null>(null);
   const formTitleId = "contact-form-title";
 
@@ -74,11 +73,12 @@ export function ContactSection() {
         dialog.querySelectorAll<HTMLElement>(focusableSelectors),
       ).filter(
         (el) =>
-          !el.hasAttribute("disabled") && !el.getAttribute("aria-hidden"),
+          !el.hasAttribute("disabled") &&
+          !el.getAttribute("aria-hidden") &&
+          el.offsetParent !== null,
       );
 
-      const target =
-        closeButtonRef.current ?? focusable[0] ?? (dialog as HTMLElement);
+      const target = focusable[0] ?? (dialog as HTMLElement);
       target?.focus();
 
       return focusable;
@@ -420,15 +420,6 @@ export function ContactSection() {
             tabIndex={-1}
             className="relative w-full max-w-2xl mx-4 rounded-2xl border border-white/15 bg-white/95 shadow-2xl"
           >
-            <button
-              type="button"
-              onClick={() => setShowForm(false)}
-              aria-label="Close"
-              ref={closeButtonRef}
-              className="absolute top-3 right-3 md:-top-3 md:-right-3 z-10 grid place-items-center w-10 h-10 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white hover:scale-110 transition-all shadow-lg"
-            >
-              ✕
-            </button>
             <div className="p-6">
               <h2 id={formTitleId} className="sr-only">
                 Contact Paramveer

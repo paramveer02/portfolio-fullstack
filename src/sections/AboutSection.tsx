@@ -79,7 +79,7 @@ export function AboutSection() {
           <p className="mt-3 text-sm sm:text-base tracking-[0.18em] uppercase text-gray-700">
             Building Products with Precision
           </p>
-          <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-gray-700 leading-relaxed">
+          <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-gray-900 leading-relaxed">
             I design and ship systems so founders can stay focused on vision,
             product, and customers. Architecture, development, and automation
             are handled end-to-end—without you getting pulled into technical
@@ -113,7 +113,7 @@ export function AboutSection() {
               </p>
               <p
                 className="
-                  text-sm sm:text-base text-gray-800 leading-relaxed 
+                  text-sm sm:text-base text-gray-900 leading-relaxed 
                   transition-colors duration-500 
                   md:group-hover:text-white
                 "
@@ -145,9 +145,9 @@ export function AboutSection() {
                 {executionPillars.map((pillar) => (
                   <div
                     key={pillar.title}
-                    className="px-4 py-5 flex flex-col gap-3 text-gray-800 text-sm leading-relaxed transition-colors duration-500 md:group-hover:text-white"
+                    className="px-4 py-5 flex flex-col gap-3 text-gray-900 text-sm leading-relaxed transition-colors duration-500 md:group-hover:text-white"
                   >
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-700 transition-colors duration-500 md:group-hover:text-white/70">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-600 transition-colors duration-500 md:group-hover:text-white/70">
                       {pillar.title}
                     </p>
                     <p>{pillar.description}</p>
@@ -164,7 +164,7 @@ export function AboutSection() {
                     text-[11px] md:text-[11px] lg:text-xs 
                     font-semibold uppercase 
                     tracking-[0.18em] md:tracking-[0.22em]
-                    text-gray-800 transition-colors duration-500 
+                    text-gray-600 transition-colors duration-500 
                     md:group-hover:text-white/70 md:group-hover:border-white/20
                   "
                 >
@@ -172,8 +172,7 @@ export function AboutSection() {
                     <div
                       key={pillar.title}
                       className={[
-                        // slightly tighter vertical padding so the card isn't too tall
-                        "px-4 py-6 md:px-5 md:py-9.5 lg:px-6",
+                        "px-4 py-4 md:px-5 md:py-5 lg:px-6 lg:py-5",
                         "text-left",
                         idx === 0
                           ? ""
@@ -191,17 +190,16 @@ export function AboutSection() {
                 <div
                   className="
                     grid grid-cols-3
-                    text-[11px] md:text-[13px] lg:text-sm
-                    leading-relaxed md:leading-6
+                    text-sm
+                    leading-relaxed md:leading-6 text-gray-900
                   "
                 >
                   {executionPillars.map((pillar, idx) => (
                     <div
                       key={pillar.title}
                       className={[
-                        // reduced vertical padding compared to before
-                        "px-4 py-4 md:px-5 md:py-4.5 lg:px-6 lg:py-5",
-                        "text-gray-800/90 transition-colors duration-500 md:group-hover:text-white",
+                        "px-4 py-4 md:px-5 md:py-5 lg:px-6 lg:py-6",
+                        "transition-colors duration-500 md:group-hover:text-white",
                         idx === 0
                           ? ""
                           : "border-l border-black/10 md:group-hover:border-white/25",
@@ -230,7 +228,7 @@ export function AboutSection() {
               md:hover:scale-[1.01]
             "
           >
-            <div className="absolute inset-y-5 sm:inset-y-6 left-4 sm:left-6 w-px bg-gradient-to-b from-black via-black/60 to-transparent md:group-hover:from-white md:group-hover:via-white/60 md:group-hover:to-transparent transition-all duration-500 pointer-events-none" />
+            <div className="hidden sm:block absolute inset-y-6 left-6 w-px bg-gradient-to-b from-black via-black/60 to-transparent md:group-hover:from-white md:group-hover:via-white/60 md:group-hover:to-transparent transition-all duration-500 pointer-events-none" />
 
             <h3
               className="
@@ -242,25 +240,28 @@ export function AboutSection() {
               Delivery Blueprint
             </h3>
 
-            <ol className="space-y-6 text-sm sm:text-base text-gray-900 relative pl-4 sm:pl-6">
+            <ol className="space-y-6 text-sm text-gray-900 relative pl-0 sm:pl-6">
               {stepTitles.map((title, idx) => (
-                <li key={title} className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
-                  <span
-                    className="
-                      mt-1 h-6 w-6 flex items-center justify-center rounded-full border border-black 
-                      text-[11px] font-semibold transition-colors duration-500 shrink-0
-                      md:group-hover:border-white md:group-hover:text-white
-                    "
-                  >
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <p className="font-semibold transition-colors duration-500 md:group-hover:text-white">
-                      {title}
-                    </p>
-                    <p className="text-xs sm:text-sm text-gray-700 transition-colors duration-500 md:group-hover:text-white/80">
-                      {stepDescriptions[idx]}
-                    </p>
+                <li key={title} className="flex flex-col gap-2">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    {/* Simple number label, no circle */}
+                    <span
+                      className="
+                        text-[11px] sm:text-xs font-semibold tracking-[0.24em]
+                        text-gray-600 mt-1
+                        transition-colors duration-500 md:group-hover:text-white/70
+                      "
+                    >
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <p className="font-semibold transition-colors duration-500 md:group-hover:text-white">
+                        {title}
+                      </p>
+                      <p className="text-sm text-gray-900 leading-relaxed transition-colors duration-500 md:group-hover:text-white/80">
+                        {stepDescriptions[idx]}
+                      </p>
+                    </div>
                   </div>
                 </li>
               ))}

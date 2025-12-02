@@ -223,10 +223,10 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
                     className="absolute -bottom-4 -right-4 sm:-bottom-5 sm:-right-5 bg-white text-black px-4 py-3 sm:px-6 sm:py-4 border-3 sm:border-4 border-white shadow-2xl z-10"
                   >
                     <div className="text-[10px] sm:text-xs font-semibold tracking-[0.2em]">
-                      AI-POWERED
+                      SOFTWARE
                     </div>
                     <div className="text-lg sm:text-xl md:text-2xl font-bold leading-tight">
-                      PRODUCT BUILDER
+                      ENGINEER
                     </div>
                   </motion.div>
                 </div>

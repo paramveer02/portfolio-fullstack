@@ -146,7 +146,7 @@ export function SkillsSection() {
                       </div>
 
                       {/* Tech Stack with Individual Icons */}
-                      <div className="space-y-2 sm:space-y-3 md:space-y-4 w-full overflow-x-hidden overflow-y-auto pr-1">
+                      <div className="space-y-2 sm:space-y-3 md:space-y-4 w-full overflow-x-hidden overflow-y-auto pr-1 touch-auto">
                         {skillCard.tech.map((item: string) => {
                           const TechIcon = techIcons[item] || FaReact;
                           return (
