@@ -91,7 +91,7 @@ const mobileImageMap: Record<string, string[]> = {
 
 // shared disclaimer text
 const PORTFOLIO_DISCLAIMER =
-  "These demos use free-tier hosting, which may briefly spin up on first load.\nThey are private portfolio previews—not production deployments—and are intended only for evaluation.";
+  "These demos use free-tier hosting, which may briefly spin up on first load.\nThey are privately deployed portfolio websites — and are intended only for evaluation.";
 
 // Individual project card
 interface ProjectCardProps {
