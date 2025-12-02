@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FaReact } from "react-icons/fa";
 import { IconType } from "react-icons";
 import DecryptedText from "../components/DecryptedText";
@@ -15,6 +15,26 @@ type SkillCard = {
 
 export function SkillsSection() {
   const ref = useRef(null);
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const cardDimensions = useMemo(() => {
+    const width = viewportWidth;
+    if (width < 360) return { width: 220, height: 320 };
+    if (width < 480) return { width: 260, height: 360 };
+    if (width < 640) return { width: 300, height: 400 };
+    if (width < 768) return { width: 360, height: 460 };
+    if (width < 1024) return { width: 420, height: 540 };
+    return { width: 560, height: 640 };
+  }, [viewportWidth]);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -95,29 +115,12 @@ export function SkillsSection() {
         </motion.div>
 
         {/* Stack Container */}
-        <div className="flex items-center justify-center min-h-[500px] sm:min-h-[600px] md:min-h-[700px]">
+        <div className="flex items-center justify-center min-h-[420px] sm:min-h-[560px] md:min-h-[700px]">
           <Stack
             randomRotation={true}
             sensitivity={180}
             sendToBackOnClick={false}
-            cardDimensions={{
-              width:
-                typeof window !== "undefined" && window.innerWidth < 640
-                  ? 280
-                  : typeof window !== "undefined" && window.innerWidth < 768
-                    ? 380
-                    : typeof window !== "undefined" && window.innerWidth < 1024
-                      ? 480
-                      : 650,
-              height:
-                typeof window !== "undefined" && window.innerWidth < 640
-                  ? 400
-                  : typeof window !== "undefined" && window.innerWidth < 768
-                    ? 480
-                    : typeof window !== "undefined" && window.innerWidth < 1024
-                      ? 560
-                      : 650,
-            }}
+            cardDimensions={cardDimensions}
             cardsData={skills}
             animationConfig={{ stiffness: 260, damping: 20 }}
           >
@@ -130,36 +133,35 @@ export function SkillsSection() {
                   <div className="absolute inset-0 bg-white group-hover:bg-black transition-all duration-700" />
 
                   {/* Content */}
-                  <div className="relative z-10 h-full flex flex-col justify-between p-6 sm:p-8 md:p-10 lg:p-12 group-hover:text-white transition-colors duration-700">
-                    {/* Top Section */}
-                    <div className="flex flex-col items-center">
+                  <div className="relative z-10 h-full flex flex-col justify-between p-4 sm:p-6 md:p-8 group-hover:text-white transition-colors duration-700">
+                    <div className="flex flex-col items-center flex-grow">
                       {/* Category Title with Icon */}
-                      <div className="flex flex-col items-center justify-center gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-8 md:mb-12">
-                        <div className="p-3 sm:p-4 md:p-5 border-2 border-black group-hover:border-white transition-colors duration-700 flex-shrink-0">
-                          <CategoryIcon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14" />
+                      <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 md:gap-5 mb-4 sm:mb-6 md:mb-8">
+                        <div className="p-2 sm:p-3 md:p-4 border-2 border-black group-hover:border-white transition-colors duration-700 flex-shrink-0">
+                          <CategoryIcon className="w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 lg:w-12 lg:h-12" />
                         </div>
-                        <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-center break-words max-w-full">
+                        <h3 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-center break-words max-w-full tracking-tight">
                           {skillCard.category}
                         </h3>
                       </div>
-                    </div>
 
-                    {/* Tech Stack with Individual Icons */}
-                    <div className="space-y-3 sm:space-y-4 md:space-y-5 w-full overflow-hidden">
-                      {skillCard.tech.map((item: string) => {
-                        const TechIcon = techIcons[item] || FaReact;
-                        return (
-                          <div
-                            key={item}
-                            className="flex items-center justify-start gap-3 sm:gap-4 md:gap-5 border-b border-black group-hover:border-white pb-3 sm:pb-4 transition-colors duration-700"
-                          >
-                            <TechIcon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex-shrink-0" />
-                            <span className="text-sm sm:text-base md:text-lg lg:text-xl tracking-wide">
-                              {item}
-                            </span>
-                          </div>
-                        );
-                      })}
+                      {/* Tech Stack with Individual Icons */}
+                      <div className="space-y-2 sm:space-y-3 md:space-y-4 w-full overflow-x-hidden overflow-y-auto pr-1">
+                        {skillCard.tech.map((item: string) => {
+                          const TechIcon = techIcons[item] || FaReact;
+                          return (
+                            <div
+                              key={item}
+                              className="flex items-center justify-start gap-2 sm:gap-3 md:gap-4 border-b border-black group-hover:border-white pb-2 sm:pb-3 transition-colors duration-700"
+                            >
+                              <TechIcon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex-shrink-0" />
+                              <span className="text-sm sm:text-base md:text-lg tracking-wide">
+                                {item}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>

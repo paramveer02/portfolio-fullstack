@@ -100,7 +100,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
 
       {/* Foreground Content */}
       <div className="max-w-7xl mx-auto py-8 sm:py-12 md:py-16 relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 xl:gap-32 items-stretch">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-24 xl:gap-32 items-stretch">
           {/* LEFT — TEXT */}
           <motion.div
             initial={{ opacity: 0, x: -100 }}
@@ -130,39 +130,39 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
 
             {/* Vision Lines */}
             <div className="mb-7 sm:mb-9 md:mb-11 space-y-4 sm:space-y-5 md:space-y-6">
-{/* Line 1 */}
-<motion.div
-  initial={{ opacity: 0, x: -30 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.8, delay: 0.3 }}
-  className="flex gap-4 justify-center lg:justify-start items-start"
->
-  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white translate-y-[8px] sm:translate-y-[9px]" />
-  <p
-    className="font-bold tracking-tight leading-tight text-left"
-    style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
-  >
-    Modern web apps, dashboards & internal tools for founders and small teams
-  </p>
-</motion.div>
+              {/* Line 1 */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="flex gap-4 justify-center lg:justify-start items-start"
+              >
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white translate-y-[8px] sm:translate-y-[9px]" />
+                <p
+                  className="font-bold tracking-tight leading-tight text-left"
+                  style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
+                >
+                  Modern web apps, dashboards & internal tools for founders and
+                  small teams
+                </p>
+              </motion.div>
 
-{/* Line 2 */}
-<motion.div
-  initial={{ opacity: 0, x: -30 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.8, delay: 0.5 }}
-  className="flex gap-4 justify-center lg:justify-start items-start"
->
-  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white translate-y-[8px] sm:translate-y-[9px]" />
-  <p
-    className="font-bold tracking-tight leading-tight text-left"
-    style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
-  >
-    AI-assisted development to ship faster and automate repetitive workflows
-  </p>
-</motion.div>
-
-
+              {/* Line 2 */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="flex gap-4 justify-center lg:justify-start items-start"
+              >
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white translate-y-[8px] sm:translate-y-[9px]" />
+                <p
+                  className="font-bold tracking-tight leading-tight text-left"
+                  style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
+                >
+                  AI-assisted development to ship faster and automate repetitive
+                  workflows
+                </p>
+              </motion.div>
             </div>
 
             {/* Social Icons */}
@@ -205,11 +205,11 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
             initial={{ opacity: 0, rotateY: -30, y: 50 }}
             animate={{ opacity: 1, rotateY: 0, y: 0 }}
             transition={{ duration: 1.2, delay: 0.3 }}
-            className="relative preserve-3d w-full h-full flex items-center justify-center py-8 sm:py-10 md:py-12"
+            className="relative preserve-3d w-full h-full flex items-center justify-center pt-4 pb-0 sm:pt-6 sm:pb-4 md:py-12"
           >
             <div
               className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg"
-              style={{ minHeight: "500px" }}
+              style={{ minHeight: isMobile ? "380px" : "500px" }}
             >
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative">

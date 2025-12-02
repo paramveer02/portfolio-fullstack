@@ -4,6 +4,7 @@ import { Mail, Github, Linkedin } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import { ContactForm } from "../components/contact/ContactForm";
 
+const PHONE_DISPLAY = "+49 176 43835327";
 const WHATSAPP_LINK =
   "https://wa.me/4917643835327?text=Hi%20Paramvir,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project.";
 
@@ -16,6 +17,10 @@ export function ContactSection() {
   });
 
   const [showForm, setShowForm] = useState(false);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const previouslyFocusedRef = useRef<Element | null>(null);
+  const formTitleId = "contact-form-title";
 
   // Close form on ESC key
   useEffect(() => {
@@ -49,6 +54,72 @@ export function ContactSection() {
       body.style.overflow = originalOverflow;
       body.style.paddingRight = originalPaddingRight;
       body.classList.remove("contact-modal-open");
+    };
+  }, [showForm]);
+
+  // Focus trap + restore focus for modal
+  useEffect(() => {
+    if (!showForm) return;
+
+    previouslyFocusedRef.current = document.activeElement;
+    const dialog = dialogRef.current;
+
+    if (!dialog) return;
+
+    const focusableSelectors =
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+    const focusFirstElement = () => {
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>(focusableSelectors),
+      ).filter(
+        (el) =>
+          !el.hasAttribute("disabled") && !el.getAttribute("aria-hidden"),
+      );
+
+      const target =
+        closeButtonRef.current ?? focusable[0] ?? (dialog as HTMLElement);
+      target?.focus();
+
+      return focusable;
+    };
+
+    let focusableElements = focusFirstElement();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+
+      focusableElements = Array.from(
+        dialog.querySelectorAll<HTMLElement>(focusableSelectors),
+      ).filter(
+        (el) =>
+          !el.hasAttribute("disabled") &&
+          !el.getAttribute("aria-hidden") &&
+          el.offsetParent !== null,
+      );
+
+      if (!focusableElements.length) return;
+
+      const first = focusableElements[0];
+      const last = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) {
+        if (document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    dialog.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      dialog.removeEventListener("keydown", handleKeyDown);
+      const previous = previouslyFocusedRef.current as HTMLElement | null;
+      previous?.focus?.();
     };
   }, [showForm]);
 
@@ -148,8 +219,6 @@ export function ContactSection() {
             </button>
           </div>
 
-
-
           {/* Social Icons */}
           <div className="flex items-center justify-center pt-2">
             <SocialButtons />
@@ -170,23 +239,19 @@ export function ContactSection() {
             </div>
             <div className="relative">
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">
-                Phone &amp; WhatsApp
+                Phone
               </span>
-              <span 
-                className="text-sm text-gray-900 block mb-2 cursor-pointer hover:text-blue-600 transition-colors"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const selection = confirm('Choose an option:\nOK = Call\nCancel = WhatsApp');
-                  if (selection) {
-                    window.location.href = 'tel:+4917643835327';
-                  } else {
-                    window.open(WHATSAPP_LINK, '_blank', 'noopener,noreferrer');
-                  }
-                }}
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-900 block mb-1 font-semibold hover:underline underline-offset-4"
               >
-                +49 176 43835327
-              </span>
-              <div className="text-xs text-gray-500">Click to choose call or WhatsApp</div>
+                {PHONE_DISPLAY}
+              </a>
+              <div className="text-xs text-gray-500 mt-1">
+                Prefer WhatsApp? just click on the number above.
+              </div>
             </div>
             <div>
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">
@@ -200,12 +265,11 @@ export function ContactSection() {
 
           {/* Tagline moved to bottom */}
           <div className="text-center px-4 pt-4 border-t border-gray-200 mt-4">
-            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3">
+            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3 border-b border-black/40 pb-1 inline-block">
               Let&apos;s Build Together
             </h3>
             <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed">
-              Full-stack developer + AI automation consultant. Available for small
-              business websites, dashboards, and automation systems.
+             Full-stack developer + AI automation consultant. I build modern web apps and automation systems for small businesses and startups.
             </p>
           </div>
         </div>
@@ -215,12 +279,11 @@ export function ContactSection() {
           <div className="grid grid-cols-1 gap-8 sm:gap-12 md:grid-cols-12 md:items-start text-center">
             {/* LEFT: intro + icons */}
             <div className="md:col-span-4 space-y-4 sm:space-y-6 mx-auto">
-              <h3 className="text-base sm:text-lg font-semibold tracking-[0.15em] sm:tracking-[0.18em] text-gray-800 uppercase">
+              <h3 className="text-base sm:text-lg font-semibold tracking-[0.15em] sm:tracking-[0.18em] text-gray-800 uppercase border-b border-black/40 pb-2 inline-block">
                 Let&apos;s Build Together
               </h3>
               <p className="text-sm sm:text-base text-gray-700 max-w-sm mx-auto">
-                Full-stack developer + AI automation consultant. I build modern
-                web apps and automation systems for small businesses and startups.
+                Full-stack developer + AI automation consultant. I build modern web apps and automation systems for small businesses and startups.
               </p>
               <div className="flex items-center justify-center pt-2">
                 <SocialButtons />
@@ -231,7 +294,7 @@ export function ContactSection() {
             <div className="md:col-span-8 grid gap-8 sm:gap-10 sm:grid-cols-2 text-sm sm:text-base">
               {/* Contact column */}
               <div className="space-y-3 sm:space-y-4">
-                <h4 className="mb-2 text-sm font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-800">
+                <h4 className="mb-2 text-sm font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-800 border-b border-black/30 pb-2 inline-block">
                   Contact
                 </h4>
                 <ul className="space-y-3 sm:space-y-4 text-gray-900">
@@ -248,23 +311,19 @@ export function ContactSection() {
                   </li>
                   <li className="flex flex-col gap-1">
                     <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
-                      Phone &amp; WhatsApp
+                      Phone
                     </span>
-                    <span 
-                      className="text-gray-900 cursor-pointer hover:text-blue-600 transition-colors"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const selection = confirm('Choose an option:\nOK = Call\nCancel = WhatsApp');
-                        if (selection) {
-                          window.location.href = 'tel:+4917643835327';
-                        } else {
-                          window.open(WHATSAPP_LINK, '_blank', 'noopener,noreferrer');
-                        }
-                      }}
+                    <a
+                      href={WHATSAPP_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-900 font-medium hover:underline underline-offset-4"
                     >
-                      +49 176 43835327
+                      {PHONE_DISPLAY}
+                    </a>
+                    <span className="text-xs text-gray-500 pt-1">
+                      Prefer WhatsApp, just click on the number above.
                     </span>
-                    <span className="text-xs text-gray-500">Click to choose call or WhatsApp</span>
                   </li>
                   <li className="flex flex-col gap-1">
                     <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
@@ -297,7 +356,7 @@ export function ContactSection() {
 
               {/* Info column */}
               <div className="space-y-3 sm:space-y-4">
-                <h4 className="mb-2 text-sm font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-800">
+                <h4 className="mb-2 text-sm font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-800 border-b border-black/30 pb-2 inline-block">
                   Info
                 </h4>
                 <ul className="space-y-3 sm:space-y-4 text-gray-900">
@@ -352,21 +411,28 @@ export function ContactSection() {
           <motion.div
             role="dialog"
             aria-modal="true"
+            aria-labelledby={formTitleId}
             initial={{ scale: 0.95, y: 18 }}
             animate={{ scale: 1, y: 0 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
+            ref={dialogRef}
+            tabIndex={-1}
             className="relative w-full max-w-2xl mx-4 rounded-2xl border border-white/15 bg-white/95 shadow-2xl"
           >
             <button
               type="button"
               onClick={() => setShowForm(false)}
               aria-label="Close"
+              ref={closeButtonRef}
               className="absolute top-3 right-3 md:-top-3 md:-right-3 z-10 grid place-items-center w-10 h-10 rounded-full border-2 border-black bg-white text-black hover:bg-black hover:text-white hover:scale-110 transition-all shadow-lg"
             >
               ✕
             </button>
             <div className="p-6">
+              <h2 id={formTitleId} className="sr-only">
+                Contact Paramveer
+              </h2>
               <ContactForm onClose={() => setShowForm(false)} />
             </div>
           </motion.div>

@@ -127,12 +127,21 @@ function ProjectCard({
 
   const [isHovered, setIsHovered] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
+  const [hasActivated, setHasActivated] = useState(index === 0);
+
+  useEffect(() => {
+    if (Math.abs(currentProjectIndex - index) <= 1) {
+      setHasActivated(true);
+    }
+  }, [currentProjectIndex, index]);
 
   // Handle touch events for mobile
   const handleTouchStart = () => {
     setIsTouched(true);
     setTimeout(() => setIsTouched(false), 3000); // Reset after 3 seconds
   };
+
+  const shouldRenderImages = hasActivated && imageSet.length > 0;
 
   return (
     <motion.div
@@ -171,29 +180,39 @@ function ProjectCard({
         {/* Image Slideshow Container */}
           <div className="relative w-full h-full">
             {/* Multiple Images for Slideshow */}
-            {imageSet.map((img: string, imgIndex: number) => (
-              <div
-                key={imgIndex}
-                className="absolute inset-0 transition-opacity duration-1000"
-                style={{
-                  opacity: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
-                  zIndex: (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
-                }}
-              >
-                <ImageWithFallback
-                  src={img}
-                  alt={`${project.title} - ${imgIndex + 1}`}
-                  className="w-full h-full object-contain"
-                  style={{
-                    objectFit: 'contain',
-                    objectPosition: 'center',
-                  }}
-                  width={800}
-                  height={600}
-                />
+            {shouldRenderImages ? (
+              <>
+                {imageSet.map((img: string, imgIndex: number) => (
+                  <div
+                    key={imgIndex}
+                    className="absolute inset-0 transition-opacity duration-1000"
+                    style={{
+                      opacity:
+                        (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
+                      zIndex:
+                        (currentImageIndex[index] || 0) === imgIndex ? 1 : 0,
+                    }}
+                  >
+                    <ImageWithFallback
+                      src={img}
+                      alt={`${project.title} - ${imgIndex + 1}`}
+                      className="w-full h-full object-contain"
+                      style={{
+                        objectFit: "contain",
+                        objectPosition: "center",
+                      }}
+                      width={800}
+                      height={600}
+                    />
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/80 text-white text-xs tracking-[0.2em] uppercase">
+                Loading preview…
               </div>
-            ))}
-              {totalImages > 1 && (
+            )}
+              {totalImages > 1 && shouldRenderImages && (
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30">
                   <button
                     onClick={(e) => {
@@ -263,7 +282,7 @@ function ProjectCard({
                 aria-label={`View ${project.title} project`}
               >
                 <p className="text-cyan-400 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-[0.15em] uppercase font-['Space_Grotesk',_sans-serif]">
-                  View Project
+                  EXPERIENCE LIVE
                 </p>
               </button>
             </Magnet>
@@ -463,7 +482,7 @@ export function ProjectsSection() {
                     onClick={() => window.open(project.link, "_blank", "noopener,noreferrer")}
                     className="mt-2 inline-flex items-center justify-center w-full border border-black bg-black text-white py-2 text-sm font-semibold tracking-wide"
                   >
-                    View project
+                    EXPERIENCE LIVE
                   </button>
                 </div>
               );

@@ -79,7 +79,6 @@ export const techIcons: Record<string, IconType> = {
   "n8n": FaCogs,
   AgentKit: FaRobot,
   Sora: FaBrain,
-  "Google Nano Pro": FaBrain,
   "Make.com": FaCogs,
   Render: SiRender,
   Vercel: SiVercel,
@@ -134,7 +133,7 @@ export const skills: Skill[] = [
   {
     id: 5,
     category: "AI & AUTOMATION",
-    tech: ["OpenAI API", "Cursor", "Copilot", "n8n", "AgentKit", "Sora", "Google Nano Pro", "Make.com"],
+    tech: ["OpenAI API", "Cursor", "Copilot", "n8n", "AgentKit", "Sora", "Make.com"],
     icon: FaBrain,
   },
   {
