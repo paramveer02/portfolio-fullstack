@@ -69,6 +69,7 @@ export function SkillsSection() {
           rotate: useTransform(scrollYProgress, [0, 1], [360, 0]),
         }}
       />
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -78,15 +79,15 @@ export function SkillsSection() {
           viewport={{ once: true }}
           className="mb-12 sm:mb-16 md:mb-20"
         >
-          <div 
+          <div
             className="inline-block px-4 sm:px-6 py-2 mb-6 sm:mb-8 text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em]"
             style={{
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: '#000000',
-              backgroundColor: '#ffffff',
-              color: '#000000',
-              transition: 'all 0.3s ease'
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderColor: "#000000",
+              backgroundColor: "#ffffff",
+              color: "#000000",
+              transition: "all 0.3s ease",
             }}
           >
             <DecryptedText
@@ -115,7 +116,9 @@ export function SkillsSection() {
         </motion.div>
 
         {/* Stack Container */}
-        <div className="flex items-center justify-center min-h-[420px] sm:min-h-[560px] md:min-h-[700px]">
+        <div className="flex items-center justify-center min-h-[420px] sm:min-h-[560px] md:min-h-[700px] touch-none">
+          {/*                        ^^^^^^^^^^
+              prevent browser from treating swipe as scroll, so drag is more reliable on mobile */}
           <Stack
             randomRotation={true}
             sensitivity={180}
@@ -146,7 +149,15 @@ export function SkillsSection() {
                       </div>
 
                       {/* Tech Stack with Individual Icons */}
-                      <div className="space-y-2 sm:space-y-3 md:space-y-4 w-full overflow-x-hidden overflow-y-auto pr-1 touch-auto">
+                      <div
+                        className="
+                          space-y-2 sm:space-y-3 md:space-y-4
+                          w-full
+                          overflow-x-hidden
+                          sm:overflow-y-auto   /* scroll only from sm+ */
+                          pr-1
+                        "
+                      >
                         {skillCard.tech.map((item: string) => {
                           const TechIcon = techIcons[item] || FaReact;
                           return (
