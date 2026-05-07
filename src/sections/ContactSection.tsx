@@ -126,7 +126,7 @@ export function ContactSection() {
   const SocialButtons = () => (
     <div className="social-circle-grid">
       <a
-        href="mailto:service@monpro-ai.com"
+        href="mailto:param@param-marwah.com"
         aria-label="Email"
         className="social-card tl email focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       >
@@ -215,7 +215,7 @@ export function ContactSection() {
               }}
               aria-label="Open contact form"
             >
-              <span className="box">Let&apos;s Connect!</span>
+              <span className="box">Get in touch.</span>
             </button>
           </div>
 
@@ -228,13 +228,13 @@ export function ContactSection() {
           <div className="space-y-4 text-center px-4">
             <div>
               <span className="text-xs uppercase tracking-widest text-gray-600 block mb-1">
-                Outlook Email
+                Email
               </span>
               <a
-                href="mailto:service@monpro-ai.com"
+                href="mailto:param@param-marwah.com"
                 className="text-sm text-gray-900 hover:underline"
               >
-                service@monpro-ai.com
+                param@param-marwah.com
               </a>
             </div>
             <div className="relative">
@@ -263,14 +263,21 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* Tagline moved to bottom */}
+          {/* Mobile MonPro-AI line */}
           <div className="text-center px-4 pt-4 border-t border-gray-200 mt-4">
-            <h3 className="text-sm font-semibold tracking-[0.2em] text-gray-800 uppercase mb-3 border-b border-black/40 pb-1 inline-block">
-              Let&apos;s Build Together
-            </h3>
-            <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed">
-             Full-stack developer + AI automation consultant. I build modern web apps and automation systems for small businesses and startups.
+            <p className="text-xs text-gray-700 max-w-xs mx-auto leading-relaxed mb-3">
+              For development work and direct collaboration, reach out below.
+              For AI automation consulting, the conversation happens through
+              MonPro-AI.
             </p>
+            <a
+              href="https://monpro-ai.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gray-500 hover:text-black transition-colors underline underline-offset-4 decoration-1"
+            >
+              Consulting inquiries → monpro-ai.com
+            </a>
           </div>
         </div>
 
@@ -279,14 +286,23 @@ export function ContactSection() {
           <div className="grid grid-cols-1 gap-8 sm:gap-12 md:grid-cols-12 md:items-start text-center">
             {/* LEFT: intro + icons */}
             <div className="md:col-span-4 space-y-4 sm:space-y-6 mx-auto">
-              <h3 className="text-base sm:text-lg font-semibold tracking-[0.15em] sm:tracking-[0.18em] text-gray-800 uppercase border-b border-black/40 pb-2 inline-block">
-                Let&apos;s Build Together
-              </h3>
               <p className="text-sm sm:text-base text-gray-700 max-w-sm mx-auto">
-                Full-stack developer + AI automation consultant. I build modern web apps and automation systems for small businesses and startups.
+                For development work and direct collaboration, reach out below.
+                For AI automation consulting, the conversation happens through
+                MonPro-AI.
               </p>
               <div className="flex items-center justify-center pt-2">
                 <SocialButtons />
+              </div>
+              <div className="text-center">
+                <a
+                  href="https://monpro-ai.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-gray-500 hover:text-black transition-colors underline underline-offset-4 decoration-1"
+                >
+                  Consulting inquiries → monpro-ai.com
+                </a>
               </div>
             </div>
 
@@ -300,13 +316,13 @@ export function ContactSection() {
                 <ul className="space-y-3 sm:space-y-4 text-gray-900">
                   <li className="flex flex-col gap-1">
                     <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
-                      Outlook Email
+                      Email
                     </span>
                     <a
-                      href="mailto:service@monpro-ai.com"
+                      href="mailto:param@param-marwah.com"
                       className="text-gray-900 hover:underline underline-offset-4 decoration-2 break-all"
                     >
-                      service@monpro-ai.com
+                      param@param-marwah.com
                     </a>
                   </li>
                   <li className="flex flex-col gap-1">
@@ -370,13 +386,13 @@ export function ContactSection() {
                     <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
                       Experience
                     </span>
-                    <span>4 years · Full-stack development</span>
+                    <span>5 years · Software Development</span>
                   </li>
                   <li className="flex flex-col gap-1">
                     <span className="text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.16em] text-gray-600">
                       Availability
                     </span>
-                    <span>Open to freelance & collaborations</span>
+                    <span>Open to collaboration</span>
                   </li>
                 </ul>
               </div>

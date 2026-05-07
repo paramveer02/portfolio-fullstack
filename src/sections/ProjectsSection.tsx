@@ -464,12 +464,12 @@ export function ProjectsSection() {
             <p className="inline-block px-4 py-2 border border-black bg-black text-white text-xs tracking-[0.3em] uppercase">
               Featured Work
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold leading-tight">
-              Web &amp; Mobile experiences ready for launch.
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight">
+              DEPLOYED WEBSITES
             </h2>
             <p className="text-sm sm:text-base text-gray-600">
-              A curated set of builds pairing modern stacks with automation so
-              releases stay predictable.
+              A selection of projects I have designed, built, and deployed.
+              Stack and live demos linked where available.
             </p>
             {/* mobile disclaimer, near the top */}
             <p className="mt-2 text-[10px] sm:text-xs text-gray-500 leading-relaxed max-w-md mx-auto text-center flex items-start justify-center gap-1">

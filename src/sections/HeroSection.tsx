@@ -115,7 +115,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
               transition={{ delay: 0.3 }}
               className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 mb-4 sm:mb-6 border border-white bg-white/5 text-[10px] sm:text-xs tracking-[0.24em] uppercase font-semibold"
             >
-              Full-Stack Developer · AI Automation Consultant
+              SOFTWARE DEVELOPER · AI AUTOMATION CONSULTANT
             </motion.div>
 
             {/* Name */}
@@ -142,8 +142,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
                   className="font-bold tracking-tight leading-tight text-left"
                   style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
                 >
-                  Modern web apps, dashboards & internal tools for founders and
-                  small teams
+                  Five years building software for founders and small teams.
                 </p>
               </motion.div>
 
@@ -159,14 +158,35 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
                   className="font-bold tracking-tight leading-tight text-left"
                   style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
                 >
-                  AI-assisted development to ship faster and automate repetitive
-                  workflows
+                  Now consulting on AI automation through MonPro-AI.
                 </p>
               </motion.div>
             </div>
 
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-6 sm:mb-8">
+              <a
+                href="#projects"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="px-5 py-2.5 border border-white text-sm font-semibold tracking-[0.1em] hover:bg-white hover:text-black transition-colors duration-300"
+              >
+                View my work ↓
+              </a>
+              <a
+                href="https://monpro-ai.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 bg-white text-black text-sm font-semibold tracking-[0.1em] hover:bg-white/90 transition-colors duration-300"
+              >
+                Visit MonPro-AI →
+              </a>
+            </div>
+
             {/* Social Icons */}
-            <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start mt-6 sm:mt-8">
+            <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start mt-0">
               {[
                 {
                   Icon: Github,
@@ -180,7 +200,7 @@ export function HeroSection({ scrollProgress }: HeroSectionProps) {
                 },
                 {
                   Icon: Mail,
-                  href: "mailto:service@monpro-ai.com",
+                  href: "mailto:param@param-marwah.com",
                   label: "Email",
                 },
               ].map(({ Icon, href, label }, i) => (

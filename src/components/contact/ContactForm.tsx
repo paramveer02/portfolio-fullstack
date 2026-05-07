@@ -206,7 +206,7 @@ export function ContactForm({ onClose }: ContactFormProps) {
           {/* Side Contact Options - Hidden on mobile, shown on desktop */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full hidden lg:flex flex-col gap-4 pr-6">
             <a
-              href="mailto:service@monpro-ai.com"
+              href="mailto:param@param-marwah.com"
               className="group flex items-center gap-3 px-4 py-3 bg-white/90 backdrop-blur border border-black/10 rounded-l-xl shadow-lg hover:shadow-xl transition-all hover:-translate-x-1"
               aria-label="Email Paramveer"
             >
@@ -232,7 +232,7 @@ export function ContactForm({ onClose }: ContactFormProps) {
           {/* Top Contact Options - Shown on mobile, hidden on desktop */}
           <div className="flex lg:hidden flex-col sm:flex-row gap-3 mb-6">
             <a
-              href="mailto:service@monpro-ai.com"
+              href="mailto:param@param-marwah.com"
               className="group flex-1 flex items-center justify-center gap-3 px-4 py-3 bg-white/90 backdrop-blur border border-black/10 rounded-xl shadow-md hover:shadow-lg transition-all"
               aria-label="Email Paramveer"
             >

@@ -125,6 +125,50 @@ export function Portfolio() {
       <ProjectsSection />
       <SkillsSection />
       <ContactSection />
+      <footer className="bg-white text-black border-t border-black/10 px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+            <span className="text-sm text-gray-700">
+              Paramvir Marwah · Software Developer · Leipzig
+            </span>
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
+              <a
+                href="https://monpro-ai.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-black transition-colors"
+              >
+                MonPro-AI ↗
+              </a>
+              <a
+                href="https://www.linkedin.com/in/paramveer-marwah/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-black transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/paramveer02"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-black transition-colors"
+              >
+                GitHub
+              </a>
+              <a
+                href="mailto:param@param-marwah.com"
+                className="text-gray-700 hover:text-black transition-colors"
+              >
+                Email
+              </a>
+            </div>
+          </div>
+          <div className="border-t border-black/10 pt-4">
+            <p className="text-xs text-gray-500">© 2026 Paramvir Marwah</p>
+          </div>
+        </div>
+      </footer>
     </motion.div>
   );
 }
